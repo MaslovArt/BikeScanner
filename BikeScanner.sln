@@ -7,6 +7,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Domain", "BikeS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Application", "BikeScanner.Application\BikeScanner.Application.csproj", "{131658F5-55B0-4890-9C11-B10BC89A809A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{4108A877-B345-4DC4-A4E7-310F50B81649}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{4CA547DE-DE8E-421C-BA41-EA19AE876F9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Infrastructure.VK", "BikeScanner.Infrastructure.VK\BikeScanner.Infrastructure.VK.csproj", "{554666AF-C3BA-4406-8467-2E81AF113FD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Data.Postgre", "BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj", "{930932CA-3286-40DB-93EB-458F5AFEC4E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.UI.Telegram", "BikeScanner.UI.Telegram\BikeScanner.UI.Telegram.csproj", "{26B38CB5-4725-4335-9834-61B73997464A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.DI", "BikeScanner.DI\BikeScanner.DI.csproj", "{B8746026-35FB-4499-AAB3-EB79A588E712}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Infrastructure", "BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj", "{E98DD6ED-978C-475D-A2DC-11AE1193D81A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +35,35 @@ Global
 		{131658F5-55B0-4890-9C11-B10BC89A809A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{131658F5-55B0-4890-9C11-B10BC89A809A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{131658F5-55B0-4890-9C11-B10BC89A809A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554666AF-C3BA-4406-8467-2E81AF113FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554666AF-C3BA-4406-8467-2E81AF113FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554666AF-C3BA-4406-8467-2E81AF113FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554666AF-C3BA-4406-8467-2E81AF113FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B38CB5-4725-4335-9834-61B73997464A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B38CB5-4725-4335-9834-61B73997464A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B38CB5-4725-4335-9834-61B73997464A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B38CB5-4725-4335-9834-61B73997464A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8746026-35FB-4499-AAB3-EB79A588E712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8746026-35FB-4499-AAB3-EB79A588E712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8746026-35FB-4499-AAB3-EB79A588E712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8746026-35FB-4499-AAB3-EB79A588E712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{554666AF-C3BA-4406-8467-2E81AF113FD6} = {4108A877-B345-4DC4-A4E7-310F50B81649}
+		{930932CA-3286-40DB-93EB-458F5AFEC4E3} = {4108A877-B345-4DC4-A4E7-310F50B81649}
+		{26B38CB5-4725-4335-9834-61B73997464A} = {4CA547DE-DE8E-421C-BA41-EA19AE876F9D}
+		{E98DD6ED-978C-475D-A2DC-11AE1193D81A} = {4108A877-B345-4DC4-A4E7-310F50B81649}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B3D2C64-B3BA-416D-AB0B-4C5316035DC3}
