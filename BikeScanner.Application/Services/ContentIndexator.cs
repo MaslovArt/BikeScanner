@@ -1,5 +1,6 @@
 ﻿using BikeScanner.Application.Interfaces;
 using BikeScanner.Domain.Content;
+using BikeScanner.Domain.Vars;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,39 +12,103 @@ namespace BikeScanner.Application.Services
 {
     public class ContentIndexator : IContentIndexator
     {
-        private readonly ILogger<ContentIndexator> _logger;
-        private readonly IContentLoader[] _contentLoaders;
-        private readonly IContentsRepository _contentsRepository;
+        private readonly ILogger<ContentIndexator>  _logger;
+        private readonly IContentLoader[]           _contentLoaders;
+        private readonly IContentsRepository        _contentsRepository;
+        private readonly IVarsRepository            _varsRepository;
 
         public ContentIndexator(
             ILogger<ContentIndexator> logger,
             IEnumerable<IContentLoader> contentLoaders,
-            IContentsRepository contentsRepository)
+            IContentsRepository contentsRepository,
+            IVarsRepository varsRepository)
         {
             _logger = logger;
             _contentLoaders = contentLoaders.ToArray();
             _contentsRepository = contentsRepository;
+            _varsRepository = varsRepository;
         }
 
         public async Task Execute(DateTime loadSince)
         {
-            _logger.LogInformation($"Starting indexing ({_contentLoaders.Length} providers)");
+            try
+            {
+                var timer = new Stopwatch();
+                timer.Start();
 
+                var indexTime = DateTime.Now;
+                _logger.LogInformation($"Starting indexing ({_contentLoaders.Length} providers)"); ;
+
+                var loadedContents = await LoadContents(loadSince);
+                var currentContents = await _contentsRepository.Get();
+                await RemoveOutdatedContent(currentContents, loadedContents, DateTime.Now.AddDays(-30));
+                await AddNewContent(currentContents, loadedContents, indexTime);
+
+                await _varsRepository.SetLastIndexingTime(indexTime);
+
+                timer.Stop();
+                _logger.LogInformation($"Finish indexing in {timer.Elapsed}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+            }
+        }
+
+        private async Task<ContentEntity[]> LoadContents(DateTime loadSince)
+        {
             var timer = new Stopwatch();
             timer.Start();
 
             var loadTasks = _contentLoaders.Select(l => l.Load(loadSince));
             var tasksResults = await Task.WhenAll(loadTasks);
-            var results = tasksResults.SelectMany(r => r);
+            var results = tasksResults.SelectMany(r => r).ToArray();
+
             var downloadTime = timer.Elapsed;
-            _logger.LogInformation($"Download {results.Count()} records in {downloadTime}");
+            _logger.LogInformation($"Download {results.Length} items in {downloadTime}");
 
-            var changeCount = await _contentsRepository.Refresh(results, loadSince);
-            var updateTime = timer.Elapsed - downloadTime;
-            _logger.LogInformation($"Update {changeCount} db items in {updateTime}");
+            return results;
+        }
 
-            timer.Stop();
-            _logger.LogInformation($"Finish indexing in {timer.Elapsed}");
+        private Task RemoveOutdatedContent(
+            IEnumerable<ContentEntity> current, 
+            IEnumerable<ContentEntity> loaded,
+            DateTime expired)
+        {
+            var currentUrls = current.Select(m => m.Url);
+            var loadedUrls = loaded.Select(c => c.Url);
+
+            var deletedUrls = currentUrls.Except(loadedUrls);
+            var deleted = current
+                .Where(m => deletedUrls.Contains(m.Url) || 
+                            m.Published.Date < expired.Date)
+                .Select(m => new ContentEntity() { Id = m.Id });
+
+            _logger.LogInformation($"Remove {deleted.Count()} records.");
+
+            return _contentsRepository.RemoveRange(deleted);
+        }
+
+        private Task AddNewContent(
+            IEnumerable<ContentEntity> current,
+            IEnumerable<ContentEntity> loaded,
+            DateTime stamp)
+        {
+            var currentUrls = current.Select(c => c.Url);
+            var loadedUrls = loaded.Select(c => c.Url);
+
+            var newUrls = loadedUrls.Except(currentUrls);
+            var newEntities = loaded.Where(c => newUrls.Contains(c.Url));
+
+            foreach (var newEntity in newEntities)
+            {
+                newEntity.IndexTime = stamp;
+                newEntity.Text = newEntity.Text.ToUpper();
+            }
+
+            _logger.LogInformation($"Add {newEntities.Count()} records.");
+
+            return _contentsRepository.AddRange(newEntities);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace BikeScanner.DI
             services.AddSingleton<VKApi>();
 
             services.AddSingleton<IContentLoader, VkWallsContentLoadService>();
-            services.AddSingleton<IContentLoader, VkAlbumsContentLoadService>();
+            //services.AddSingleton<IContentLoader, VkAlbumsContentLoadService>();
         }
     }
 }

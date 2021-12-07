@@ -4,6 +4,7 @@ using BikeScanner.Domain.Content;
 using BikeScanner.Domain.NotificationsQueue;
 using BikeScanner.Domain.SearchHistory;
 using BikeScanner.Domain.Subscriptions;
+using BikeScanner.Domain.Vars;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,7 @@ namespace BikeScanner.DI
             services.AddScoped<INotificationsQueueRepository, NotificationsQueueRepository>();
             services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
             services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
+            services.AddScoped<IVarsRepository, VarsRepository>();
         }
     }
 }

@@ -2,7 +2,6 @@
 using BikeScanner.Infrastructure.VK.Api.Abstraction;
 using BikeScanner.Infrastructure.VK.Models;
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;

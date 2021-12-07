@@ -3,6 +3,7 @@ using BikeScanner.Domain.Content;
 using BikeScanner.Domain.NotificationsQueue;
 using BikeScanner.Domain.SearchHistory;
 using BikeScanner.Domain.Subscriptions;
+using BikeScanner.Domain.Vars;
 using Microsoft.EntityFrameworkCore;
 
 namespace BikeScanner.Data.Postgre
@@ -17,6 +18,7 @@ namespace BikeScanner.Data.Postgre
         public DbSet<NotificationQueueEntity> NotificationsQueue { get; set; }
         public DbSet<SearchHistoryEntity> SearchHistories { get; set; }
         public DbSet<SubscriptionEntity> Subscriptions { get; set; }
+        public DbSet<VarEntity> Vars { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +27,7 @@ namespace BikeScanner.Data.Postgre
             modelBuilder.ApplyConfiguration(new ContentsConfiguration());
             modelBuilder.ApplyConfiguration(new SubsciptionsConfiguration());
             modelBuilder.ApplyConfiguration(new SearchHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new VarsConfiguration());
         }
     }
 }
