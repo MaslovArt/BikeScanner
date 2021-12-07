@@ -1,9 +1,5 @@
 ﻿using BikeScanner.Data.Postgre.DBConfigurations;
-using BikeScanner.Domain.Content;
-using BikeScanner.Domain.NotificationsQueue;
-using BikeScanner.Domain.SearchHistory;
-using BikeScanner.Domain.Subscriptions;
-using BikeScanner.Domain.Vars;
+using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BikeScanner.Data.Postgre

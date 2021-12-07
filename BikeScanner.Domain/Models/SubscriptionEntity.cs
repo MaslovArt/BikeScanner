@@ -1,6 +1,4 @@
-﻿using BikeScanner.Domain.Base;
-
-namespace BikeScanner.Domain.Subscriptions
+﻿namespace BikeScanner.Domain.Models
 {
     public class SubscriptionEntity : BaseEntity
     {

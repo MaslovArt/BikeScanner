@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using BikeScanner.Domain.Content;
 using BikeScanner.Domain.Extentions;
 using BikeScanner.Application.Interfaces;
 using BikeScanner.Infrastructure.VK.Api;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BikeScanner.Domain.Models;
 
 namespace BikeScanner.Infrastructure.VK.Services
 {

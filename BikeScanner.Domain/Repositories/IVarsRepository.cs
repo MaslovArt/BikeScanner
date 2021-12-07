@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace BikeScanner.Domain.Vars
+namespace BikeScanner.Domain.Repositories
 {
     public interface IVarsRepository
     {

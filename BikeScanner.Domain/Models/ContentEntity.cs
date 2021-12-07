@@ -1,7 +1,6 @@
-﻿using BikeScanner.Domain.Base;
-using System;
+﻿using System;
 
-namespace BikeScanner.Domain.Content
+namespace BikeScanner.Domain.Models
 {
     public class ContentEntity : BaseEntity
     {

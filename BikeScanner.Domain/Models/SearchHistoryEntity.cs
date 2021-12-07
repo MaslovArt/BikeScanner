@@ -1,7 +1,6 @@
-﻿using BikeScanner.Domain.Base;
-using System;
+﻿using System;
 
-namespace BikeScanner.Domain.SearchHistory
+namespace BikeScanner.Domain.Models
 {
     public class SearchHistoryEntity : BaseEntity
     {

@@ -1,4 +1,4 @@
-﻿using BikeScanner.Domain.Content;
+﻿using BikeScanner.Domain.Models;
 using System;
 using System.Threading.Tasks;
 

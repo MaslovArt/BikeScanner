@@ -1,6 +1,6 @@
 ﻿using BikeScanner.Application.Interfaces;
-using BikeScanner.Domain.Content;
-using BikeScanner.Domain.Vars;
+using BikeScanner.Domain.Models;
+using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,27 +31,30 @@ namespace BikeScanner.Application.Services
 
         public async Task Execute(DateTime loadSince)
         {
+            var indexingWath = new Stopwatch();
+            indexingWath.Start();
+
+            var indexTime = DateTime.Now;
+            _logger.LogInformation($"Starting indexing ({_contentLoaders.Length} providers)");
+
             try
             {
-                var timer = new Stopwatch();
-                timer.Start();
-
-                var indexTime = DateTime.Now;
-                _logger.LogInformation($"Starting indexing ({_contentLoaders.Length} providers)"); ;
-
                 var loadedContents = await LoadContents(loadSince);
+
                 var currentContents = await _contentsRepository.Get();
                 await RemoveOutdatedContent(currentContents, loadedContents, DateTime.Now.AddDays(-30));
                 await AddNewContent(currentContents, loadedContents, indexTime);
 
                 await _varsRepository.SetLastIndexingTime(indexTime);
-
-                timer.Stop();
-                _logger.LogInformation($"Finish indexing in {timer.Elapsed}");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
+            }
+            finally
+            {
+                indexingWath.Stop();
+                _logger.LogInformation($"Finish indexing in {indexingWath.Elapsed}");
             }
         }
 

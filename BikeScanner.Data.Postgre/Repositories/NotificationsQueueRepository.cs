@@ -1,9 +1,5 @@
-﻿using BikeScanner.Domain.NotificationsQueue;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BikeScanner.Domain.Models;
+using BikeScanner.Domain.Repositories;
 
 namespace BikeScanner.Data.Postgre.Repositories
 {

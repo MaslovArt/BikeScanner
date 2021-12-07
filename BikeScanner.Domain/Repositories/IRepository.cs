@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using BikeScanner.Domain.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BikeScanner.Domain.Base
+namespace BikeScanner.Domain.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {

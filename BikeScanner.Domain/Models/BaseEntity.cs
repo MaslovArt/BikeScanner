@@ -1,4 +1,4 @@
-﻿namespace BikeScanner.Domain.Base
+﻿namespace BikeScanner.Domain.Models
 {
     public class BaseEntity
     {

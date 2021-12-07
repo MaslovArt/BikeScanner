@@ -1,4 +1,4 @@
-﻿using BikeScanner.Domain.Content;
+﻿using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,7 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
     {
         public void Configure(EntityTypeBuilder<ContentEntity> builder)
         {
+            builder.HasAlternateKey(e => e.Url);
             builder.HasIndex(e => e.IndexTime);
             builder.HasIndex(e => e.Published);
         }

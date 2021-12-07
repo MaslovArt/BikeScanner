@@ -1,4 +1,5 @@
-﻿using BikeScanner.Domain.Base;
+﻿using BikeScanner.Domain.Models;
+using BikeScanner.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

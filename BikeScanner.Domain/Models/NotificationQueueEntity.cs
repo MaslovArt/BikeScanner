@@ -1,6 +1,4 @@
-﻿using BikeScanner.Domain.Base;
-
-namespace BikeScanner.Domain.NotificationsQueue
+﻿namespace BikeScanner.Domain.Models
 {
     public class NotificationQueueEntity : BaseEntity
     {

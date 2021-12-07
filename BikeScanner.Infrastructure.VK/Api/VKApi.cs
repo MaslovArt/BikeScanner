@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace BikeScanner.Infrastructure.VK.Api
 {
+    /// <summary>
+    /// Vk api
+    /// </summary>
     public class VKApi
     {
         private readonly VkSettings _settings;
@@ -20,6 +23,12 @@ namespace BikeScanner.Infrastructure.VK.Api
             _executor = new VkApiExecutor(logger, settings.Value.MaxApiRequestsPerSecond);
         }
 
+        /// <summary>
+        /// Get albums
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="albumsIds"></param>
+        /// <returns>Albums or empty array</returns>
         public async Task<AlbumModel[]> GetAlbums(int id, int[] albumsIds = null)
         {
             var getGroupMethod = new GetAlbums(_settings, id)
@@ -33,6 +42,11 @@ namespace BikeScanner.Infrastructure.VK.Api
                 : Array.Empty<AlbumModel>();
         }
 
+        /// <summary>
+        /// Get group info
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns>Group info or null</returns>
         public async Task<GroupModel> GetGroupInfo(string group)
         {
             var getGroupMethod = new GetGroupInfo(_settings, group);
@@ -43,6 +57,11 @@ namespace BikeScanner.Infrastructure.VK.Api
                 : null;
         }
 
+        /// <summary>
+        /// Get user info
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>User info or null</returns>
         public async Task<UserModel> GetUserInfo(string user)
         {
             var getGroupMethod = new GetUserInfo(_settings, user);
@@ -53,6 +72,13 @@ namespace BikeScanner.Infrastructure.VK.Api
                 : null;
         }
 
+        /// <summary>
+        /// Get wall posts
+        /// </summary>
+        /// <param name="ownerId"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns>Posts or empty array</returns>
         public async Task<WallModel[]> GetWallPosts(int ownerId, int offset, int count)
         {
             var getWallPostsMethod = new GetWallPosts(_settings, ownerId)
@@ -67,6 +93,14 @@ namespace BikeScanner.Infrastructure.VK.Api
                 : Array.Empty<WallModel>();
         }
 
+        /// <summary>
+        /// Get photos
+        /// </summary>
+        /// <param name="ownerId"></param>
+        /// <param name="albumId"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns>Photos or empty array</returns>
         public async Task<PhotoModel[]> GetPhotos(int ownerId, int albumId, int offset, int count)
         {
             var getPhotosMethod = new GetPhotos(_settings, ownerId, albumId)
@@ -82,6 +116,12 @@ namespace BikeScanner.Infrastructure.VK.Api
                 : Array.Empty<PhotoModel>();
         }
 
+        /// <summary>
+        /// Get photo comments
+        /// </summary>
+        /// <param name="albumOwnerId"></param>
+        /// <param name="photoId"></param>
+        /// <returns>Comments or empty array</returns>
         public async Task<CommentModel[]> GetPhotoComments(int albumOwnerId, int photoId)
         {
             var getPhotosMethod = new GetPhotoComments(_settings, albumOwnerId, photoId);

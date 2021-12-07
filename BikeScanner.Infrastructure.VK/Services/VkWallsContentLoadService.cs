@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BikeScanner.Application.Interfaces;
-using BikeScanner.Domain.Content;
+using BikeScanner.Domain.Models;
 
 namespace BikeScanner.Infrastructure.VK.Services
 {

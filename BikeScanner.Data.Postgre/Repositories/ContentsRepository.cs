@@ -1,9 +1,5 @@
-﻿using BikeScanner.Domain.Content;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BikeScanner.Domain.Models;
+using BikeScanner.Domain.Repositories;
 
 namespace BikeScanner.Data.Postgre.Repositories
 {

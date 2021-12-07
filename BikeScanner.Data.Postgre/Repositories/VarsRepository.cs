@@ -1,4 +1,5 @@
-﻿using BikeScanner.Domain.Vars;
+﻿using BikeScanner.Domain.Models;
+using BikeScanner.Domain.Repositories;
 using System;
 using System.Threading.Tasks;
 

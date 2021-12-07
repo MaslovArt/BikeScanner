@@ -1,4 +1,4 @@
-﻿namespace BikeScanner.Domain.Vars
+﻿namespace BikeScanner.Domain.Models
 {
     public class VarEntity
     {

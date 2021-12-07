@@ -1,10 +1,5 @@
-﻿using BikeScanner.Domain.Content;
-using BikeScanner.Domain.Subscriptions;
+﻿using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BikeScanner.Application.Services

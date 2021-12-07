@@ -1,10 +1,6 @@
 ﻿using BikeScanner.Data.Postgre;
 using BikeScanner.Data.Postgre.Repositories;
-using BikeScanner.Domain.Content;
-using BikeScanner.Domain.NotificationsQueue;
-using BikeScanner.Domain.SearchHistory;
-using BikeScanner.Domain.Subscriptions;
-using BikeScanner.Domain.Vars;
+using BikeScanner.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

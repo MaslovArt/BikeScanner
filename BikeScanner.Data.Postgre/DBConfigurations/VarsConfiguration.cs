@@ -1,4 +1,4 @@
-﻿using BikeScanner.Domain.Vars;
+﻿using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

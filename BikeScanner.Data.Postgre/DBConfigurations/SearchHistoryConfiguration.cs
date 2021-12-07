@@ -1,4 +1,4 @@
-﻿using BikeScanner.Domain.SearchHistory;
+﻿using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
