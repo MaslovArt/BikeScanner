@@ -27,11 +27,18 @@ namespace BikeScanner.Telegram
 
                     services.AddHostedService<TelegramHostedService>();
 
-                    if (true)
+                    try
                     {
-                        var provider = services.BuildServiceProvider();
-                        var indexer = provider.GetRequiredService<IContentIndexator>();
-                        indexer.Execute(DateTime.Now.Date.AddDays(-30));
+                        if (true)
+                        {
+                            var provider = services.BuildServiceProvider();
+                            var indexer = provider.GetRequiredService<INotificationsScheduler>();
+                            indexer.Execute();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
                     }
                 })
                 .ConfigureLogging((hostingContext, logging) => {

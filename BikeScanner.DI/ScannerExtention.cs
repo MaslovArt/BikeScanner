@@ -10,6 +10,7 @@ namespace BikeScanner.DI
         public static void AddBikeScanner(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IContentIndexator, ContentIndexator>();
+            services.AddSingleton<INotificationsScheduler, NotificationsScheduler>();
         }
     }
 }

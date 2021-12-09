@@ -1,4 +1,5 @@
 ﻿using BikeScanner.Application.Interfaces;
+using BikeScanner.Domain.Extentions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -31,10 +32,10 @@ namespace BikeScanner.Application.Services
 
         public async Task Execute(DateTime loadSince)
         {
-            var indexingWath = new Stopwatch();
-            indexingWath.Start();
+            var indexingWatch = new Stopwatch();
+            indexingWatch.Start();
 
-            var indexTime = DateTime.Now;
+            var indexStamp = DateTime.Now.UnixStamp();
             _logger.LogInformation($"Starting indexing ({_contentLoaders.Length} providers)");
 
             try
@@ -43,9 +44,9 @@ namespace BikeScanner.Application.Services
 
                 var currentContents = await _contentsRepository.Get();
                 await RemoveOutdatedContent(currentContents, loadedContents, DateTime.Now.AddDays(-30));
-                await AddNewContent(currentContents, loadedContents, indexTime);
+                await AddNewContent(currentContents, loadedContents, indexStamp);
 
-                await _varsRepository.SetLastIndexingTime(indexTime);
+                await _varsRepository.SetLastIndexingStamp(indexStamp);
             }
             catch (Exception ex)
             {
@@ -53,8 +54,8 @@ namespace BikeScanner.Application.Services
             }
             finally
             {
-                indexingWath.Stop();
-                _logger.LogInformation($"Finish indexing in {indexingWath.Elapsed}");
+                indexingWatch.Stop();
+                _logger.LogInformation($"Finish indexing in {indexingWatch.Elapsed}");
             }
         }
 
@@ -95,7 +96,7 @@ namespace BikeScanner.Application.Services
         private Task AddNewContent(
             IEnumerable<ContentEntity> current,
             IEnumerable<ContentEntity> loaded,
-            DateTime stamp)
+            long stamp)
         {
             var currentUrls = current.Select(c => c.Url);
             var loadedUrls = loaded.Select(c => c.Url);
@@ -105,8 +106,7 @@ namespace BikeScanner.Application.Services
 
             foreach (var newEntity in newEntities)
             {
-                newEntity.IndexTime = stamp;
-                newEntity.Text = newEntity.Text.ToUpper();
+                newEntity.IndexingStamp = stamp;
             }
 
             _logger.LogInformation($"Add {newEntities.Count()} records.");

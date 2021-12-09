@@ -23,6 +23,7 @@ namespace BikeScanner.Data.Postgre
             modelBuilder.ApplyConfiguration(new ContentsConfiguration());
             modelBuilder.ApplyConfiguration(new SubsciptionsConfiguration());
             modelBuilder.ApplyConfiguration(new SearchHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationQueueConfiguration());
             modelBuilder.ApplyConfiguration(new VarsConfiguration());
         }
     }

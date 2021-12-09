@@ -1,11 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace BikeScanner.Domain.Repositories
 {
     public interface IVarsRepository
     {
-        Task<DateTime?> GetLastIndexingTime();
-        Task SetLastIndexingTime(DateTime time);
+        Task<long?> GetLastIndexingStamp();
+        Task SetLastIndexingStamp(long stamp);
+
+        Task<long?> GetLastSchedulingStamp();
+        Task SetLastSchedulingStamp(long stamp);
     }
 }
