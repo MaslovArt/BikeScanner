@@ -3,6 +3,7 @@
     public class SubscriptionEntity : BaseEntity
     {
         public long UserId { get; set; }
+        public string Type { get; set; }
         public string SearchQuery { get; set; }
     }
 }

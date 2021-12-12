@@ -2,23 +2,24 @@
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BikeScanner.Application.Services
+namespace BikeScanner.Application.Jobs
 {
-    public class NotificationsScheduler : INotificationsScheduler
+    public class NotificationsSchedulerJob : INotificationsSchedulerJob
     {
-        private readonly ILogger<NotificationsScheduler>    _logger;
+        private readonly ILogger<NotificationsSchedulerJob>    _logger;
         private readonly IContentsRepository                _contentsRepository;
         private readonly ISubscriptionsRepository           _subsRepository;
         private readonly INotificationsQueueRepository      _notificationsQueueRepository;
         private readonly IVarsRepository                    _varsRepository;
 
-        public NotificationsScheduler(
-            ILogger<NotificationsScheduler> logger,
+        public NotificationsSchedulerJob(
+            ILogger<NotificationsSchedulerJob> logger,
             IContentsRepository contentsRepository,
             ISubscriptionsRepository subscriptionsRepository,
             IVarsRepository varsRepository,
@@ -38,26 +39,35 @@ namespace BikeScanner.Application.Services
             var schedulerWatch = new Stopwatch();
             schedulerWatch.Start();
 
-            var lastIndexing = await _varsRepository.GetLastIndexingStamp();
-            if (!lastIndexing.HasValue)
+            try
             {
-                _logger.LogWarning($"Stop scheduling: no indexing stamp.");
-                return;
-            }
+                var lastIndexing = await _varsRepository.GetLastIndexingStamp();
+                if (!lastIndexing.HasValue)
+                {
+                    _logger.LogWarning($"Stop scheduling: no indexing stamp.");
+                    return;
+                }
 
-            var lastScheduling = await _varsRepository.GetLastSchedulingStamp();
-            if (lastIndexing == lastScheduling)
+                var lastScheduling = await _varsRepository.GetLastSchedulingStamp();
+                if (lastIndexing == lastScheduling)
+                {
+                    _logger.LogWarning($"Stop scheduling: scheduling same stamp. {lastScheduling}");
+                    return;
+                }
+
+                await Schedule(lastIndexing.Value);
+
+                await _varsRepository.SetLastSchedulingStamp(lastIndexing.Value);
+            }
+            catch (Exception ex)
             {
-                _logger.LogWarning($"Stop scheduling: scheduling same stamp. {lastScheduling}");
-                return;
+                _logger.LogCritical(ex, $"scheduling error: ${ex}");
             }
-
-            await Schedule(lastIndexing.Value);
-
-            await _varsRepository.SetLastSchedulingStamp(lastIndexing.Value);
-
-            schedulerWatch.Stop();
-            _logger.LogInformation($"Finish scheduling in {schedulerWatch.Elapsed}");
+            finally
+            {
+                schedulerWatch.Stop();
+                _logger.LogInformation($"Finish scheduling in {schedulerWatch.Elapsed}");
+            }
         }
 
         private async Task Schedule(long lastIndexingStamp)
@@ -68,12 +78,14 @@ namespace BikeScanner.Application.Services
             var usersNotifications = new List<NotificationQueueEntity>();
             foreach (var sub in subscriptions)
             {
+                //ToDo load all then try find
                 var results = await _contentsRepository.Search(sub.SearchQuery, lastIndexingStamp);
                 var userNotifications = results.Select(r => new NotificationQueueEntity()
                 {
                     SearchQuery = sub.SearchQuery,
                     ContentUrl = r.Url,
-                    UserId = sub.UserId
+                    UserId = sub.UserId,
+                    Type = sub.Type
                 });
                 usersNotifications.AddRange(userNotifications);
             }

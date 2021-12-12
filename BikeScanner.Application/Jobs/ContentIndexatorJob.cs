@@ -1,37 +1,44 @@
 ﻿using BikeScanner.Application.Interfaces;
+using BikeScanner.Domain.Configs;
 using BikeScanner.Domain.Extentions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BikeScanner.Application.Services
+namespace BikeScanner.Application.Jobs
 {
-    public class ContentIndexator : IContentIndexator
+    public class ContentIndexatorJob : IContentIndexatorJob
     {
-        private readonly ILogger<ContentIndexator>  _logger;
+        private readonly ILogger<ContentIndexatorJob>  _logger;
         private readonly IContentLoader[]           _contentLoaders;
         private readonly IContentsRepository        _contentsRepository;
         private readonly IVarsRepository            _varsRepository;
+        private readonly int                        _actualDays;
 
-        public ContentIndexator(
-            ILogger<ContentIndexator> logger,
+        public ContentIndexatorJob(
+            ILogger<ContentIndexatorJob> logger,
             IEnumerable<IContentLoader> contentLoaders,
             IContentsRepository contentsRepository,
-            IVarsRepository varsRepository)
+            IVarsRepository varsRepository,
+            IOptions<BSSettings> options)
         {
             _logger = logger;
             _contentLoaders = contentLoaders.ToArray();
             _contentsRepository = contentsRepository;
             _varsRepository = varsRepository;
+            _actualDays = options.Value.ActualDays;
         }
 
-        public async Task Execute(DateTime loadSince)
+        public async Task Execute()
         {
+            var loadSince = DateTime.Now.AddDays(-1 * _actualDays);
+
             var indexingWatch = new Stopwatch();
             indexingWatch.Start();
 
@@ -43,14 +50,14 @@ namespace BikeScanner.Application.Services
                 var loadedContents = await LoadContents(loadSince);
 
                 var currentContents = await _contentsRepository.Get();
-                await RemoveOutdatedContent(currentContents, loadedContents, DateTime.Now.AddDays(-30));
+                await RemoveOutdatedContent(currentContents, loadedContents, loadSince);
                 await AddNewContent(currentContents, loadedContents, indexStamp);
 
                 await _varsRepository.SetLastIndexingStamp(indexStamp);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.LogCritical(ex, $"Indexing error: {ex.Message}");
             }
             finally
             {
@@ -74,7 +81,7 @@ namespace BikeScanner.Application.Services
             return results;
         }
 
-        private Task RemoveOutdatedContent(
+        private async Task RemoveOutdatedContent(
             IEnumerable<ContentEntity> current, 
             IEnumerable<ContentEntity> loaded,
             DateTime expired)
@@ -83,17 +90,15 @@ namespace BikeScanner.Application.Services
             var loadedUrls = loaded.Select(c => c.Url);
 
             var deletedUrls = currentUrls.Except(loadedUrls);
-            var deleted = current
-                .Where(m => deletedUrls.Contains(m.Url) || 
-                            m.Published.Date < expired.Date)
-                .Select(m => new ContentEntity() { Id = m.Id });
+            var deleted = current.Where(m => deletedUrls.Contains(m.Url) ||
+                                             m.Published.Date < expired.Date);
+
+            await _contentsRepository.RemoveRange(deleted);
 
             _logger.LogInformation($"Remove {deleted.Count()} records.");
-
-            return _contentsRepository.RemoveRange(deleted);
         }
 
-        private Task AddNewContent(
+        private async Task AddNewContent(
             IEnumerable<ContentEntity> current,
             IEnumerable<ContentEntity> loaded,
             long stamp)
@@ -109,9 +114,9 @@ namespace BikeScanner.Application.Services
                 newEntity.IndexingStamp = stamp;
             }
 
-            _logger.LogInformation($"Add {newEntities.Count()} records.");
+            await _contentsRepository.AddRange(newEntities);
 
-            return _contentsRepository.AddRange(newEntities);
+            _logger.LogInformation($"Add {newEntities.Count()} records.");
         }
     }
 }

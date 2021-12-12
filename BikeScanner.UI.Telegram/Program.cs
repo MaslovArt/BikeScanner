@@ -1,5 +1,6 @@
 ﻿using BikeScanner.Application.Interfaces;
 using BikeScanner.DI;
+using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,19 +28,25 @@ namespace BikeScanner.Telegram
 
                     services.AddHostedService<TelegramHostedService>();
 
-                    try
-                    {
-                        if (true)
-                        {
-                            var provider = services.BuildServiceProvider();
-                            var indexer = provider.GetRequiredService<INotificationsScheduler>();
-                            indexer.Execute();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
 
-                    }
+                    var provider = services.BuildServiceProvider();
+
+                    //var repo = provider.GetRequiredService<ISubscriptionsRepository>();
+                    //int counter = 1;
+                    //while (counter++ < 1000)
+                    //{
+                    //    await repo.Add(new Domain.Models.SubscriptionEntity()
+                    //    {
+                    //        UserId = counter,
+                    //        SearchQuery = "Canyon"
+                    //    });
+                    //}
+
+                    //var indexer = provider.GetRequiredService<IContentIndexator>();
+                    //indexer.Execute();
+
+                    //var indexer = provider.GetRequiredService<INotificationsScheduler>();
+                    //indexer.Execute();
                 })
                 .ConfigureLogging((hostingContext, logging) => {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
