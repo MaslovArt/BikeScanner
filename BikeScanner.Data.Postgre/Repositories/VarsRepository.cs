@@ -6,8 +6,8 @@ namespace BikeScanner.Data.Postgre.Repositories
 {
     public class VarsRepository : IVarsRepository
     {
-        private readonly string _indexingStampKey = "LastIndexingStamp";
-        private readonly string _schedulingStampKey = "LastSchedulingStamp";
+        private readonly string _indexingStampKey = "LastIndexEpoch";
+        private readonly string _schedulingStampKey = "LastScheduleEpoch";
 
         private readonly BikeScannerContext _context;
 
@@ -16,7 +16,7 @@ namespace BikeScanner.Data.Postgre.Repositories
             _context = context;
         }
 
-        public async Task<long?> GetLastIndexingStamp()
+        public async Task<long?> GetLastIndexEpoch()
         {
             var value = await _context.Vars.FindAsync(_indexingStampKey);
             return value == null
@@ -24,7 +24,7 @@ namespace BikeScanner.Data.Postgre.Repositories
                 : long.Parse(value.Value);
         }
 
-        public async Task SetLastIndexingStamp(long stamp)
+        public async Task SetLastIndexEpoch(long stamp)
         {
             var indexingTimeVar = await _context.Vars.FindAsync(_indexingStampKey);
 
@@ -44,7 +44,7 @@ namespace BikeScanner.Data.Postgre.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<long?> GetLastSchedulingStamp()
+        public async Task<long?> GetLastScheduleEpoch()
         {
             var value = await _context.Vars.FindAsync(_schedulingStampKey);
             return value == null
@@ -52,7 +52,7 @@ namespace BikeScanner.Data.Postgre.Repositories
                 : long.Parse(value.Value);
         }
 
-        public async Task SetLastSchedulingStamp(long stamp)
+        public async Task SetLastScheduleEpoch(long stamp)
         {
             var indexingTimeVar = await _context.Vars.FindAsync(_schedulingStampKey);
 

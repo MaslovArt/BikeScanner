@@ -1,8 +1,9 @@
 ﻿using BikeScanner.Application.Interfaces;
+using BikeScanner.Domain.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BikeScanner.Application.Services
+namespace BikeScanner.Application.Services.NotificationFactory
 {
     public class NotificatorFactory : INotificatorFactory
     {
@@ -15,7 +16,10 @@ namespace BikeScanner.Application.Services
 
         public INotificator Resolve(string type)
         {
-            return _notificators.Single(n => n.CanHandle(type));
+            var notificator = _notificators
+                .FirstOrDefault(n => n.CanHandle(type));
+
+            return notificator ?? throw new NotificatorTypeException(type);
         }
     }
 }

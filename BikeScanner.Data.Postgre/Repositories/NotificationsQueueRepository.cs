@@ -1,5 +1,8 @@
 ﻿using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BikeScanner.Data.Postgre.Repositories
 {
@@ -8,5 +11,12 @@ namespace BikeScanner.Data.Postgre.Repositories
         public NotificationsQueueRepository(BikeScannerContext context)
             : base(context)
         { }
+
+        public Task<NotificationQueueEntity[]> GetNotSended()
+        {
+            return Set
+                .Where(e => e.Status == NotificationStatus.Scheduled)
+                .ToArrayAsync();
+        }
     }
 }

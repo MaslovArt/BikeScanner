@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Domain", "BikeScanner.Domain\BikeScanner.Domain.csproj", "{1DE0C47A-AC51-4C50-9347-CFD347439B45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Domain", "BikeScanner.Domain\BikeScanner.Domain.csproj", "{1DE0C47A-AC51-4C50-9347-CFD347439B45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Application", "BikeScanner.Application\BikeScanner.Application.csproj", "{131658F5-55B0-4890-9C11-B10BC89A809A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Application", "BikeScanner.Application\BikeScanner.Application.csproj", "{131658F5-55B0-4890-9C11-B10BC89A809A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{4108A877-B345-4DC4-A4E7-310F50B81649}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{4CA547DE-DE8E-421C-BA41-EA19AE876F9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Infrastructure.VK", "BikeScanner.Infrastructure.VK\BikeScanner.Infrastructure.VK.csproj", "{554666AF-C3BA-4406-8467-2E81AF113FD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Infrastructure.VK", "BikeScanner.Infrastructure.VK\BikeScanner.Infrastructure.VK.csproj", "{554666AF-C3BA-4406-8467-2E81AF113FD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Data.Postgre", "BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj", "{930932CA-3286-40DB-93EB-458F5AFEC4E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Data.Postgre", "BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj", "{930932CA-3286-40DB-93EB-458F5AFEC4E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.UI.Telegram", "BikeScanner.UI.Telegram\BikeScanner.UI.Telegram.csproj", "{26B38CB5-4725-4335-9834-61B73997464A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.DI", "BikeScanner.DI\BikeScanner.DI.csproj", "{B8746026-35FB-4499-AAB3-EB79A588E712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.DI", "BikeScanner.DI\BikeScanner.DI.csproj", "{B8746026-35FB-4499-AAB3-EB79A588E712}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Infrastructure", "BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj", "{E98DD6ED-978C-475D-A2DC-11AE1193D81A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Infrastructure", "BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj", "{E98DD6ED-978C-475D-A2DC-11AE1193D81A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.UI.TestConsole", "BikeScanner.UI.TestConsole\BikeScanner.UI.TestConsole.csproj", "{1E616867-6012-4114-AF85-2E6EDD39531F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +43,6 @@ Global
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26B38CB5-4725-4335-9834-61B73997464A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26B38CB5-4725-4335-9834-61B73997464A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26B38CB5-4725-4335-9834-61B73997464A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26B38CB5-4725-4335-9834-61B73997464A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8746026-35FB-4499-AAB3-EB79A588E712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8746026-35FB-4499-AAB3-EB79A588E712}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8746026-35FB-4499-AAB3-EB79A588E712}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,6 +51,10 @@ Global
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E616867-6012-4114-AF85-2E6EDD39531F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E616867-6012-4114-AF85-2E6EDD39531F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E616867-6012-4114-AF85-2E6EDD39531F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E616867-6012-4114-AF85-2E6EDD39531F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,8 +62,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{554666AF-C3BA-4406-8467-2E81AF113FD6} = {4108A877-B345-4DC4-A4E7-310F50B81649}
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3} = {4108A877-B345-4DC4-A4E7-310F50B81649}
-		{26B38CB5-4725-4335-9834-61B73997464A} = {4CA547DE-DE8E-421C-BA41-EA19AE876F9D}
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A} = {4108A877-B345-4DC4-A4E7-310F50B81649}
+		{1E616867-6012-4114-AF85-2E6EDD39531F} = {4CA547DE-DE8E-421C-BA41-EA19AE876F9D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B3D2C64-B3BA-416D-AB0B-4C5316035DC3}

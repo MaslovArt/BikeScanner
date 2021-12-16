@@ -42,7 +42,7 @@ namespace BikeScanner.Application.Jobs
             var indexingWatch = new Stopwatch();
             indexingWatch.Start();
 
-            var indexStamp = DateTime.Now.UnixStamp();
+            var indexEpoch = DateTime.Now.UnixStamp();
             _logger.LogInformation($"Starting indexing ({_contentLoaders.Length} providers)");
 
             try
@@ -51,9 +51,9 @@ namespace BikeScanner.Application.Jobs
 
                 var currentContents = await _contentsRepository.Get();
                 await RemoveOutdatedContent(currentContents, loadedContents, loadSince);
-                await AddNewContent(currentContents, loadedContents, indexStamp);
+                await AddNewContent(currentContents, loadedContents, indexEpoch);
 
-                await _varsRepository.SetLastIndexingStamp(indexStamp);
+                await _varsRepository.SetLastIndexEpoch(indexEpoch);
             }
             catch (Exception ex)
             {
@@ -86,11 +86,11 @@ namespace BikeScanner.Application.Jobs
             IEnumerable<ContentEntity> loaded,
             DateTime expired)
         {
-            var currentUrls = current.Select(m => m.Url);
-            var loadedUrls = loaded.Select(c => c.Url);
+            var currentUrls = current.Select(m => m.AdUrl);
+            var loadedUrls = loaded.Select(c => c.AdUrl);
 
             var deletedUrls = currentUrls.Except(loadedUrls);
-            var deleted = current.Where(m => deletedUrls.Contains(m.Url) ||
+            var deleted = current.Where(m => deletedUrls.Contains(m.AdUrl) ||
                                              m.Published.Date < expired.Date);
 
             await _contentsRepository.RemoveRange(deleted);
@@ -101,17 +101,17 @@ namespace BikeScanner.Application.Jobs
         private async Task AddNewContent(
             IEnumerable<ContentEntity> current,
             IEnumerable<ContentEntity> loaded,
-            long stamp)
+            long indexEpoch)
         {
-            var currentUrls = current.Select(c => c.Url);
-            var loadedUrls = loaded.Select(c => c.Url);
+            var currentUrls = current.Select(c => c.AdUrl);
+            var loadedUrls = loaded.Select(c => c.AdUrl);
 
             var newUrls = loadedUrls.Except(currentUrls);
-            var newEntities = loaded.Where(c => newUrls.Contains(c.Url));
+            var newEntities = loaded.Where(c => newUrls.Contains(c.AdUrl));
 
             foreach (var newEntity in newEntities)
             {
-                newEntity.IndexingStamp = stamp;
+                newEntity.IndexEpoch = indexEpoch;
             }
 
             await _contentsRepository.AddRange(newEntities);

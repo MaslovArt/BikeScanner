@@ -43,6 +43,12 @@ namespace BikeScanner.Data.Postgre.Repositories
             return query.ToArrayAsync();
         }
 
+        public Task<T> GetById(int id)
+        {
+            return Set
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
         public Task Remove(T entity)
         {
             Set.Remove(entity);
@@ -53,6 +59,24 @@ namespace BikeScanner.Data.Postgre.Repositories
         {
             Set.RemoveRange(entities);
             return Context.SaveChangesAsync();
+        }
+
+        public Task Update(T entity)
+        {
+            if (!Set.Local.Any(e => e == entity))
+            {
+                Set.Update(entity);
+            }
+
+            return Context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRange(IEnumerable<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                await Update(entity);
+            }
         }
     }
 }

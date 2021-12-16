@@ -14,6 +14,8 @@ namespace BikeScanner.Domain.Repositories
         /// <returns></returns>
         Task<T[]> Get(int? count = null, int? offset = null);
 
+        Task<T> GetById(int id);
+
         Task Remove(T entity);
 
         Task RemoveRange(IEnumerable<T> entities);
@@ -21,5 +23,9 @@ namespace BikeScanner.Domain.Repositories
         Task Add(T entity);
 
         Task AddRange(IEnumerable<T> entities);
+
+        Task Update(T entity);
+
+        Task UpdateRange(IEnumerable<T> entities);
     }
 }

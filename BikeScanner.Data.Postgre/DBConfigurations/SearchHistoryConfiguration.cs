@@ -9,6 +9,8 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         public void Configure(EntityTypeBuilder<SearchHistoryEntity> builder)
         {
             builder.HasIndex(e => e.UserId);
+
+            builder.Property(e => e.SearchQuery).IsRequired();
         }
     }
 }

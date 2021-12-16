@@ -1,5 +1,8 @@
 ﻿using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BikeScanner.Data.Postgre.Repositories
 {
@@ -8,5 +11,20 @@ namespace BikeScanner.Data.Postgre.Repositories
         public SubscriptionsRepository(BikeScannerContext context)
             : base(context)
         { }
+
+        public Task<SubscriptionEntity[]> GetUserSubs(long userId, SubscriptionStatus status)
+        {
+            return Set
+                .Where(e => e.UserId == userId &&
+                            e.Status == status)
+                .ToArrayAsync();
+        }
+
+        public Task<bool> SubExists(long userId, string query)
+        {
+            return Set
+                .AnyAsync(e => e.UserId == userId && 
+                               e.SearchQuery == query);
+        }
     }
 }

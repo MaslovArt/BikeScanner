@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
+  </ItemGroup>
+
 </Project>

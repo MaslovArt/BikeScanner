@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using BikeScanner.Infrastructure.Loggers;
+using BikeScanner.Application.Interfaces;
+using BikeScanner.Infrastructure.Notificators;
 
 namespace BikeScanner.DI
 {
@@ -10,6 +12,8 @@ namespace BikeScanner.DI
         public static void AddServices(this IServiceCollection services)
         {
             services.Replace(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(TimeLogger<>)));
+
+            services.AddSingleton<INotificator, TestLoggerNotificator>();
         }
     }
 }

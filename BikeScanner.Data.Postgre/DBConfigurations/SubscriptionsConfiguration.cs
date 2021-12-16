@@ -9,6 +9,10 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         public void Configure(EntityTypeBuilder<SubscriptionEntity> builder)
         {
             builder.HasIndex(e => e.UserId);
+            builder.HasIndex(e => e.Status);
+
+            builder.Property(e => e.SearchQuery).IsRequired();
+            builder.Property(e => e.NotificationType).IsRequired();
         }
     }
 }

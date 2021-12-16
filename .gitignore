@@ -366,3 +366,4 @@ logs/
 Migrations/
 /MTBRadar.Polling/appsettings.json
 /BikeScanner.UI.Telegram/appsettings.json
+/BikeScanner.UI.TestConsole/appsettings.json

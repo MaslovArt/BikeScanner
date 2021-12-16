@@ -4,10 +4,10 @@ namespace BikeScanner.Domain.Repositories
 {
     public interface IVarsRepository
     {
-        Task<long?> GetLastIndexingStamp();
-        Task SetLastIndexingStamp(long stamp);
+        Task<long?> GetLastIndexEpoch();
+        Task SetLastIndexEpoch(long stamp);
 
-        Task<long?> GetLastSchedulingStamp();
-        Task SetLastSchedulingStamp(long stamp);
+        Task<long?> GetLastScheduleEpoch();
+        Task SetLastScheduleEpoch(long stamp);
     }
 }

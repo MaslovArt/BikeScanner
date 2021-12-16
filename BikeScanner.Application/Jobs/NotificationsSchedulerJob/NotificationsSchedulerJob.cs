@@ -1,4 +1,4 @@
-﻿using BikeScanner.Application.Interfaces;
+﻿using BikeScanner.Application.Services.SearchService;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -12,21 +12,21 @@ namespace BikeScanner.Application.Jobs
 {
     public class NotificationsSchedulerJob : INotificationsSchedulerJob
     {
-        private readonly ILogger<NotificationsSchedulerJob>    _logger;
-        private readonly IContentsRepository                _contentsRepository;
+        private readonly ILogger<NotificationsSchedulerJob> _logger;
+        private readonly ISearchService                     _searchService;
         private readonly ISubscriptionsRepository           _subsRepository;
         private readonly INotificationsQueueRepository      _notificationsQueueRepository;
         private readonly IVarsRepository                    _varsRepository;
 
         public NotificationsSchedulerJob(
             ILogger<NotificationsSchedulerJob> logger,
-            IContentsRepository contentsRepository,
+            ISearchService searchService,
             ISubscriptionsRepository subscriptionsRepository,
             IVarsRepository varsRepository,
             INotificationsQueueRepository notificationsQueueRepository)
         {
             _logger = logger;
-            _contentsRepository = contentsRepository;
+            _searchService = searchService;
             _subsRepository = subscriptionsRepository;
             _varsRepository = varsRepository;
             _notificationsQueueRepository = notificationsQueueRepository;
@@ -41,23 +41,23 @@ namespace BikeScanner.Application.Jobs
 
             try
             {
-                var lastIndexing = await _varsRepository.GetLastIndexingStamp();
-                if (!lastIndexing.HasValue)
+                var indexEpoch = await _varsRepository.GetLastIndexEpoch();
+                if (!indexEpoch.HasValue)
                 {
-                    _logger.LogWarning($"Stop scheduling: no indexing stamp.");
+                    _logger.LogWarning($"Stop scheduling: no index epoch.");
                     return;
                 }
 
-                var lastScheduling = await _varsRepository.GetLastSchedulingStamp();
-                if (lastIndexing == lastScheduling)
+                var lastScheduling = await _varsRepository.GetLastScheduleEpoch();
+                if (indexEpoch == lastScheduling)
                 {
-                    _logger.LogWarning($"Stop scheduling: scheduling same stamp. {lastScheduling}");
+                    _logger.LogWarning($"Stop scheduling: scheduling same index epoch. {lastScheduling}");
                     return;
                 }
 
-                await Schedule(lastIndexing.Value);
+                await Schedule(indexEpoch.Value);
 
-                await _varsRepository.SetLastSchedulingStamp(lastIndexing.Value);
+                await _varsRepository.SetLastScheduleEpoch(indexEpoch.Value);
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace BikeScanner.Application.Jobs
             }
         }
 
-        private async Task Schedule(long lastIndexingStamp)
+        private async Task Schedule(long indexEpoch)
         {
             var subscriptions = await _subsRepository.Get();
             _logger.LogInformation($"Subs count {subscriptions.Length}");
@@ -78,14 +78,13 @@ namespace BikeScanner.Application.Jobs
             var usersNotifications = new List<NotificationQueueEntity>();
             foreach (var sub in subscriptions)
             {
-                //ToDo load all then try find
-                var results = await _contentsRepository.Search(sub.SearchQuery, lastIndexingStamp);
+                var results = await _searchService.SearchEpoch(sub.UserId, sub.SearchQuery, indexEpoch);
                 var userNotifications = results.Select(r => new NotificationQueueEntity()
                 {
                     SearchQuery = sub.SearchQuery,
-                    ContentUrl = r.Url,
+                    AdUrl = r.AdUrl,
                     UserId = sub.UserId,
-                    Type = sub.Type
+                    NotificationType = sub.NotificationType
                 });
                 usersNotifications.AddRange(userNotifications);
             }

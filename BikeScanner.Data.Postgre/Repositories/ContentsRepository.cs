@@ -25,8 +25,16 @@ namespace BikeScanner.Data.Postgre.Repositories
         {
             return Set
                 .AsNoTracking()
-                .Where(c => c.IndexingStamp == indexingStamp)
+                .Where(c => c.IndexEpoch == indexingStamp)
                 .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
+                .ToArrayAsync();
+        }
+
+        public Task<ContentEntity[]> GetContents(long indexingStamp)
+        {
+            return Set
+                .AsNoTracking()
+                .Where(c => c.IndexEpoch == indexingStamp)
                 .ToArrayAsync();
         }
     }

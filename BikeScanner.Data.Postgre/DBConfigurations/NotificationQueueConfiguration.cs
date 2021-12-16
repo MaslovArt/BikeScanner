@@ -8,7 +8,11 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
     {
         public void Configure(EntityTypeBuilder<NotificationQueueEntity> builder)
         {
+            builder.HasIndex(e => e.Status);
 
+            builder.Property(e => e.SearchQuery).IsRequired();
+            builder.Property(e => e.NotificationType).IsRequired();
+            builder.Property(e => e.AdUrl).IsRequired();
         }
     }
 }

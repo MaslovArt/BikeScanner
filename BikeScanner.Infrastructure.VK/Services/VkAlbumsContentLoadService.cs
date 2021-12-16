@@ -67,7 +67,7 @@ namespace BikeScanner.Infrastructure.VK.Services
                     Text = p.Text,
                     Published = DateTimeOffset.FromUnixTimeSeconds(p.DateStamp).DateTime,
                     SourceType = Consts.VkAlbumSourceType,
-                    Url = p.Url
+                    AdUrl = p.Url
                 })
                 .ToArray();
         }

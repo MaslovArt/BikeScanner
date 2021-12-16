@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BikeScanner.Application.Interfaces
+namespace BikeScanner.Application.Jobs
 {
     public interface INotificationsSenderJob
     {

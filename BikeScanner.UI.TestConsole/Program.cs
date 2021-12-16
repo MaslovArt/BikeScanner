@@ -1,6 +1,8 @@
 ﻿using BikeScanner.Application.Interfaces;
+using BikeScanner.Application.Jobs;
 using BikeScanner.DI;
 using BikeScanner.Domain.Repositories;
+using BikeScanner.Infrastructure.Notificators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +11,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BikeScanner.Telegram
+namespace BikeScanner.TestConsole
 {
     class Program
     {
@@ -17,7 +19,7 @@ namespace BikeScanner.Telegram
         {
             await Host.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureServices(async (hostContext, services) =>
                 {
                     var configuration = hostContext.Configuration;
 
@@ -26,10 +28,20 @@ namespace BikeScanner.Telegram
                     services.AddVKServices(configuration);
                     services.AddPostgreDataAccess(configuration);
 
-                    services.AddHostedService<TelegramHostedService>();
-
-
                     var provider = services.BuildServiceProvider();
+
+                    //var repo = provider.GetRequiredService<INotificationsQueueRepository>();
+                    //int counter = 1;
+                    //while (counter++ < 1000)
+                    //{
+                    //    await repo.Add(new Domain.Models.NotificationQueueEntity()
+                    //    {
+                    //        UserId = counter,
+                    //        SearchQuery = "Canyon Spectral",
+                    //        AdUrl = "vk.com....",
+                    //        NotificationType = "test"
+                    //    });
+                    //}
 
                     //var repo = provider.GetRequiredService<ISubscriptionsRepository>();
                     //int counter = 1;
@@ -38,15 +50,19 @@ namespace BikeScanner.Telegram
                     //    await repo.Add(new Domain.Models.SubscriptionEntity()
                     //    {
                     //        UserId = counter,
-                    //        SearchQuery = "Canyon"
+                    //        SearchQuery = "Canyon Spectral",
+                    //        NotificationType = "test"
                     //    });
                     //}
 
-                    //var indexer = provider.GetRequiredService<IContentIndexator>();
-                    //indexer.Execute();
+                    //var service = provider.GetRequiredService<INotificationsSenderJob>();
+                    //await service.Execute();
 
-                    //var indexer = provider.GetRequiredService<INotificationsScheduler>();
-                    //indexer.Execute();
+                    //var service = provider.GetRequiredService<IContentIndexatorJob>();
+                    //await service.Execute();
+
+                    //var service = provider.GetRequiredService<INotificationsSchedulerJob>();
+                    //await service.Execute();
                 })
                 .ConfigureLogging((hostingContext, logging) => {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
