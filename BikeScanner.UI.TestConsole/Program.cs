@@ -25,7 +25,7 @@ namespace BikeScanner.TestConsole
 
                     services.AddBikeScanner(configuration);
                     services.AddServices();
-                    services.AddVKServices(configuration);
+                    services.AddVKAdSource(configuration);
                     services.AddPostgreDataAccess(configuration);
 
                     var provider = services.BuildServiceProvider();

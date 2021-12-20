@@ -9,7 +9,7 @@ namespace BikeScanner.DI
 {
     public static class VkExtention
     {
-        public static void AddVKServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddVKAdSource(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<VkSettings>(configuration.GetSection(typeof(VkSettings).Name));
             services.Configure<VkSourseSettings>(configuration.GetSection(typeof(VkSourseSettings).Name));
