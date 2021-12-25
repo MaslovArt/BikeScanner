@@ -1,7 +1,5 @@
 ﻿using BikeScanner.UI.Bot.BotService.Commands;
 using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace BikeScanner.UI.Bot.Commands
 {
@@ -12,12 +10,8 @@ namespace BikeScanner.UI.Bot.Commands
     {
         public override string CallName => UICommands.Start;
         public override string Description => "Запуск бота";
-        public override string CancelWith => null;
 
-        public StartCommand()
-        { }
-
-        public override async Task<string> Execute(Update update, ITelegramBotClient client)
+        public override async Task<ContinueWith> Execute(CommandContext context)
         {
             var message = @$"Привет!
 Я бот для поиска по объявлениям. 
@@ -32,7 +26,7 @@ namespace BikeScanner.UI.Bot.Commands
                 UICommands.Cancel
             };
 
-            await SendMessageKeyboard(message, update, client, mainButtons);
+            await SendMessageKeyboard(message, context, mainButtons);
 
             return null;
         }

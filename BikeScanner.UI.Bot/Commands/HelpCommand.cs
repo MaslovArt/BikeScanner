@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace BikeScanner.UI.Bot.Commands
 {
@@ -16,19 +14,14 @@ namespace BikeScanner.UI.Bot.Commands
         private readonly IBotUICommand[] _commands;
 
         public override string CallName => UICommands.Help;
-        public override string Description => "Помощь";
-        public override string CancelWith => null;
+        public override string Description => "Возможности";
 
-        public HelpCommand(
-            IEnumerable<IBotUICommand> commands,
-            ICancelCommand cancelCommand)
+        public HelpCommand(IEnumerable<IBotUICommand> commands)
         {
-            _commands = commands
-                .Append(cancelCommand)
-                .ToArray();
+            _commands = commands.ToArray();
         }
 
-        public override async Task<string> Execute(Update update, ITelegramBotClient client)
+        public override async Task<ContinueWith> Execute(CommandContext context)
         {
             var reply = new StringBuilder();
             reply.AppendLine($"Возможности бота. ({_commands.Length})\n");
@@ -37,7 +30,7 @@ namespace BikeScanner.UI.Bot.Commands
                 reply.AppendLine($"{command.CallName} - {command.Description}");
             }
 
-            await SendMessage(reply.ToString(), update, client);
+            await SendMessage(reply.ToString(), context);
 
             return null;
         }

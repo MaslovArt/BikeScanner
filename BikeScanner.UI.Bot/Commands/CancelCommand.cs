@@ -3,8 +3,6 @@ using BikeScanner.UI.Bot.BotService.Context;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace BikeScanner.UI.Bot.Commands
 {
@@ -18,7 +16,6 @@ namespace BikeScanner.UI.Bot.Commands
 
         public override string CallName => UICommands.Cancel;
         public override string Description => "Отмена действия";
-        public override string CancelWith => null;
 
         public CancelCommand(IEnumerable<IBotCommand> commands, IBotContext botContext)
         {
@@ -26,27 +23,27 @@ namespace BikeScanner.UI.Bot.Commands
             _botContext = botContext;
         }
 
-        public override async Task<string> Execute(Update update, ITelegramBotClient client)
+        public override async Task<ContinueWith> Execute(CommandContext context)
         {
-            var chatId = GetChatId(update);
+            var chatId = GetChatId(context);
             var userContext = await _botContext.GetUserContext(chatId);
             var cancelingCommand = userContext?.NextCommand;
 
             if (string.IsNullOrEmpty(cancelingCommand))
             {
                 var message = "Хм..\nА что отменять то? Я ничего не делаю.";
-                await SendMessage(message, update, client);
+                await SendMessage(message, context);
             }
             else
             {
                 var currentCommand = _commands.FirstOrDefault(c => c.Key == cancelingCommand);
                 if (string.IsNullOrEmpty(currentCommand?.CancelWith))
                 {
-                    await SendMessage("Отменил", update, client);
+                    await SendMessage("Отменил", context);
                 }
                 else
                 {
-                    return currentCommand.CancelWith;
+                    return ContinueWith.Command(currentCommand.CancelWith);
                 }
             }
 

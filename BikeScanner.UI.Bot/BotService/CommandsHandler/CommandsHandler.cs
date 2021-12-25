@@ -45,25 +45,25 @@ namespace BikeScanner.UI.Bot.BotService.CommandsHandler
 
             if (string.IsNullOrEmpty(input)) return;
 
-            var currentAction = await _context.EnsureContext(userId);
+            var userContext = await _context.EnsureContext(userId);
 
             var command = _commands
                             .OfType<IBotUICommand>()
                             .FirstOrDefault(c => c.CanHandel(input)) ??
                             _commands
-                            .FirstOrDefault(c => c.Key == currentAction.NextCommand) ??
+                            .FirstOrDefault(c => c.Key == userContext.NextCommand) ??
                             _unknownCommand;
 
             if (command is IBotUICommand &&
                 command is not ICancelCommand &&
-                !string.IsNullOrEmpty(currentAction.NextCommand))
+                !string.IsNullOrEmpty(userContext.NextCommand))
             {
                 var message = $"Сначала нужно завершить или отменить выполняемую командку!";
                 await client.SendTextMessageAsync(userId, message);
                 return;
             }
 
-            await ExecuteCommandChain(command, currentAction, update, client);
+            await ExecuteCommandChain(command, userContext, update, client);
         }
 
         private long GetChatId(Update update)
@@ -77,7 +77,7 @@ namespace BikeScanner.UI.Bot.BotService.CommandsHandler
 
         private async Task ExecuteCommandChain(
             IBotCommand command,
-            BotContextModel currentAction,
+            BotContext userContext,
             Update update,
             ITelegramBotClient client)
         {
@@ -85,28 +85,30 @@ namespace BikeScanner.UI.Bot.BotService.CommandsHandler
             try
             {
                 _logger.LogDebug($"User[{userId}] start [{command.Key}]");
-                var nextCommand = await command.Execute(update, client);
+                var commandContext = new CommandContext(update, client, userContext.State);
+                var continueWith = await command.Execute(commandContext);
                 _logger.LogDebug($"User[{userId}] end [{command.Key}]");
 
-                if (!string.IsNullOrEmpty(nextCommand))
+                if (continueWith != null)
                 {
-                    _logger.LogDebug($"User[{userId}] next [{nextCommand}]");
-                    var next = _commands.FirstOrDefault(c => c.Key == nextCommand);
+                    _logger.LogDebug($"User[{userId}] next [{continueWith.Key}]");
+                    var next = _commands.FirstOrDefault(c => c.Key == continueWith.Key);
                     if (next.ExecuteImmediately)
                     {
-                        await ExecuteCommandChain(next, currentAction, update, client);
+                        await ExecuteCommandChain(next, userContext, update, client);
                     }
                     else
                     {
-                        currentAction.NextCommand = next.Key;
-                        await _context.Update(currentAction);
+                        userContext.NextCommand = continueWith.Key;
+                        userContext.State = continueWith.State;
+                        await _context.Update(userContext);
                         _logger.LogDebug($"Command [{next.Key}] wait user[{userId}]");
                     }
                 }
-                else if (!string.IsNullOrEmpty(currentAction.NextCommand))
+                else if (!string.IsNullOrEmpty(userContext.NextCommand))
                 {
-                    currentAction.NextCommand = null;
-                    await _context.Update(currentAction);
+                    userContext.NextCommand = null;
+                    await _context.Update(userContext);
                     _logger.LogDebug($"User[{userId}] completed task");
                 }
             }

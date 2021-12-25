@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Telegram.Bot.Types;
 
 namespace BikeScanner.UI.Bot.BotService.Commands
 {
@@ -11,21 +10,22 @@ namespace BikeScanner.UI.Bot.BotService.Commands
     {
         public abstract string CallName { get; }
         public abstract string Description { get; }
-        public override bool ExecuteImmediately => true; 
+        public override bool ExecuteImmediately => true;
+        public override string CancelWith => null;
 
         public bool CanHandel(string command)
         {
             return !string.IsNullOrWhiteSpace(command) && command.Contains($"{CallName}");
         }
 
-        protected string GetParam(Update update, int paramInd)
+        protected string GetParam(CommandContext context, int paramInd)
         {
-            return GetParams(update)[paramInd];
+            return GetParams(context)[paramInd];
         }
 
-        protected string[] GetParams(Update update)
+        protected string[] GetParams(CommandContext context)
         {
-            var text = GetChatInput(update);
+            var text = GetChatInput(context);
             return text
                 .Replace(CallName, "")
                 .Trim()

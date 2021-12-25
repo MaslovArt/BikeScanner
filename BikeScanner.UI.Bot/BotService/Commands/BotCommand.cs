@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace BikeScanner.UI.Bot.BotService.Commands
@@ -17,44 +16,36 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         public abstract bool ExecuteImmediately { get; }
         public abstract string CancelWith { get; }
 
-        public abstract Task<string> Execute(
-            Update update, 
-            ITelegramBotClient client);   
+        public abstract Task<ContinueWith> Execute(CommandContext context);   
         
-        protected string GetChatInput(Update update)
+        protected string GetChatInput(CommandContext context)
         {
-            return update.Message?.Text ?? update.CallbackQuery?.Data;
+            return context.Update.Message?.Text ?? context.Update.CallbackQuery?.Data;
         }
 
-        protected long GetChatId(Update update)
+        protected long GetChatId(CommandContext context)
         {
-            return (update.Message?.Chat.Id ?? update.CallbackQuery.Message?.Chat.Id).Value;
+            return (context.Update.Message?.Chat.Id ?? context.Update.CallbackQuery.Message?.Chat.Id).Value;
         }
 
-        protected Task SendMessage(
-            string text, 
-            Update update, 
-            ITelegramBotClient telegramBotClient)
+        protected Task SendMessage(string text, CommandContext context)
         {
-            var chatId = GetChatId(update);
-            return telegramBotClient.SendTextMessageAsync(chatId, text);
+            var chatId = GetChatId(context);
+            return context.Client.SendTextMessageAsync(chatId, text);
         }
 
-        protected Task SendErrorMessage(
-            Update update,
-            ITelegramBotClient telegramBotClient)
+        protected Task SendErrorMessage(CommandContext context)
         {
-            var chatId = GetChatId(update);
-            return telegramBotClient.SendTextMessageAsync(chatId, "Упс.\nЧто-то пошло не так.");
+            var chatId = GetChatId(context);
+            return context.Client.SendTextMessageAsync(chatId, "Упс.\nЧто-то пошло не так.");
         }
 
         protected Task SendMessageKeyboard(
             string text,
-            Update update, 
-            ITelegramBotClient telegramBotClient, 
+            CommandContext context, 
             params string[] options)
         {
-            var chatId = GetChatId(update);
+            var chatId = GetChatId(context);
             ReplyKeyboardMarkup buttons = null;
             if (options?.Length > 0)
             {
@@ -68,32 +59,30 @@ namespace BikeScanner.UI.Bot.BotService.Commands
                 };
             }
 
-            return telegramBotClient.SendTextMessageAsync(chatId, text, replyMarkup: buttons);
+            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: buttons);
         }
 
         protected Task SendMessageRowButtons(
             string text,
-            Update update,
-            ITelegramBotClient telegramBotClient,
-            IEnumerable<string> options)
+            CommandContext context,
+            params string[] options)
         {
-            var chatId = GetChatId(update);
+            var chatId = GetChatId(context);
 
             var buttons = options
                 .ToMax64BytesValue()
                 .Select(o => InlineKeyboardButton.WithCallbackData(o));
             InlineKeyboardMarkup markup = new InlineKeyboardMarkup(buttons);
 
-            return telegramBotClient.SendTextMessageAsync(chatId, text, replyMarkup: markup);
+            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
         }
 
         protected Task SendMessageColumnButtons(
             string text,
-            Update update,
-            ITelegramBotClient telegramBotClient,
-            IEnumerable<string> options)
+            CommandContext context,
+            params string[] options)
         {
-            var chatId = GetChatId(update);
+            var chatId = GetChatId(context);
 
             var buttons = options
                 .ToMax64BytesValue()
@@ -103,7 +92,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
                 });
             InlineKeyboardMarkup markup = new InlineKeyboardMarkup(buttons);
 
-            return telegramBotClient.SendTextMessageAsync(chatId, text, replyMarkup: markup);
+            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
         }
     }
 }

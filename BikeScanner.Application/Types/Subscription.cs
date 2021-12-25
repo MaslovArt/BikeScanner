@@ -1,6 +1,6 @@
-﻿namespace BikeScanner.Application.Models
+﻿namespace BikeScanner.Application.Types
 {
-    public class SubscriptionModel
+    public class Subscription
     {
         public int Id { get; set; }
         public long UserId { get; set; }

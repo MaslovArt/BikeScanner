@@ -1,6 +1,6 @@
 ﻿namespace BikeScanner.UI.Bot.BotService.Config
 {
-    public class TelegramConfig
+    public class TelegramBotConfig
     {
         public string Key { get; set; }
         public string BotName { get; set; }

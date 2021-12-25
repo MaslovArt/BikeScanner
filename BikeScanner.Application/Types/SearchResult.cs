@@ -1,8 +1,8 @@
-﻿namespace BikeScanner.Application.Models
+﻿namespace BikeScanner.Application.Types
 {
-    public class SearchResultModel
+    public class SearchResult
     {
-        public SearchResultModel(string query, string adUrl)
+        public SearchResult(string query, string adUrl)
         {
             Query = query;
             AdUrl = adUrl;

@@ -28,7 +28,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         /// <param name="message"></param>
         /// <param name="client"></param>
         /// <returns>Next command key</returns>
-        Task<string> Execute(Update update, ITelegramBotClient client);
+        Task<ContinueWith> Execute(CommandContext context);
         /// <summary>
         /// Can command handle message
         /// </summary>

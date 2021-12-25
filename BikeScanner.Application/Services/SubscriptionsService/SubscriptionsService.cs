@@ -1,4 +1,4 @@
-﻿using BikeScanner.Application.Models;
+﻿using BikeScanner.Application.Types;
 using BikeScanner.Domain.Exceptions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
@@ -22,7 +22,7 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             return Task.FromResult(true);
         }
 
-        public async Task<int> AddSub(SubscriptionModel sub)
+        public async Task<int> AddSub(Subscription sub)
         {
             if (!await NewSubsAvailable(sub.UserId)) 
                 throw AppError.TooMuchSubs;
@@ -53,12 +53,12 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             await _subscriptionsRepository.Update(entity);
         }
 
-        public async Task<SubscriptionModel[]> GetActiveSubs(long userId)
+        public async Task<Subscription[]> GetActiveSubs(long userId)
         {
             var result = await _subscriptionsRepository.GetUserSubs(userId, SubscriptionStatus.Active);
 
             return result
-                .Select(r => new SubscriptionModel()
+                .Select(r => new Subscription()
                 {
                     Id = r.Id,
                     SearchQuery = r.SearchQuery,
