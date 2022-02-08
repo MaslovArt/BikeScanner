@@ -34,6 +34,6 @@ namespace BikeScanner.Application.Services.SubscriptionsService
         /// </summary>
         /// <param name="subId"></param>
         /// <returns></returns>
-        Task RemoveSub(int subId);
+        Task<Subscription> RemoveSub(int subId);
     }
 }

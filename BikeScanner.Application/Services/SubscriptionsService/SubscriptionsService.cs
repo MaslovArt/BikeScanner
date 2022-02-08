@@ -27,8 +27,8 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             if (!await NewSubsAvailable(sub.UserId)) 
                 throw AppError.TooMuchSubs;
 
-            if (await _subscriptionsRepository.SubExists(sub.UserId, sub.SearchQuery))
-                throw AppError.SubAlreadyExists;
+            if (await _subscriptionsRepository.HasActiveSub(sub.UserId, sub.SearchQuery))
+                throw AppError.SubAlreadyExists(sub.SearchQuery);
 
             var entity = new SubscriptionEntity()
             {
@@ -42,7 +42,7 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             return entity.Id;
         }
 
-        public async Task RemoveSub(int subId)
+        public async Task<Subscription> RemoveSub(int subId)
         {
             var entity = await _subscriptionsRepository.GetById(subId);
             if (entity == null) 
@@ -51,6 +51,14 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             entity.Status = SubscriptionStatus.Deleted;
 
             await _subscriptionsRepository.Update(entity);
+
+            return new Subscription()
+            {
+                Id = entity.Id,
+                SearchQuery = entity.SearchQuery,
+                SubscriptionType = entity.NotificationType,
+                UserId = entity.UserId
+            };
         }
 
         public async Task<Subscription[]> GetActiveSubs(long userId)

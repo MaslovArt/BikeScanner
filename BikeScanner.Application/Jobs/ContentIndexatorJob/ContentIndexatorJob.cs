@@ -73,7 +73,9 @@ namespace BikeScanner.Application.Jobs
 
             var loadTasks = _contentLoaders.Select(l => l.Load(loadSince));
             var tasksResults = await Task.WhenAll(loadTasks);
-            var results = tasksResults.SelectMany(r => r).ToArray();
+            var results = tasksResults
+                .SelectMany(r => r)
+                .ToArray();
 
             var downloadTime = timer.Elapsed;
             _logger.LogInformation($"Download {results.Length} items in {downloadTime}");

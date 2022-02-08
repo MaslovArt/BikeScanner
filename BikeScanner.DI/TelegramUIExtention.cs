@@ -3,7 +3,9 @@ using BikeScanner.UI.Bot.BotService.CommandsHandler;
 using BikeScanner.UI.Bot.BotService.Config;
 using BikeScanner.UI.Bot.BotService.Context;
 using BikeScanner.UI.Bot.Commands;
+using BikeScanner.UI.Bot.Commands.Feed;
 using BikeScanner.UI.Bot.Commands.Search;
+using BikeScanner.UI.Bot.Commands.Subs;
 using BikeScanner.UI.Bot.Configs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,8 +40,20 @@ namespace BikeScanner.DI
             services.AddScoped<IBotUICommand, RequestSearchCommand>();
             services.AddScoped<IBotCommand, RunSearchCommand>();
             services.AddScoped<IBotCommand, CancelSearchCommand>();
-            services.AddScoped<IBotCommand, NextSearchResultsCommand>();
+            services.AddScoped<IBotCommand, MoreSearchResultsCommand>();
             #endregion
+            #region subs commands
+            services.AddScoped<IBotUICommand, SaveLastSearchCommand>();
+            services.AddScoped<IBotUICommand, GetSubsCommand>();
+            services.AddScoped<IBotUICommand, WhatSubDelCommand>();
+            services.AddScoped<IBotCommand, ConfirmSubDelCommand>();
+            services.AddScoped<IBotCommand, ApplySubDelCommand>();
+            services.AddScoped<IBotCommand, CancelSubDelCommand>();
+            #endregion
+            //#region
+            //services.AddScoped<IBotUICommand, GetFeedCommand>();
+            //services.AddScoped<IBotCommand, MoreFeedCommand>();
+            //#endregion
         }
     }
 }

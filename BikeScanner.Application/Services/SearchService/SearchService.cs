@@ -4,17 +4,23 @@ using System.Threading.Tasks;
 using System.Linq;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Exceptions;
+using System;
 
 namespace BikeScanner.Application.Services.SearchService
 {
     public class SearchService : ISearchService
     {
-        private readonly IContentsRepository _contentsRepository;
-        private ContentEntity[] _newContents;
+        private readonly ISearchHistoryRepository   _searchHistoryRepository;
+        private readonly IContentsRepository        _contentsRepository;
+        private ContentEntity[]                     _newContents;
 
-        public SearchService(IContentsRepository contentsRepository)
+        public SearchService(
+            IContentsRepository contentsRepository,
+            ISearchHistoryRepository searchHistoryRepository
+            )
         {
             _contentsRepository = contentsRepository;
+            _searchHistoryRepository = searchHistoryRepository;
         }
 
         //ToDo add restrictions
@@ -28,6 +34,9 @@ namespace BikeScanner.Application.Services.SearchService
             if (!await CanSearch(userId))
                 throw AppError.SearchLimit;
 
+            if (skip == 0) 
+                await WriteHistory(userId, query);
+
             var result = await _contentsRepository.Search(query, skip, take);
             var pageItems = result.Entities
                 .Select(r => new SearchResult(query, r.AdUrl))
@@ -36,7 +45,8 @@ namespace BikeScanner.Application.Services.SearchService
             return new Paged<SearchResult>()
             {
                 Items = pageItems,
-                Total = result.Total
+                Total = result.Total,
+                Offset = result.Offset
             };
         }
 
@@ -53,6 +63,17 @@ namespace BikeScanner.Application.Services.SearchService
             return result
                 .Select(r => new SearchResult(query, r.AdUrl))
                 .ToArray();
+        }
+
+        private Task WriteHistory(long userId, string query)
+        {
+            var history = new SearchHistoryEntity()
+            {
+                UserId = userId,
+                SearchQuery = query,
+                Date = DateTime.Now
+            };
+            return _searchHistoryRepository.Add(history);
         }
     }
 }

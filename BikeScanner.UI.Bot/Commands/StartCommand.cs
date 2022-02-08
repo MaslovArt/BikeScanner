@@ -22,7 +22,6 @@ namespace BikeScanner.UI.Bot.Commands
             var mainButtons = new string[]
             {
                 UICommands.Search,
-                UICommands.MainUI,
                 UICommands.Cancel
             };
 

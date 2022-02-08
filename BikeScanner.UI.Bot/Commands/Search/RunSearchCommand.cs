@@ -1,5 +1,4 @@
 ﻿using BikeScanner.Application.Services.SearchService;
-using BikeScanner.Domain.Repositories;
 using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Configs;
 using Microsoft.Extensions.Options;
@@ -9,22 +8,19 @@ namespace BikeScanner.UI.Bot.Commands.Search
 {
     public class RunSearchCommand : BotCommand
     {
-        private readonly int                        _perPage;
-        private readonly ISearchService             _searchService;
-        private readonly ISearchHistoryRepository   _searchHistory;
+        private readonly int               _perPage;
+        private readonly ISearchService    _searchService;
 
         public override bool ExecuteImmediately => false;
         public override string CancelWith => nameof(CancelSearchCommand);
 
         public RunSearchCommand(
-            ISearchService searchService, 
-            ISearchHistoryRepository searchHistoryRepository,
+            ISearchService searchService,
             IOptions<TelegramUIConfig> options
             )
         {
             _perPage = options.Value.SearchResultPageSize;
             _searchService = searchService;
-            _searchHistory = searchHistoryRepository;
         }
 
         public override async Task<ContinueWith> Execute(CommandContext context)
@@ -32,11 +28,10 @@ namespace BikeScanner.UI.Bot.Commands.Search
             var chatId = GetChatId(context);
             var input = GetChatInput(context);
 
-            await _searchHistory.WriteHistory(chatId, input);
-
             var results = await _searchService.Search(chatId, input, 0, _perPage);
 
-            await SendMessage($"Нашел {results.Total} объявлений", context);
+            var resultMessage = $"Нашел {results.Total} объявлений.\n(Сохранить поиск {UICommands.SaveSearch})";
+            await SendMessage(resultMessage, context);
             foreach (var result in results.Items)
             {
                 await SendMessage(result.AdUrl, context);
@@ -44,16 +39,12 @@ namespace BikeScanner.UI.Bot.Commands.Search
 
             if (results.Total > results.Items.Length)
             {
-                var state = new SearchState(input, _perPage);
-                var message = $"Показать еще ({results.Total - results.Items.Length})?";
-                var btns = new string[]
-                {
-                    SearchConstants.COMPLETE_BTN,
-                    SearchConstants.NEXT_BTN
-                };
-                await SendMessageColumnButtons(message, context, btns);
+                var state = new SearchState(input, results.Offset);
+                var askMoreMessage = $"Показать еще ({results.Total - results.Items.Length})?";
 
-                return ContinueWith.Command<NextSearchResultsCommand>(state);
+                await SendMessageColumnButtons(askMoreMessage, context, ShowMoreCommand.Buttons);
+
+                return ContinueWith.Command<MoreSearchResultsCommand>(state);
             }
 
             return null;

@@ -1,4 +1,5 @@
-﻿using BikeScanner.UI.Bot.BotService.Commands;
+﻿using BikeScanner.Domain.Exceptions;
+using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.BotService.Context;
 using Microsoft.Extensions.Logging;
 using System;
@@ -81,17 +82,17 @@ namespace BikeScanner.UI.Bot.BotService.CommandsHandler
             Update update,
             ITelegramBotClient client)
         {
-            var userId = GetChatId(update);
+            var chatId = GetChatId(update);
             try
             {
-                _logger.LogDebug($"User[{userId}] start [{command.Key}]");
+                _logger.LogDebug($"User[{chatId}] start [{command.Key}]");
                 var commandContext = new CommandContext(update, client, userContext.State);
                 var continueWith = await command.Execute(commandContext);
-                _logger.LogDebug($"User[{userId}] end [{command.Key}]");
+                _logger.LogDebug($"User[{chatId}] end [{command.Key}]");
 
                 if (continueWith != null)
                 {
-                    _logger.LogDebug($"User[{userId}] next [{continueWith.Key}]");
+                    _logger.LogDebug($"User[{chatId}] next [{continueWith.Key}]");
                     var next = _commands.FirstOrDefault(c => c.Key == continueWith.Key);
                     if (next.ExecuteImmediately)
                     {
@@ -102,19 +103,32 @@ namespace BikeScanner.UI.Bot.BotService.CommandsHandler
                         userContext.NextCommand = continueWith.Key;
                         userContext.State = continueWith.State;
                         await _context.Update(userContext);
-                        _logger.LogDebug($"Command [{next.Key}] wait user[{userId}]");
+                        _logger.LogDebug($"Command [{next.Key}] wait user[{chatId}]");
                     }
                 }
                 else if (!string.IsNullOrEmpty(userContext.NextCommand))
                 {
                     userContext.NextCommand = null;
                     await _context.Update(userContext);
-                    _logger.LogDebug($"User[{userId}] completed task");
+                    _logger.LogDebug($"User[{chatId}] completed task");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"User[{userId}] error:{ex.Message}");
+                await HandleError(chatId, client, ex);
+            }
+        }
+
+        private Task HandleError(long chatId, ITelegramBotClient client, Exception ex)
+        {
+            if (ex is AppError)
+            {
+                return client.SendTextMessageAsync(chatId, $"Упс. {ex.Message}");
+            }
+            else
+            {
+                _logger.LogError(ex, $"User[{chatId}] error:{ex.Message}");
+                return client.SendTextMessageAsync(chatId, "Что-то пошло не так(");
             }
         }
     }

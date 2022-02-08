@@ -17,15 +17,15 @@ namespace BikeScanner.Domain.Exceptions
         }
 
         public static AppError TooMuchSubs => 
-            new AppError(ErrorCode.TooMuchSubs, "Достигнуто максимальное число подписок");
+            new AppError(ErrorCode.TooMuchSubs, "Достигнуто максимальное число подписок.");
 
-        public static AppError SubAlreadyExists => 
-            new AppError(ErrorCode.SubDuplicate, "Такая подписка уже существует");
+        public static AppError SubAlreadyExists(string query) => 
+            new AppError(ErrorCode.SubDuplicate, $"Подписка '{query}' уже существует.");
 
         public static AppError SearchLimit =>
-            new AppError(ErrorCode.SearchLimit, $"Достигнут лимит поисков за сутки");
+            new AppError(ErrorCode.SearchLimit, $"Достигнут лимит поисков за сутки.");
 
         public static AppError NotExists(string description) =>
-            new AppError(ErrorCode.ElementNotExists, $"{description} не существует");
+            new AppError(ErrorCode.ElementNotExists, $"{description} не существует.");
     }
 }

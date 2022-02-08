@@ -7,6 +7,6 @@ namespace BikeScanner.Domain.Repositories
     {
         Task<SubscriptionEntity[]> GetUserSubs(long userId, SubscriptionStatus status);
 
-        Task<bool> SubExists(long userId, string query);
+        Task<bool> HasActiveSub(long userId, string query);
     }
 }

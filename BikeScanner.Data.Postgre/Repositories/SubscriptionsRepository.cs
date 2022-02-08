@@ -20,11 +20,12 @@ namespace BikeScanner.Data.Postgre.Repositories
                 .ToArrayAsync();
         }
 
-        public Task<bool> SubExists(long userId, string query)
+        public Task<bool> HasActiveSub(long userId, string query)
         {
             return Set
                 .AnyAsync(e => e.UserId == userId && 
-                               e.SearchQuery == query);
+                               e.SearchQuery == query &&
+                               e.Status == SubscriptionStatus.Active);
         }
     }
 }

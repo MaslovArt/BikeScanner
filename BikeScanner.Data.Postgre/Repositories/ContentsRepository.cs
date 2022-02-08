@@ -12,6 +12,16 @@ namespace BikeScanner.Data.Postgre.Repositories
             : base(context)
         { }
 
+        public Task<ContentEntity[]> Scroll(int afterId, int take)
+        {
+            return Set
+                .AsNoTracking()
+                .Where(c => c.Id > afterId)
+                .Take(take)
+                .OrderBy(c => c.Id)
+                .ToArrayAsync();
+        }
+
         public async Task<PagedEntities<ContentEntity>> Search(string query, int skip, int take)
         {
             var queryable = Set
@@ -31,7 +41,8 @@ namespace BikeScanner.Data.Postgre.Repositories
             return new PagedEntities<ContentEntity>()
             {
                 Entities = entities,
-                Total = total
+                Total = total,
+                Offset = skip + entities.Length
             };
         }
 

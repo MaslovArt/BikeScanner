@@ -20,7 +20,9 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         
         protected string GetChatInput(CommandContext context)
         {
-            return context.Update.Message?.Text ?? context.Update.CallbackQuery?.Data;
+            var input = context.Update.Message?.Text ?? context.Update.CallbackQuery?.Data;
+
+            return input.Trim();
         }
 
         protected long GetChatId(CommandContext context)
@@ -65,7 +67,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         protected Task SendMessageRowButtons(
             string text,
             CommandContext context,
-            params string[] options)
+            IEnumerable<string> options)
         {
             var chatId = GetChatId(context);
 
@@ -80,7 +82,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         protected Task SendMessageColumnButtons(
             string text,
             CommandContext context,
-            params string[] options)
+            IEnumerable<string> options)
         {
             var chatId = GetChatId(context);
 

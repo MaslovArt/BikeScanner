@@ -1,6 +1,8 @@
 ﻿using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BikeScanner.Data.Postgre.Repositories
@@ -11,14 +13,12 @@ namespace BikeScanner.Data.Postgre.Repositories
             : base(context)
         { }
 
-        public Task WriteHistory(long userId, string searchQuery)
+        public Task<SearchHistoryEntity> GetLast(long userId)
         {
-            return Add(new SearchHistoryEntity()
-            {
-                UserId = userId,
-                SearchQuery = searchQuery,
-                Date = DateTime.Now,
-            });
+            return Set
+                .AsNoTracking()
+                .OrderByDescending(e => e.Date)
+                .FirstOrDefaultAsync();
         }
     }
 }
