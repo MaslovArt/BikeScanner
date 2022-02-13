@@ -40,8 +40,7 @@ namespace BikeScanner.UI.Bot.Commands.Search
                 var message = $"Показать еще ({results.Total - results.Offset})?";
                 await SendMessageColumnButtons(message, context, Buttons);
 
-                var newState = new SearchState(state.SearchQuery, results.Offset);
-
+                var newState = state with { Skip = results.Offset };
                 return ContinueWith.Command<MoreSearchResultsCommand>(newState);
             }
 

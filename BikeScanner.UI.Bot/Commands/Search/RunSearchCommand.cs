@@ -39,11 +39,14 @@ namespace BikeScanner.UI.Bot.Commands.Search
 
             if (results.Total > results.Items.Length)
             {
-                var state = new SearchState(input, results.Offset);
                 var askMoreMessage = $"Показать еще ({results.Total - results.Items.Length})?";
-
                 await SendMessageColumnButtons(askMoreMessage, context, ShowMoreCommand.Buttons);
 
+                var state = new SearchState()
+                {
+                    SearchQuery = input,
+                    Skip = results.Offset
+                };
                 return ContinueWith.Command<MoreSearchResultsCommand>(state);
             }
 
