@@ -11,7 +11,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         public abstract string CallName { get; }
         public abstract string Description { get; }
         public override bool ExecuteImmediately => true;
-        public override string CancelWith => null;
+        public override CancelWith CancelWith => null;
 
         public bool CanHandel(string command)
         {

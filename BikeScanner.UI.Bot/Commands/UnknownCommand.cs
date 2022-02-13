@@ -9,7 +9,7 @@ namespace BikeScanner.UI.Bot.Commands
     public class UnknownCommand : BotCommand, IUnknownCommand
     {
         public override bool ExecuteImmediately => true;
-        public override string CancelWith => null;
+        public override CancelWith CancelWith => null;
 
         public override async Task<ContinueWith> Execute(CommandContext context)
         {

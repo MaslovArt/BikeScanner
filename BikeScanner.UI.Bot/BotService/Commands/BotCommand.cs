@@ -14,7 +14,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
     {
         public string Key => GetType().Name;
         public abstract bool ExecuteImmediately { get; }
-        public abstract string CancelWith { get; }
+        public abstract CancelWith CancelWith { get; }
 
         public abstract Task<ContinueWith> Execute(CommandContext context);   
         

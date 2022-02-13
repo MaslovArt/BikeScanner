@@ -8,7 +8,7 @@ namespace BikeScanner.UI.Bot.Commands.Subs
     {
         private readonly ISubscriptionsService _subs;
 
-        public override string CancelWith => nameof(CancelSubDelCommand);
+        public override CancelWith CancelWith => CancelWith.Command<CancelSubDelCommand>();
 
         public ApplySubDelCommand(ISubscriptionsService subscriptionsService)
         {

@@ -34,8 +34,7 @@ namespace BikeScanner.Application.Services.SearchService
             if (!await CanSearch(userId))
                 throw AppError.SearchLimit;
 
-            if (skip == 0) 
-                await WriteHistory(userId, query);
+            await WriteHistory(userId, query);
 
             var result = await _contentsRepository.Search(query, skip, take);
             var pageItems = result.Entities
@@ -71,7 +70,7 @@ namespace BikeScanner.Application.Services.SearchService
             {
                 UserId = userId,
                 SearchQuery = query,
-                Date = DateTime.Now
+                Date = DateTime.UtcNow
             };
             return _searchHistoryRepository.Add(history);
         }

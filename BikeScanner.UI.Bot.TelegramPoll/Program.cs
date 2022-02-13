@@ -1,8 +1,10 @@
-﻿using BikeScanner.DI;
+﻿using BikeScanner.Application.Jobs;
+using BikeScanner.DI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace BikeScanner.UI.Bot.TelegramPoll
         {
             await Host.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureServices(async (hostContext, services) =>
                 {
                     var configuration = hostContext.Configuration;
 
@@ -23,6 +25,17 @@ namespace BikeScanner.UI.Bot.TelegramPoll
                     services.AddPostgreDataAccess(configuration);
                     services.AddTelegramUI(configuration);
                     services.AddServices();
+
+                    //try
+                    //{
+                    //    var provider = services.BuildServiceProvider();
+                    //    var indexator = provider.GetRequiredService<IContentIndexatorJob>();
+                    //    await indexator.Execute();
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //}
 
                     services.AddHostedService<TelegramHostedService>();
                 })

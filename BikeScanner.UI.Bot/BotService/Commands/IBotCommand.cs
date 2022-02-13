@@ -20,7 +20,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         /// <summary>
         /// Command (Key) that executes on cancelation
         /// </summary>
-        string CancelWith { get; }
+        CancelWith CancelWith { get; }
         /// <summary>
         /// Execute current command
         /// </summary>

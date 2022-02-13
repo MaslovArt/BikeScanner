@@ -12,7 +12,7 @@ namespace BikeScanner.UI.Bot.Commands.Search
         private readonly ISearchService _searchService;
 
         public override bool ExecuteImmediately => false;
-        public override string CancelWith => null;
+        public override CancelWith CancelWith => CancelWith.Command<CancelSearchCommand>();
 
         public MoreSearchResultsCommand(
             ISearchService searchService,

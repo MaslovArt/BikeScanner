@@ -12,7 +12,6 @@ namespace BikeScanner.UI.Bot.Commands.Subs
         private readonly ISubscriptionsService      _subs;
         private readonly ISearchHistoryRepository   _searchHistory;
 
-        public override string CancelWith => null;
         public override string CallName => UICommands.SaveSearch;
         public override string Description => "Сохранить последний поиск";
 

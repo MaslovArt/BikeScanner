@@ -12,7 +12,7 @@ namespace BikeScanner.UI.Bot.Commands.Feed
         private readonly int _pageSize;
         private readonly IContentsRepository _contents;
 
-        public override string CancelWith => null;
+        public override CancelWith CancelWith => null;
 
         public MoreFeedCommand(
             IContentsRepository contentsRepository,

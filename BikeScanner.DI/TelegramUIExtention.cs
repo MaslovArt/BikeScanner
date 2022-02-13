@@ -50,10 +50,6 @@ namespace BikeScanner.DI
             services.AddScoped<IBotCommand, ApplySubDelCommand>();
             services.AddScoped<IBotCommand, CancelSubDelCommand>();
             #endregion
-            //#region
-            //services.AddScoped<IBotUICommand, GetFeedCommand>();
-            //services.AddScoped<IBotCommand, MoreFeedCommand>();
-            //#endregion
         }
     }
 }

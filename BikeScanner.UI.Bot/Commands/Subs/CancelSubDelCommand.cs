@@ -6,7 +6,7 @@ namespace BikeScanner.UI.Bot.Commands.Subs
     public class CancelSubDelCommand : BotCommand
     {
         public override bool ExecuteImmediately => true;
-        public override string CancelWith => null;
+        public override CancelWith CancelWith => null;
 
         public async override Task<ContinueWith> Execute(CommandContext context)
         {

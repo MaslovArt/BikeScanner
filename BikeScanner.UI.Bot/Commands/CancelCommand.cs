@@ -37,13 +37,13 @@ namespace BikeScanner.UI.Bot.Commands
             else
             {
                 var currentCommand = _commands.FirstOrDefault(c => c.Key == cancelingCommand);
-                if (string.IsNullOrEmpty(currentCommand?.CancelWith))
+                if (currentCommand?.CancelWith != null)
                 {
-                    await SendMessage("Отменил", context);
+                    return ContinueWith.Command(currentCommand.CancelWith.Key);
                 }
                 else
                 {
-                    return ContinueWith.Command(currentCommand.CancelWith);
+                    await SendMessage("Отменил.", context);
                 }
             }
 
