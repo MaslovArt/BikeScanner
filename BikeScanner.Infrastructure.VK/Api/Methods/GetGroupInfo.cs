@@ -17,7 +17,7 @@ namespace BikeScanner.Infrastructure.VK.Api
         [VkParameter("group_id")]
         public string GroupShortName { get; set; }
 
-        public GetGroupInfo(VkSettings settings, string groupShortName)
+        public GetGroupInfo(VkApiAccessConfig settings, string groupShortName)
             : base(settings) 
         {
             GroupShortName = groupShortName;

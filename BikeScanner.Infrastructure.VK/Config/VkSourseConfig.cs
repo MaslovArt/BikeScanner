@@ -5,7 +5,7 @@ namespace BikeScanner.Infrastructure.VK.Config
     /// <summary>
     /// Vk source configuration
     /// </summary>
-    public class VkSourseSettings
+    public class VkSourseConfig
     {
         /// <summary>
         /// Users or groups walls list

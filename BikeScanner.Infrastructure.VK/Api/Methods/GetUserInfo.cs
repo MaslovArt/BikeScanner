@@ -13,7 +13,7 @@ namespace BikeScanner.Infrastructure.VK.Api
         [VkParameter("user_ids")]
         public string UserShortName { get; set; }
 
-        public GetUserInfo(VkSettings settings, string userShortName)
+        public GetUserInfo(VkApiAccessConfig settings, string userShortName)
             : base(settings)
         {
             UserShortName = UserShortName;

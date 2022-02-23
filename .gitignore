@@ -368,3 +368,7 @@ Migrations/
 /BikeScanner.UI.Telegram/appsettings.json
 /BikeScanner.UI.TestConsole/appsettings.json
 /BikeScanner.UI.Bot.TelegramPoll/appsettings.json
+
+BikeScanner.Server/appsettings.Development.json
+
+BikeScanner.Server/appsettings.Production.json

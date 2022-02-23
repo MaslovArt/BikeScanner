@@ -26,7 +26,7 @@ namespace BikeScanner.Infrastructure.VK.Services
         public VkWallsContentLoadService(
             ILogger<VkWallsContentLoadService> logger,
             VKApi vkApi,
-            IOptions<VkSourseSettings> sourseCollection)
+            IOptions<VkSourseConfig> sourseCollection)
         {
             _logger = logger;
             _vkApi = vkApi;

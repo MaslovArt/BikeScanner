@@ -21,9 +21,9 @@ namespace BikeScanner.DI
             services.AddScoped<ISubscriptionsService, SubscriptionsService>();
             services.AddScoped<ISearchService, SearchService>();
 
-            services.AddSingleton<IContentIndexatorJob, ContentIndexatorJob>();
-            services.AddSingleton<INotificationsSchedulerJob, NotificationsSchedulerJob>();
-            services.AddSingleton<INotificationsSenderJob, NotificationsSenderJob>();
+            services.AddScoped<IContentIndexatorJob, ContentIndexatorJob>();
+            services.AddScoped<INotificationsSchedulerJob, NotificationsSchedulerJob>();
+            services.AddScoped<INotificationsSenderJob, NotificationsSenderJob>();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace BikeScanner.Infrastructure.VK.Api.Methods
         [VkParameter("album_ids")]
         public ParamsCollection<int> AlbumsIds { get; set; }
 
-        public GetAlbums(VkSettings settings, int ownerId)
+        public GetAlbums(VkApiAccessConfig settings, int ownerId)
             : base(settings)
         {
             OwnerId = ownerId; 

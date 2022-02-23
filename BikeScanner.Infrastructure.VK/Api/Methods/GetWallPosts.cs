@@ -40,7 +40,7 @@ namespace BikeScanner.Infrastructure.VK.Api.Methods
             }
         }
 
-        public GetWallPosts(VkSettings settings, int groupId) 
+        public GetWallPosts(VkApiAccessConfig settings, int groupId) 
             : base(settings)
         {
             OwnerId = groupId;

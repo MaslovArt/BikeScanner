@@ -14,10 +14,10 @@ namespace BikeScanner.Infrastructure.VK.Api
     /// </summary>
     public class VKApi
     {
-        private readonly VkSettings _settings;
+        private readonly VkApiAccessConfig _settings;
         private readonly VkApiExecutor _executor;
 
-        public VKApi(IOptions<VkSettings> settings, ILogger<VKApi> logger)
+        public VKApi(IOptions<VkApiAccessConfig> settings, ILogger<VKApi> logger)
         {
             if (settings.Value.MaxApiRequestsPerSecond < 0)
                 throw new ArgumentException($"{nameof(settings.Value.MaxApiRequestsPerSecond)} min value is 1!");

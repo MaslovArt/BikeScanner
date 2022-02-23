@@ -11,8 +11,8 @@ namespace BikeScanner.DI
     {
         public static void AddVKAdSource(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<VkSettings>(configuration.GetSection(typeof(VkSettings).Name));
-            services.Configure<VkSourseSettings>(configuration.GetSection(typeof(VkSourseSettings).Name));
+            services.Configure<VkApiAccessConfig>(configuration.GetSection(typeof(VkApiAccessConfig).Name));
+            services.Configure<VkSourseConfig>(configuration.GetSection(typeof(VkSourseConfig).Name));
 
             services.AddSingleton<VKApi>();
 

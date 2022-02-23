@@ -13,7 +13,7 @@ namespace BikeScanner.Infrastructure.VK.Api.Abstraction
         private readonly string _apiVersion,
                                 _accessToken;
 
-        public BaseVkApiMethod(VkSettings settings)
+        public BaseVkApiMethod(VkApiAccessConfig settings)
         {
             _accessToken = settings.ApiKey 
                 ?? throw new ArgumentNullException(nameof(settings.ApiKey));

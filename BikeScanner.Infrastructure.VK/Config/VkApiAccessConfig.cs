@@ -1,6 +1,6 @@
 ﻿namespace BikeScanner.Infrastructure.VK.Config
 {
-    public class VkSettings
+    public class VkApiAccessConfig
     {
         public string ApiKey { get; set; }
 

@@ -46,7 +46,7 @@ namespace BikeScanner.Infrastructure.VK.Api.Methods
             }
         }
 
-        public GetPhotos(VkSettings settings, int ownerId, int albumId) 
+        public GetPhotos(VkApiAccessConfig settings, int ownerId, int albumId) 
             : base(settings)
         {
             OwnerId = ownerId;

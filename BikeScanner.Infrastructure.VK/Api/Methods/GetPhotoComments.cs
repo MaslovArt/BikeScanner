@@ -13,7 +13,7 @@ namespace BikeScanner.Infrastructure.VK.Api.Methods
         [VkParameter("photo_id")]
         public int PhotoId { get; set; }
 
-        public GetPhotoComments(VkSettings settings, int albumOwnerId, int photoId) 
+        public GetPhotoComments(VkApiAccessConfig settings, int albumOwnerId, int photoId) 
             : base(settings)
         {
             AlbumOwnerId = albumOwnerId;

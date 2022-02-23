@@ -19,10 +19,10 @@ namespace BikeScanner.DI
         public static void AddTelegramUI(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<TelegramUIConfig>(configuration.GetSection(nameof(TelegramUIConfig)));
-            services.Configure<TelegramBotConfig>(configuration.GetSection(nameof(TelegramBotConfig)));
+            services.Configure<TelegramApiAccessConfig>(configuration.GetSection(nameof(TelegramApiAccessConfig)));
 
             services.AddSingleton<ITelegramBotClient, TelegramBotClient>(x => {
-                var bot = x.GetRequiredService<IOptions<TelegramBotConfig>>().Value;
+                var bot = x.GetRequiredService<IOptions<TelegramApiAccessConfig>>().Value;
 
                 return new TelegramBotClient(bot.Key);
             });
