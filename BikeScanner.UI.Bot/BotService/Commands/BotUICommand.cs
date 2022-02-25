@@ -15,7 +15,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
 
         public bool CanHandel(string command)
         {
-            return !string.IsNullOrWhiteSpace(command) && command.Contains($"{CallName}");
+            return !string.IsNullOrWhiteSpace(command) && command.StartsWith($"{CallName}");
         }
 
         protected string GetParam(CommandContext context, int paramInd)
@@ -29,7 +29,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
             return text
                 .Replace(CallName, "")
                 .Trim()
-                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Split(';', StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
         }
     }

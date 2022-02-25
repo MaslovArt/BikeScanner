@@ -67,7 +67,7 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         protected Task SendMessageRowButtons(
             string text,
             CommandContext context,
-            IEnumerable<string> options)
+            params string[] options)
         {
             var chatId = GetChatId(context);
 
@@ -79,10 +79,22 @@ namespace BikeScanner.UI.Bot.BotService.Commands
             return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
         }
 
+        protected Task SendMessageRowButtons(
+            string text,
+            CommandContext context,
+            params InlineKeyboardButton[] btns)
+        {
+            var chatId = GetChatId(context);
+
+            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(btns);
+
+            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
+        }
+
         protected Task SendMessageColumnButtons(
             string text,
             CommandContext context,
-            IEnumerable<string> options)
+            params string[] options)
         {
             var chatId = GetChatId(context);
 

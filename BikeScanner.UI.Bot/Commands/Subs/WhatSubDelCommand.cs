@@ -32,7 +32,9 @@ namespace BikeScanner.UI.Bot.Commands.Subs
                 return null;
             }
 
-            var subsNames = userSubs.Select(s => s.SearchQuery);
+            var subsNames = userSubs
+                .Select(s => s.SearchQuery)
+                .ToArray();
             await SendMessageColumnButtons("Какой удалить?", context, subsNames);
 
             return ContinueWith.Command<ConfirmSubDelCommand>();

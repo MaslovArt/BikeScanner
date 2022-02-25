@@ -3,6 +3,7 @@ using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Configs;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace BikeScanner.UI.Bot.Commands.Search
 {
@@ -30,12 +31,12 @@ namespace BikeScanner.UI.Bot.Commands.Search
 
             var results = await _searchService.Search(chatId, input, 0, _perPage);
 
-            var resultMessage = $"Нашел {results.Total} объявлений.\n(Сохранить поиск {UICommands.SaveSearch})";
-            await SendMessage(resultMessage, context);
+            var resultMessage = $"По запросу '{input}' нашел {results.Total} объявлений.";
+            var saveSearchBtn = InlineKeyboardButton.WithCallbackData("Сохранить поиск", $"{UICommands.SaveSearch} {input}");
+            await SendMessageRowButtons(resultMessage, context, saveSearchBtn);
+
             foreach (var result in results.Items)
-            {
                 await SendMessage(result.AdUrl, context);
-            }
 
             if (results.Total > results.Items.Length)
             {

@@ -46,7 +46,7 @@ namespace BikeScanner.DI
             services.AddScoped<IBotCommand, MoreSearchResultsCommand>();
             #endregion
             #region subs commands
-            services.AddScoped<IBotUICommand, SaveLastSearchCommand>();
+            services.AddScoped<IBotUICommand, SaveSearchCommand>();
             services.AddScoped<IBotUICommand, GetSubsCommand>();
             services.AddScoped<IBotUICommand, WhatSubDelCommand>();
             services.AddScoped<IBotCommand, ConfirmSubDelCommand>();
