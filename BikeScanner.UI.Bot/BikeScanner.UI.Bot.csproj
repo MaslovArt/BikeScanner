@@ -13,4 +13,10 @@
     <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
 </Project>

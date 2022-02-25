@@ -1,9 +1,7 @@
 ﻿using BikeScanner.Application.Services.SubscriptionsService;
 using BikeScanner.UI.Bot.BotService.Commands;
-using System;
-using System.Collections.Generic;
+using BikeScanner.UI.Bot.Helpers;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BikeScanner.UI.Bot.Commands.Subs
@@ -32,7 +30,7 @@ namespace BikeScanner.UI.Bot.Commands.Subs
                 ContinueWith.Command<ConfirmSubDelCommand>();
 
             var message = $"Удалить '{deletingSub.SearchQuery}'?";
-            await SendMessageRowButtons(message, context, ConfirmCommand.ConfirmButtons);
+            await SendMessageWithButtons(message, context, TelegramButtonsHelper.BooleanButtons);
 
             return ContinueWith.Command<ApplySubDelCommand>(deletingSub.Id);
         }

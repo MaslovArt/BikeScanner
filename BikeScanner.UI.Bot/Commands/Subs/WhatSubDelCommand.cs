@@ -1,5 +1,6 @@
 ﻿using BikeScanner.Application.Services.SubscriptionsService;
 using BikeScanner.UI.Bot.BotService.Commands;
+using BikeScanner.UI.Bot.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace BikeScanner.UI.Bot.Commands.Subs
             var subsNames = userSubs
                 .Select(s => s.SearchQuery)
                 .ToArray();
-            await SendMessageColumnButtons("Какой удалить?", context, subsNames);
+            await SendMessageWithButtons("Какой удалить?", context, TelegramMarkupHelper.MessageColumnBtns(subsNames));
 
             return ContinueWith.Command<ConfirmSubDelCommand>();
         }

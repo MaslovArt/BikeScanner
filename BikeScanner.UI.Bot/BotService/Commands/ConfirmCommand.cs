@@ -1,14 +1,10 @@
 ﻿using System.Threading.Tasks;
+using BikeScanner.UI.Bot.Helpers;
 
 namespace BikeScanner.UI.Bot.BotService.Commands
 {
     public abstract class ConfirmCommand : BotCommand
     {
-        public static string[] ConfirmButtons = new string[]
-        {
-            "Да",
-            "Нет"
-        };
         public override bool ExecuteImmediately => false;
 
         public abstract Task<ContinueWith> OnConfirm(CommandContext context);
@@ -19,9 +15,9 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         {
             var input = GetChatInput(context);
 
-            if (input == "Да") 
+            if (input == TelegramButtonsHelper.AcceptButtonValue) 
                 return await OnConfirm(context);
-            if (input == "Нет") 
+            if (input == TelegramButtonsHelper.CancelButtonValue) 
                 return await OnCancel(context);
 
             return ContinueWith.Command<ConfirmCommand>();

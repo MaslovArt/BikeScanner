@@ -1,8 +1,8 @@
 ﻿using BikeScanner.Application.Services.SubscriptionsService;
 using BikeScanner.Application.Types;
 using BikeScanner.UI.Bot.BotService.Commands;
+using BikeScanner.UI.Bot.Helpers;
 using System.Threading.Tasks;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace BikeScanner.UI.Bot.Commands.Subs
 {
@@ -32,8 +32,8 @@ namespace BikeScanner.UI.Bot.Commands.Subs
             await _subs.AddSub(newSub);
 
             var message = $"Поиск '{searchQueryParam}' сохранен в подписках.";
-            var getSubsBtn = InlineKeyboardButton.WithCallbackData("Мои подписки", $"{UICommands.UserSubs}");
-            await SendMessageRowButtons(message, context, getSubsBtn);
+            var getSubsBtn = TelegramMarkupHelper.MessageRowBtns(("Мои подписки", UICommands.UserSubs));
+            await SendMessageWithButtons(message, context, getSubsBtn);
 
             return null;
         }

@@ -1,4 +1,5 @@
 ﻿using BikeScanner.UI.Bot.BotService.Commands;
+using BikeScanner.UI.Bot.Helpers;
 using System.Threading.Tasks;
 
 namespace BikeScanner.UI.Bot.Commands
@@ -24,8 +25,8 @@ namespace BikeScanner.UI.Bot.Commands
                 UICommands.Search,
                 UICommands.Cancel
             };
-
-            await SendMessageKeyboard(message, context, mainButtons);
+            var markup = TelegramMarkupHelper.KeyboardRowBtns(mainButtons);
+            await SendMessageWithButtons(message, context, markup);
 
             return null;
         }

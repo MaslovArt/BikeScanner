@@ -1,14 +1,10 @@
 ﻿using System.Threading.Tasks;
+using BikeScanner.UI.Bot.Helpers;
 
 namespace BikeScanner.UI.Bot.BotService.Commands
 {
     public abstract class ShowMoreCommand : BotCommand
     {
-        public static string[] Buttons = new string[]
-        {
-            "Показать еще",
-            "Завершить"
-        };
         public override bool ExecuteImmediately => false;
 
         public abstract Task<ContinueWith> OnMore(CommandContext context);
@@ -19,9 +15,9 @@ namespace BikeScanner.UI.Bot.BotService.Commands
         {
             var input = GetChatInput(context);
 
-            if (input == "Показать еще")
+            if (input == TelegramButtonsHelper.AcceptButtonValue)
                 return await OnMore(context);
-            if (input == "Завершить")
+            if (input == TelegramButtonsHelper.CancelButtonValue)
                 return await OnCancel(context);
 
             return ContinueWith.Command<ShowMoreCommand>();

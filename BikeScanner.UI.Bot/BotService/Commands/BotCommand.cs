@@ -1,7 +1,4 @@
-﻿using BikeScanner.UI.Bot.Extentions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -36,76 +33,9 @@ namespace BikeScanner.UI.Bot.BotService.Commands
             return context.Client.SendTextMessageAsync(chatId, text);
         }
 
-        protected Task SendErrorMessage(CommandContext context)
+        protected Task SendMessageWithButtons(string text, CommandContext context, IReplyMarkup markup)
         {
             var chatId = GetChatId(context);
-            return context.Client.SendTextMessageAsync(chatId, "Упс.\nЧто-то пошло не так.");
-        }
-
-        protected Task SendMessageKeyboard(
-            string text,
-            CommandContext context, 
-            params string[] options)
-        {
-            var chatId = GetChatId(context);
-            ReplyKeyboardMarkup buttons = null;
-            if (options?.Length > 0)
-            {
-                var btns = new List<List<KeyboardButton>>
-                {
-                    options.Select(o => new KeyboardButton(o)).ToList()
-                };
-                buttons = new ReplyKeyboardMarkup(btns)
-                {
-                    OneTimeKeyboard = true
-                };
-            }
-
-            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: buttons);
-        }
-
-        protected Task SendMessageRowButtons(
-            string text,
-            CommandContext context,
-            params string[] options)
-        {
-            var chatId = GetChatId(context);
-
-            var buttons = options
-                .ToMax64BytesValue()
-                .Select(o => InlineKeyboardButton.WithCallbackData(o));
-            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(buttons);
-
-            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
-        }
-
-        protected Task SendMessageRowButtons(
-            string text,
-            CommandContext context,
-            params InlineKeyboardButton[] btns)
-        {
-            var chatId = GetChatId(context);
-
-            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(btns);
-
-            return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
-        }
-
-        protected Task SendMessageColumnButtons(
-            string text,
-            CommandContext context,
-            params string[] options)
-        {
-            var chatId = GetChatId(context);
-
-            var buttons = options
-                .ToMax64BytesValue()
-                .Select(o => new List<InlineKeyboardButton>()
-                {
-                    InlineKeyboardButton.WithCallbackData(o)
-                });
-            InlineKeyboardMarkup markup = new InlineKeyboardMarkup(buttons);
-
             return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
         }
     }

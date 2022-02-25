@@ -1,5 +1,6 @@
 ﻿using BikeScanner.Application.Services.SubscriptionsService;
 using BikeScanner.UI.Bot.BotService.Commands;
+using BikeScanner.UI.Bot.Helpers;
 using System.Threading.Tasks;
 
 namespace BikeScanner.UI.Bot.Commands.Subs
@@ -20,7 +21,9 @@ namespace BikeScanner.UI.Bot.Commands.Subs
             var deletingSubId = context.GetState<int>();
             var deletedSub = await _subs.RemoveSub(deletingSubId);
 
-            await SendMessage($"Подписка '{deletedSub.SearchQuery} удалена.", context);
+            var message = $"Подписка '{deletedSub.SearchQuery} удалена.";
+            var getSubsBtn = TelegramMarkupHelper.MessageRowBtns(("Мои подписки", UICommands.UserSubs));
+            await SendMessageWithButtons(message, context, getSubsBtn);
 
             return null;
         }

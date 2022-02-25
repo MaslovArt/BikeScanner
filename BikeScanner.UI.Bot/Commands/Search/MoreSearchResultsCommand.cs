@@ -1,6 +1,7 @@
 ﻿using BikeScanner.Application.Services.SearchService;
 using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Configs;
+using BikeScanner.UI.Bot.Helpers;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -38,7 +39,7 @@ namespace BikeScanner.UI.Bot.Commands.Search
             if (results.Total > results.Offset)
             {
                 var message = $"Показать еще ({results.Total - results.Offset})?";
-                await SendMessageColumnButtons(message, context, Buttons);
+                await SendMessageWithButtons(message, context, TelegramButtonsHelper.BooleanButtons);
 
                 var newState = state with { Skip = results.Offset };
                 return ContinueWith.Command<MoreSearchResultsCommand>(newState);

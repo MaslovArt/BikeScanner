@@ -1,4 +1,5 @@
 ﻿using BikeScanner.UI.Bot.BotService.Commands;
+using BikeScanner.UI.Bot.Helpers;
 using System.Threading.Tasks;
 
 namespace BikeScanner.UI.Bot.Commands
@@ -13,8 +14,9 @@ namespace BikeScanner.UI.Bot.Commands
 
         public override async Task<ContinueWith> Execute(CommandContext context)
         {
-            var message = $"И что мне с этим делать?\nМои возможности ({UICommands.Help}).";
-            await SendMessage(message, context);
+            var message = $"Не понимаю что мне делать(";
+            var getHelpBtn = TelegramMarkupHelper.MessageRowBtns(("Посмотреть возможности", UICommands.Help));
+            await SendMessageWithButtons(message, context, getHelpBtn);
 
             return null;
         }

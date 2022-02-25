@@ -1,6 +1,7 @@
 ﻿using BikeScanner.Application.Services.SearchService;
 using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Configs;
+using BikeScanner.UI.Bot.Helpers;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -32,8 +33,8 @@ namespace BikeScanner.UI.Bot.Commands.Search
             var results = await _searchService.Search(chatId, input, 0, _perPage);
 
             var resultMessage = $"По запросу '{input}' нашел {results.Total} объявлений.";
-            var saveSearchBtn = InlineKeyboardButton.WithCallbackData("Сохранить поиск", $"{UICommands.SaveSearch} {input}");
-            await SendMessageRowButtons(resultMessage, context, saveSearchBtn);
+            var saveSearchBtn = TelegramMarkupHelper.MessageRowBtns(("Сохранить поиск", $"{UICommands.SaveSearch} {input}"));
+            await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
 
             foreach (var result in results.Items)
                 await SendMessage(result.AdUrl, context);
@@ -41,7 +42,7 @@ namespace BikeScanner.UI.Bot.Commands.Search
             if (results.Total > results.Items.Length)
             {
                 var askMoreMessage = $"Показать еще ({results.Total - results.Items.Length})?";
-                await SendMessageColumnButtons(askMoreMessage, context, ShowMoreCommand.Buttons);
+                await SendMessageWithButtons(askMoreMessage, context, TelegramButtonsHelper.BooleanButtons);
 
                 var state = new SearchState()
                 {

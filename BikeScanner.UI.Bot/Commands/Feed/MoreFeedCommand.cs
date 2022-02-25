@@ -1,6 +1,7 @@
 ﻿using BikeScanner.Domain.Repositories;
 using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Configs;
+using BikeScanner.UI.Bot.Helpers;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace BikeScanner.UI.Bot.Commands.Feed
             if (results.Length == _pageSize)
             {
                 var message = $"Показать еще?";
-                await SendMessageColumnButtons(message, context, Buttons);
+                await SendMessageWithButtons(message, context, TelegramButtonsHelper.BooleanButtons);
 
                 return ContinueWith.Command<MoreFeedCommand>(results.Last().Id);
             }
