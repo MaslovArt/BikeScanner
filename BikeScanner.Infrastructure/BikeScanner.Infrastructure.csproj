@@ -6,10 +6,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="17.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Telegram.Bot" />
+  </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 ﻿using BikeScanner.Application.Configs;
 using BikeScanner.Application.Jobs;
-using BikeScanner.Application.Services.NotificationFactory;
 using BikeScanner.Application.Services.SearchService;
 using BikeScanner.Application.Services.SubscriptionsService;
 using Microsoft.Extensions.Configuration;
@@ -13,8 +12,6 @@ namespace BikeScanner.DI
         public static void AddBikeScanner(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JobsConfig>(configuration.GetSection(nameof(JobsConfig)));
-
-            services.AddSingleton<INotificatorFactory, NotificatorFactory>();
 
             services.AddScoped<ISubscriptionsService, SubscriptionsService>();
             services.AddScoped<ISearchService, SearchService>();

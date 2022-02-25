@@ -1,9 +1,10 @@
-﻿using BikeScanner.UI.Bot.BotService.Commands;
+﻿using BikeScanner.Application.Interfaces;
+using BikeScanner.Infrastructure.Notificators;
+using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.BotService.CommandsHandler;
 using BikeScanner.UI.Bot.BotService.Config;
 using BikeScanner.UI.Bot.BotService.Context;
 using BikeScanner.UI.Bot.Commands;
-using BikeScanner.UI.Bot.Commands.Feed;
 using BikeScanner.UI.Bot.Commands.Search;
 using BikeScanner.UI.Bot.Commands.Subs;
 using BikeScanner.UI.Bot.Configs;
@@ -26,6 +27,8 @@ namespace BikeScanner.DI
 
                 return new TelegramBotClient(bot.Key);
             });
+
+            services.AddSingleton<INotificator, TelegramNotificator>();
 
             services.AddSingleton<IBotContext, MemoryBotContext>();
             services.AddScoped<CommandsHandler>();

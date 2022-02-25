@@ -1,4 +1,4 @@
-﻿using BikeScanner.Application.Services.NotificationFactory;
+﻿using BikeScanner.Application.Interfaces;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -14,17 +14,17 @@ namespace BikeScanner.Application.Jobs
     {
         private readonly ILogger<NotificationsSenderJob>    _logger;
         private readonly INotificationsQueueRepository      _notificationsQueueRepository;
-        private readonly INotificatorFactory                _notificatorFactory;
+        private readonly INotificator                       _notificator;
 
         public NotificationsSenderJob(
             ILogger<NotificationsSenderJob> logger,
             INotificationsQueueRepository notificationsQueueRepository,
-            INotificatorFactory notificatorFactory
+            INotificator notificator
             )
         {
             _logger = logger;
             _notificationsQueueRepository = notificationsQueueRepository;
-            _notificatorFactory = notificatorFactory;
+            _notificator = notificator;
         }
 
         public async Task Execute()
@@ -36,13 +36,7 @@ namespace BikeScanner.Application.Jobs
             try
             {
                 var notifications = await _notificationsQueueRepository.GetNotSended();
-                var typeNotifications = notifications.GroupBy(q => q.NotificationType);
-
-                foreach (var group in typeNotifications)
-                {
-                    await SendNotifications(group.Key, group);
-                }
-
+                await SendNotifications(notifications);
                 await _notificationsQueueRepository.UpdateRange(notifications);
             }
             catch (Exception ex)
@@ -57,15 +51,14 @@ namespace BikeScanner.Application.Jobs
             }
         }
 
-        private async Task SendNotifications(string type, IEnumerable<NotificationQueueEntity> notifications)
+        private async Task SendNotifications(IEnumerable<NotificationQueueEntity> notifications)
         {
-            var notificator = _notificatorFactory.Resolve(type);
-            _logger.LogInformation($"[{type}] notifications count {notifications.Count()}");
+            _logger.LogInformation($"Notifications count {notifications.Count()}");
 
             var notificationTasks = notifications
                 .Select(notification => 
                     //ToDO Task.Run???
-                    Task.Run(() => notificator.Send(notification.UserId, notification.AdUrl))
+                    Task.Run(() => _notificator.Send(notification.UserId, $"Новый результат поиска '{notification.SearchQuery}'\n{notification.AdUrl}"))
                     .ContinueWith(notificationTask =>
                     {
                         if (notificationTask.IsCompletedSuccessfully)
