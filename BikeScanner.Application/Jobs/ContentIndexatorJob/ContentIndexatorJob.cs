@@ -1,5 +1,5 @@
-﻿using BikeScanner.Application.Interfaces;
-using BikeScanner.Domain.Configs;
+﻿using BikeScanner.Application.Configs;
+using BikeScanner.Application.Interfaces;
 using BikeScanner.Domain.Extentions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
@@ -26,13 +26,13 @@ namespace BikeScanner.Application.Jobs
             IEnumerable<IContentLoader> contentLoaders,
             IContentsRepository contentsRepository,
             IVarsRepository varsRepository,
-            IOptions<BSSettings> options)
+            IOptions<JobsConfig> options)
         {
             _logger = logger;
             _contentLoaders = contentLoaders.ToArray();
             _contentsRepository = contentsRepository;
             _varsRepository = varsRepository;
-            _actualDays = options.Value.ActualDays;
+            _actualDays = options.Value.LoadSince;
         }
 
         public async Task Execute()
@@ -48,6 +48,8 @@ namespace BikeScanner.Application.Jobs
             try
             {
                 var loadedContents = await LoadContents(loadSince);
+                foreach (var c in loadedContents)
+                    c.Published = new DateTime(c.Published.Ticks, DateTimeKind.Utc);
 
                 var currentContents = await _contentsRepository.Get();
                 await RemoveOutdatedContent(currentContents, loadedContents, loadSince);
@@ -58,6 +60,7 @@ namespace BikeScanner.Application.Jobs
             catch (Exception ex)
             {
                 _logger.LogCritical(ex, $"Indexing error: {ex.Message}");
+                throw;
             }
             finally
             {

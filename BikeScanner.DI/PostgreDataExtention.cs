@@ -4,7 +4,6 @@ using BikeScanner.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace BikeScanner.DI
 {
@@ -12,13 +11,9 @@ namespace BikeScanner.DI
     {
         public static void AddPostgreDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<DBSettings>(configuration.GetSection("ConnectionStrings"));
-
-            services.AddDbContext<BikeScannerContext>((provided, options) =>
+            services.AddDbContext<BikeScannerContext>(options =>
             {
-                var db = provided.GetRequiredService<IOptions<DBSettings>>().Value;
-
-                options.UseNpgsql(db.DefaultConnection);
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<IContentsRepository, ContentsRepository>();

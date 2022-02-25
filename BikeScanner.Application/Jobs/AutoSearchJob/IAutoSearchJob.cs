@@ -2,7 +2,7 @@
 
 namespace BikeScanner.Application.Jobs
 {
-    public interface INotificationsSchedulerJob
+    public interface IAutoSearchJob
     {
         Task Execute();
     }

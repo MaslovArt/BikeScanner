@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace BikeScanner.Application.Jobs
 {
-    public class NotificationsSchedulerJob : INotificationsSchedulerJob
+    public class AutoSearchJob : IAutoSearchJob
     {
-        private readonly ILogger<NotificationsSchedulerJob> _logger;
+        private readonly ILogger<AutoSearchJob> _logger;
         private readonly ISearchService                     _searchService;
         private readonly ISubscriptionsRepository           _subsRepository;
         private readonly INotificationsQueueRepository      _notificationsQueueRepository;
         private readonly IVarsRepository                    _varsRepository;
 
-        public NotificationsSchedulerJob(
-            ILogger<NotificationsSchedulerJob> logger,
+        public AutoSearchJob(
+            ILogger<AutoSearchJob> logger,
             ISearchService searchService,
             ISubscriptionsRepository subscriptionsRepository,
             IVarsRepository varsRepository,
@@ -62,6 +62,7 @@ namespace BikeScanner.Application.Jobs
             catch (Exception ex)
             {
                 _logger.LogCritical(ex, $"scheduling error: ${ex}");
+                throw;
             }
             finally
             {

@@ -4,4 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Microsoft.Extensions.Configuration.Abstractions" />
+  </ItemGroup>
 </Project>

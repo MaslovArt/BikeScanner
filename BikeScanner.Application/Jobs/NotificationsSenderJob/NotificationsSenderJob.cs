@@ -48,6 +48,7 @@ namespace BikeScanner.Application.Jobs
             catch (Exception ex)
             {
                 _logger.LogCritical(ex, $"Notifying error: {ex.Message}");
+                throw;
             }
             finally
             {
@@ -69,12 +70,12 @@ namespace BikeScanner.Application.Jobs
                     {
                         if (notificationTask.IsCompletedSuccessfully)
                         {
-                            notification.SendTime = DateTime.Now;
+                            notification.SendTime = DateTime.UtcNow;
                             notification.Status = NotificationStatus.Sended;
                         }
                         else if (notificationTask.IsFaulted)
                         {
-                            notification.SendTime = DateTime.Now;
+                            notification.SendTime = DateTime.UtcNow;
                             notification.Status = NotificationStatus.Error;
 
                             var ex = notificationTask.Exception;

@@ -1,6 +1,10 @@
-﻿using BikeScanner.DI;
+﻿using BikeScanner.Application.Jobs;
+using BikeScanner.DI;
+using BikeScanner.Server;
 using BikeScanner.Server.Controllers;
 using BikeScanner.Server.Hosting;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,18 +27,32 @@ builder.Services.AddVKAdSource(configuration);
 builder.Services.AddPostgreDataAccess(configuration);
 builder.Services.AddTelegramUI(configuration);
 builder.Services.AddServices();
+builder.Services.AddHangfire(options =>
+    options.UsePostgreSqlStorage(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfireServer();
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+if (builder.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeScanner Api V1");
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeScanner Api V1");
+    });
+}
+GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
+GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
+app.UseHangfireDashboard();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+// Initializations
+RecurringJob.AddOrUpdate<ScanJobsChain>("SCAN_CHAIN", j => j.ExecuteChain(), Cron.Hourly);
+
 app.Run();
+
 

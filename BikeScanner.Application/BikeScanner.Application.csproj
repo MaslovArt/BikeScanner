@@ -13,4 +13,10 @@
     <ProjectReference Include="..\BikeScanner.Domain\BikeScanner.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Configs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configs\" />
+  </ItemGroup>
 </Project>

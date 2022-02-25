@@ -16,16 +16,24 @@
     <None Remove="Hosting\" />
     <None Remove="Controllers\" />
     <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="Hangfire.Core" />
+    <None Remove="Hangfire.AspNetCore" />
+    <None Remove="Hangfire.PostgreSql" />
+    <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="17.0.0" />
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.28" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.9.6" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Hosting\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BikeScanner.DI\BikeScanner.DI.csproj">

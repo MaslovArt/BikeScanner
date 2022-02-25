@@ -1,10 +1,8 @@
-﻿using BikeScanner.Application.Interfaces;
+﻿using BikeScanner.Application.Configs;
 using BikeScanner.Application.Jobs;
-using BikeScanner.Application.Services;
 using BikeScanner.Application.Services.NotificationFactory;
 using BikeScanner.Application.Services.SearchService;
 using BikeScanner.Application.Services.SubscriptionsService;
-using BikeScanner.Domain.Configs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +12,7 @@ namespace BikeScanner.DI
     {
         public static void AddBikeScanner(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<BSSettings>(configuration.GetSection(nameof(BSSettings)));
+            services.Configure<JobsConfig>(configuration.GetSection(nameof(JobsConfig)));
 
             services.AddSingleton<INotificatorFactory, NotificatorFactory>();
 
@@ -22,8 +20,9 @@ namespace BikeScanner.DI
             services.AddScoped<ISearchService, SearchService>();
 
             services.AddScoped<IContentIndexatorJob, ContentIndexatorJob>();
-            services.AddScoped<INotificationsSchedulerJob, NotificationsSchedulerJob>();
+            services.AddScoped<IAutoSearchJob, AutoSearchJob>();
             services.AddScoped<INotificationsSenderJob, NotificationsSenderJob>();
+            services.AddScoped<ScanJobsChain>();
         }
     }
 }

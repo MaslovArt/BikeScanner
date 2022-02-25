@@ -6,7 +6,7 @@ using Telegram.Bot.Types;
 namespace BikeScanner.Server.Controllers
 {
     /// <summary>
-    /// Handle request from telegram app
+    /// Handle requests from telegram app
     /// </summary>
     public class TelegramUIController : BaseApiController
     {
