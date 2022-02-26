@@ -6,9 +6,9 @@
         public const string Help = "/help";
         public const string Cancel = "/cancel";
         public const string Search = "/search";
-        public const string UserSubs = "/mySubs";
-        public const string DeleteSub = "/deleteSub";
-        public const string SaveSearch = "/saveSearch";
+        public const string UserSubs = "/mysubs";
+        public const string DeleteSub = "/deletesub";
+        public const string SaveSearch = "/savesearch";
         public const string ScrollFeed = "/feed";
     }
 }

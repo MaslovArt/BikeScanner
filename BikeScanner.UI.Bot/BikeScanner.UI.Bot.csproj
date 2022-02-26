@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
+    <ProjectReference Include="..\BikeScanner.Domain\BikeScanner.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

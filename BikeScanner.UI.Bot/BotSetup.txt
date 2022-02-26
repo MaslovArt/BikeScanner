@@ -1,0 +1,11 @@
+﻿--Add command autocomplete in telegram app--
+1) Go to BotFather chat
+2) Print /setcommands
+3) Copy next text
+
+search - Поиск объявлений
+savesearch - Сохранить поиск в подписки
+mysubs - Посмотреть мои подписки
+deletesub - Удалить подписку
+help - Как пользоваться ботом
+cancel - Отмена действия
