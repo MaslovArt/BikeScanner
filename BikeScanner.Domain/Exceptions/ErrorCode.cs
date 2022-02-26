@@ -6,6 +6,7 @@
         ElementNotExists,
         TooMuchSubs,
         SubDuplicate,
-        SearchLimit
+        SearchLimit,
+        ValidationFail
     }
 }

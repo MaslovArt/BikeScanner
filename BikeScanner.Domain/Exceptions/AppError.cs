@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BikeScanner.Domain.Exceptions
 {
@@ -15,6 +11,9 @@ namespace BikeScanner.Domain.Exceptions
         {
             Code = code;
         }
+
+        public static AppError Validation(string message) =>
+            new AppError(ErrorCode.ValidationFail, message);
 
         public static AppError TooMuchSubs => 
             new AppError(ErrorCode.TooMuchSubs, "Достигнуто максимальное число подписок.");

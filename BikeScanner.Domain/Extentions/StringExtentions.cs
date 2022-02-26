@@ -32,5 +32,11 @@ namespace BikeScanner.Domain.Extentions
             }
             return value;
         }
+
+        public static bool IsNullOrEmptyOrWhiteSpace(this string str) =>
+            string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str);
+
+        public static bool IsMinLength(this string str, int minLength) =>
+            !str.IsNullOrEmptyOrWhiteSpace() && str.Length >= minLength;
     }
 }

@@ -18,11 +18,25 @@ namespace BikeScanner.UI.Bot.BotService.Commands
             return !string.IsNullOrWhiteSpace(command) && command.StartsWith($"{CallName}");
         }
 
+        /// <summary>
+        /// Get param value or null if not exists
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="paramInd"></param>
+        /// <returns>String value or null</returns>
         protected string GetParam(CommandContext context, int paramInd)
         {
-            return GetParams(context)[paramInd];
+            var commandParams = GetParams(context);
+            return commandParams.Length > paramInd
+                ? commandParams[paramInd]
+                : null;
         }
 
+        /// <summary>
+        /// Get params values
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected string[] GetParams(CommandContext context)
         {
             var text = GetChatInput(context);

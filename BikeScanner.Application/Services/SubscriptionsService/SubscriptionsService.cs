@@ -1,5 +1,6 @@
 ﻿using BikeScanner.Application.Types;
 using BikeScanner.Domain.Exceptions;
+using BikeScanner.Domain.Extentions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace BikeScanner.Application.Services.SubscriptionsService
 
         public async Task<int> AddSub(Subscription sub)
         {
+            if (!sub.SearchQuery.IsMinLength(2))
+                throw AppError.Validation("Недопустимый поиск. Требуется минимум 2 символа.");
+
             if (!await NewSubsAvailable(sub.UserId)) 
                 throw AppError.TooMuchSubs;
 

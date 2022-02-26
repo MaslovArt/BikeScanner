@@ -1,10 +1,11 @@
 ﻿using BikeScanner.Application.Services.SubscriptionsService;
 using BikeScanner.Application.Types;
+using BikeScanner.Domain.Extentions;
 using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Helpers;
 using System.Threading.Tasks;
 
-namespace BikeScanner.UI.Bot.Commands.Subs
+namespace BikeScanner.UI.Bot.Commands.Search
 {
     public class SaveSearchCommand : BotUICommand
     {
