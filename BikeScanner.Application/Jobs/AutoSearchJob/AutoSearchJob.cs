@@ -84,8 +84,7 @@ namespace BikeScanner.Application.Jobs
                 {
                     SearchQuery = sub.SearchQuery,
                     AdUrl = r.AdUrl,
-                    UserId = sub.UserId,
-                    NotificationType = sub.NotificationType
+                    UserId = sub.UserId
                 });
                 usersNotifications.AddRange(userNotifications);
             }

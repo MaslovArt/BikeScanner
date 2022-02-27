@@ -23,4 +23,14 @@
     <ProjectReference Include="..\BikeScanner.Domain\BikeScanner.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="appsettings.Development.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.DesignTimeDb.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ using BikeScanner.Domain.Exceptions;
 using BikeScanner.Domain.Extentions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,7 +39,7 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             {
                 UserId = sub.UserId,
                 SearchQuery = sub.SearchQuery,
-                NotificationType = sub.SubscriptionType,
+                Created = DateTime.UtcNow,
                 Status = SubscriptionStatus.Active
             };
             await _subscriptionsRepository.Add(entity);
@@ -60,7 +61,6 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             {
                 Id = entity.Id,
                 SearchQuery = entity.SearchQuery,
-                SubscriptionType = entity.NotificationType,
                 UserId = entity.UserId
             };
         }
@@ -74,7 +74,6 @@ namespace BikeScanner.Application.Services.SubscriptionsService
                 {
                     Id = r.Id,
                     SearchQuery = r.SearchQuery,
-                    SubscriptionType = r.NotificationType,
                     UserId = r.UserId
                 })
                 .ToArray();

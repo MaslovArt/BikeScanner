@@ -363,11 +363,6 @@ FodyWeavers.xsd
 
 logs/
 
-Migrations/
-/MTBRadar.Polling/appsettings.json
-/BikeScanner.UI.Telegram/appsettings.json
-/BikeScanner.UI.TestConsole/appsettings.json
-/BikeScanner.UI.Bot.TelegramPoll/appsettings.json
 
 BikeScanner.Server/appsettings.Development.json
 

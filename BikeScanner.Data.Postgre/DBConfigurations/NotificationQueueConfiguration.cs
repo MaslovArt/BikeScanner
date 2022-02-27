@@ -10,9 +10,12 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         {
             builder.HasIndex(e => e.Status);
 
-            builder.Property(e => e.SearchQuery).IsRequired();
-            builder.Property(e => e.NotificationType).IsRequired();
-            builder.Property(e => e.AdUrl).IsRequired();
+            builder
+                .Property(e => e.SearchQuery)
+                .IsRequired();
+            builder
+                .Property(e => e.AdUrl)
+                .IsRequired();
         }
     }
 }

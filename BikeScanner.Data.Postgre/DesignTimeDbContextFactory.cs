@@ -10,8 +10,8 @@ namespace BikeScanner.Data.Postgre
         public BikeScannerContext CreateDbContext(string[] args)
         {
             IConfiguration config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.DesignTimeDb.json")
                 .Build();
 
             var connectionString = config.GetConnectionString("DefaultConnection");

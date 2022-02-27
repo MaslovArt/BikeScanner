@@ -70,7 +70,7 @@ namespace BikeScanner.Application.Jobs
                     { 
                         notification.SendTime = DateTime.UtcNow;
                         notification.Status = NotificationStatus.Error;
-                        _logger.LogError(ex, $"User [{notification.UserId}] notification({notification.NotificationType}) err: {ex.Message}");
+                        _logger.LogError(ex, $"User [{notification.UserId}] notification err: {ex.Message}");
                     }
                 });
 
