@@ -11,8 +11,8 @@ namespace BikeScanner.Server.Hosting
     {
         private readonly IServiceProvider       _serviceProvider;
         private readonly ITelegramBotClient     _botClient;
-        private readonly ILogger        _logger;
-        private CancellationTokenSource _cts;
+        private readonly ILogger                _logger;
+        private CancellationTokenSource         _cts;
 
         public TelegramPollHostedService(
             IServiceProvider serviceProvider,

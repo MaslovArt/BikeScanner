@@ -16,7 +16,12 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddScoped<TelegramUIController>();
     builder.Services.AddHostedService<TelegramPollHostedService>();
 }
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddHostedService<ConfigureWebhookHostedService>();
+}
 
+builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeScanner Api", Version = "v1" });

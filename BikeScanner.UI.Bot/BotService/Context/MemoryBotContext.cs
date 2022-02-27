@@ -1,42 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BikeScanner.UI.Bot.BotService.Context
 {
     public class MemoryBotContext : IBotContext
     {
-        private List<BotContext> _collection;
+        private readonly IMemoryCache _cache;
+        private readonly MemoryCacheEntryOptions _cacheOptions;
 
-        public MemoryBotContext()
+        public MemoryBotContext(IMemoryCache cache)
         {
-            _collection = new List<BotContext>();
+            _cache = cache;
+            _cacheOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            };
         }
 
         public Task<BotContext> EnsureContext(long userId)
         {
-            var userContext = _collection.FirstOrDefault(el => el.UserId == userId);
-            if (userContext == null)
+            BotContext context = null;
+            if (!_cache.TryGetValue(userId, out context))
             {
-                userContext = new BotContext()
+                context = new BotContext()
                 {
                     UserId = userId
                 };
-                _collection.Add(userContext);
+                _cache.Set(userId, context, _cacheOptions);
             }
 
-            return Task.FromResult(userContext);
+            return Task.FromResult(context);
         }
 
         public Task<BotContext> GetUserContext(long userId)
         {
-            var userContext = _collection.FirstOrDefault(el => el.UserId == userId);
+            var context = _cache.Get<BotContext>(userId);
 
-            return Task.FromResult(userContext);
+            return Task.FromResult(context);
         }
 
         public Task Update(BotContext context)
         {
+            _cache.Remove(context.UserId);
+            _cache.Set(context.UserId, context, _cacheOptions);
+
             return Task.FromResult(0);
         }
     }
