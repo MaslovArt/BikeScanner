@@ -20,6 +20,7 @@
     <None Remove="Hangfire.AspNetCore" />
     <None Remove="Hangfire.PostgreSql" />
     <None Remove="Middlewares\" />
+    <None Remove="NLog.Web.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="17.0.0" />
@@ -29,6 +30,7 @@
     <PackageReference Include="Hangfire.Core" Version="1.7.28" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.9.6" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Hosting\" />

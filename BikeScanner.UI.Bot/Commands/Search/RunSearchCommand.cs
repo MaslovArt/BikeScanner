@@ -4,7 +4,6 @@ using BikeScanner.UI.Bot.Configs;
 using BikeScanner.UI.Bot.Helpers;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace BikeScanner.UI.Bot.Commands.Search
 {

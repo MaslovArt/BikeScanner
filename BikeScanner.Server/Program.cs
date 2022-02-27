@@ -6,8 +6,11 @@ using BikeScanner.Server.Hosting;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.OpenApi.Models;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseNLog();
+
 var configuration = builder.Configuration;
 
 // Add services to the container.
