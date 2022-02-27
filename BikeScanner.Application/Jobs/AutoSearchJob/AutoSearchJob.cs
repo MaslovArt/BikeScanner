@@ -73,7 +73,7 @@ namespace BikeScanner.Application.Jobs
 
         private async Task Schedule(long indexEpoch)
         {
-            var subscriptions = await _subsRepository.Get();
+            var subscriptions = await _subsRepository.GetActiveSubs();
             _logger.LogInformation($"Subs count {subscriptions.Length}");
 
             var usersNotifications = new List<NotificationQueueEntity>();

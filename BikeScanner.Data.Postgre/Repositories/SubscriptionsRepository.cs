@@ -12,6 +12,13 @@ namespace BikeScanner.Data.Postgre.Repositories
             : base(context)
         { }
 
+        public Task<SubscriptionEntity[]> GetActiveSubs()
+        {
+            return Set
+                .Where(e => e.Status == SubscriptionStatus.Active)
+                .ToArrayAsync();
+        }
+
         public Task<SubscriptionEntity[]> GetUserSubs(long userId, SubscriptionStatus status)
         {
             return Set

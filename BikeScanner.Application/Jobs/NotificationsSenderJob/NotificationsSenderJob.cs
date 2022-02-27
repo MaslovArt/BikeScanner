@@ -12,9 +12,9 @@ namespace BikeScanner.Application.Jobs
 {
     public class NotificationsSenderJob : INotificationsSenderJob
     {
-        private readonly ILogger<NotificationsSenderJob>    _logger;
-        private readonly INotificationsQueueRepository      _notificationsQueueRepository;
-        private readonly INotificator                       _notificator;
+        private readonly ILogger<NotificationsSenderJob> _logger;
+        private readonly INotificationsQueueRepository _notificationsQueueRepository;
+        private readonly INotificator _notificator;
 
         public NotificationsSenderJob(
             ILogger<NotificationsSenderJob> logger,
@@ -56,25 +56,23 @@ namespace BikeScanner.Application.Jobs
             _logger.LogInformation($"Notifications count {notifications.Count()}");
 
             var notificationTasks = notifications
-                .Select(notification => 
-                    //ToDO Task.Run???
-                    Task.Run(() => _notificator.Send(notification.UserId, $"Новый результат поиска '{notification.SearchQuery}'\n{notification.AdUrl}"))
-                    .ContinueWith(notificationTask =>
-                    {
-                        if (notificationTask.IsCompletedSuccessfully)
-                        {
-                            notification.SendTime = DateTime.UtcNow;
-                            notification.Status = NotificationStatus.Sended;
-                        }
-                        else if (notificationTask.IsFaulted)
-                        {
-                            notification.SendTime = DateTime.UtcNow;
-                            notification.Status = NotificationStatus.Error;
+                .Select(async notification =>
+                {
+                    try
+                    { 
+                        var msg = $"Новый результат поиска '{notification.SearchQuery}'\n{notification.AdUrl}";
+                        await _notificator.Send(notification.UserId, msg);
 
-                            var ex = notificationTask.Exception;
-                            _logger.LogError(ex, $"User [{notification.UserId}] notification({notification.NotificationType}) err: {ex.Message}");
-                        }
-                    }));
+                        notification.SendTime = DateTime.UtcNow;
+                        notification.Status = NotificationStatus.Sended;
+                    }
+                    catch (Exception ex)
+                    { 
+                        notification.SendTime = DateTime.UtcNow;
+                        notification.Status = NotificationStatus.Error;
+                        _logger.LogError(ex, $"User [{notification.UserId}] notification({notification.NotificationType}) err: {ex.Message}");
+                    }
+                });
 
             await Task.WhenAll(notificationTasks);
         }
