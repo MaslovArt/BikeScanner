@@ -15,6 +15,7 @@ namespace BikeScanner.Data.Postgre
         public DbSet<SearchHistoryEntity> SearchHistories { get; set; }
         public DbSet<SubscriptionEntity> Subscriptions { get; set; }
         public DbSet<VarEntity> Vars { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,7 @@ namespace BikeScanner.Data.Postgre
             modelBuilder.ApplyConfiguration(new SearchHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationQueueConfiguration());
             modelBuilder.ApplyConfiguration(new VarsConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
     }
 }

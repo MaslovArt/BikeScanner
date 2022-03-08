@@ -1,6 +1,4 @@
 ﻿using BikeScanner.Application.Services.SubscriptionsService;
-using BikeScanner.Application.Types;
-using BikeScanner.Domain.Extentions;
 using BikeScanner.UI.Bot.BotService.Commands;
 using BikeScanner.UI.Bot.Helpers;
 using System.Threading.Tasks;
@@ -21,16 +19,10 @@ namespace BikeScanner.UI.Bot.Commands.Search
 
         public async override Task<ContinueWith> Execute(CommandContext context)
         {
-            var chatId = GetChatId(context);
+            var userId = GetUserId(context);
             var searchQueryParam = GetParam(context, 0);
 
-            var newSub = new Subscription()
-            {
-                UserId = chatId,
-                SearchQuery = searchQueryParam,
-                SubscriptionType = "Telegram"
-            };
-            await _subs.AddSub(newSub);
+            await _subs.AddSub(userId, searchQueryParam);
 
             var message = $"Поиск '{searchQueryParam}' сохранен в подписках.";
             var getSubsBtn = TelegramMarkupHelper.MessageRowBtns(("Мои подписки", UICommands.UserSubs));

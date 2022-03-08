@@ -27,11 +27,11 @@ namespace BikeScanner.UI.Bot.Commands.Search
         public async override Task<ContinueWith> OnMore(CommandContext context)
         {
             var state = context.GetState<SearchState>();
-            var chatId = GetChatId(context);
+            var userId = GetUserId(context);
 
-            var results = await _searchService.Search(chatId, state.SearchQuery, state.Skip, _perPage);
+            var results = await _searchService.Search(userId, state.SearchQuery, state.Skip, _perPage);
 
-            foreach (var result in results.Items)
+            foreach (var result in results.Entities)
             {
                 await SendMessage(result.AdUrl, context);
             }

@@ -22,20 +22,20 @@ namespace BikeScanner.UI.Bot.BotService.Commands
             return input.Trim();
         }
 
-        protected long GetChatId(CommandContext context)
+        protected long GetUserId(CommandContext context)
         {
             return (context.Update.Message?.Chat.Id ?? context.Update.CallbackQuery.Message?.Chat.Id).Value;
         }
 
         protected Task SendMessage(string text, CommandContext context)
         {
-            var chatId = GetChatId(context);
+            var chatId = GetUserId(context);
             return context.Client.SendTextMessageAsync(chatId, text);
         }
 
         protected Task SendMessageWithButtons(string text, CommandContext context, IReplyMarkup markup)
         {
-            var chatId = GetChatId(context);
+            var chatId = GetUserId(context);
             return context.Client.SendTextMessageAsync(chatId, text, replyMarkup: markup);
         }
     }

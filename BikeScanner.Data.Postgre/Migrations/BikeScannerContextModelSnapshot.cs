@@ -148,6 +148,32 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.ToTable("Subscriptions");
                 });
 
+            modelBuilder.Entity("BikeScanner.Domain.Models.UserEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SocialDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("UserId");
+
+                    b.HasIndex("AccountStatus");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("BikeScanner.Domain.Models.VarEntity", b =>
                 {
                     b.Property<string>("Key")

@@ -1,4 +1,5 @@
 ﻿using BikeScanner.Application.Interfaces;
+using BikeScanner.Application.Services.UsersService;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -12,9 +13,9 @@ namespace BikeScanner.Application.Jobs
 {
     public class NotificationsSenderJob : INotificationsSenderJob
     {
-        private readonly ILogger<NotificationsSenderJob> _logger;
-        private readonly INotificationsQueueRepository _notificationsQueueRepository;
-        private readonly INotificator _notificator;
+        private readonly ILogger<NotificationsSenderJob>    _logger;
+        private readonly INotificationsQueueRepository      _notificationsQueueRepository;
+        private readonly INotificator                       _notificator;
 
         public NotificationsSenderJob(
             ILogger<NotificationsSenderJob> logger,

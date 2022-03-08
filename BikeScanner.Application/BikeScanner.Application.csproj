@@ -15,8 +15,10 @@
 
   <ItemGroup>
     <None Remove="Configs\" />
+    <None Remove="Services\UsersService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configs\" />
+    <Folder Include="Services\UsersService\" />
   </ItemGroup>
 </Project>

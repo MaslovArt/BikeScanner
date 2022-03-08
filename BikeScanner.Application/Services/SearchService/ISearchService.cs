@@ -1,4 +1,4 @@
-﻿using BikeScanner.Application.Types;
+﻿using BikeScanner.Domain.Models;
 using System.Threading.Tasks;
 
 namespace BikeScanner.Application.Services.SearchService
@@ -14,7 +14,7 @@ namespace BikeScanner.Application.Services.SearchService
         /// <param name="userId">Search initiator user id</param>
         /// <param name="query">Search query</param>
         /// <returns></returns>
-        Task<Paged<SearchResult>> Search(long userId, string query, int skip, int take);
+        Task<PagedEntities<ContentEntity>> Search(long userId, string query, int skip, int take);
 
         /// <summary>
         /// Check if user can search
@@ -29,6 +29,6 @@ namespace BikeScanner.Application.Services.SearchService
         /// <param name="userId">Search initiator user id</param>
         /// <param name="query">Search query</param>
         /// <returns></returns>
-        Task<SearchResult[]> SearchEpoch(long userId, string query, long indexingStamp);
+        Task<ContentEntity[]> SearchEpoch(long userId, string query, long indexingStamp);
     }
 }

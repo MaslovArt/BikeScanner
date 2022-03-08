@@ -26,21 +26,21 @@ namespace BikeScanner.UI.Bot.Commands.Search
 
         public override async Task<ContinueWith> Execute(CommandContext context)
         {
-            var chatId = GetChatId(context);
+            var userId = GetUserId(context);
             var input = GetChatInput(context);
 
-            var results = await _searchService.Search(chatId, input, 0, _perPage);
+            var results = await _searchService.Search(userId, input, 0, _perPage);
 
             var resultMessage = $"По запросу '{input}' нашел {results.Total} объявлений.";
             var saveSearchBtn = TelegramMarkupHelper.MessageRowBtns(("Сохранить поиск", $"{UICommands.SaveSearch} {input}"));
             await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
 
-            foreach (var result in results.Items)
+            foreach (var result in results.Entities)
                 await SendMessage(result.AdUrl, context);
 
-            if (results.Total > results.Items.Length)
+            if (results.Total > results.Entities.Length)
             {
-                var askMoreMessage = $"Показать еще ({results.Total - results.Items.Length})?";
+                var askMoreMessage = $"Показать еще ({results.Total - results.Entities.Length})?";
                 await SendMessageWithButtons(askMoreMessage, context, TelegramButtonsHelper.BooleanButtons);
 
                 var state = new SearchState()

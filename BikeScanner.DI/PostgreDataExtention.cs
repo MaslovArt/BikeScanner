@@ -21,6 +21,7 @@ namespace BikeScanner.DI
             services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
             services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
             services.AddScoped<IVarsRepository, VarsRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
         }
     }
 }

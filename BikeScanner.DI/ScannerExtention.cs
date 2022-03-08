@@ -2,6 +2,7 @@
 using BikeScanner.Application.Jobs;
 using BikeScanner.Application.Services.SearchService;
 using BikeScanner.Application.Services.SubscriptionsService;
+using BikeScanner.Application.Services.UsersService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,7 @@ namespace BikeScanner.DI
 
             services.AddScoped<ISubscriptionsService, SubscriptionsService>();
             services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<IUsersService, UsersService>();
 
             services.AddScoped<IContentIndexatorJob, ContentIndexatorJob>();
             services.AddScoped<IAutoSearchJob, AutoSearchJob>();

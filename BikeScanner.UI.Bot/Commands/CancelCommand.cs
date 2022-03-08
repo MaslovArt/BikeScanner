@@ -25,7 +25,7 @@ namespace BikeScanner.UI.Bot.Commands
 
         public override async Task<ContinueWith> Execute(CommandContext context)
         {
-            var chatId = GetChatId(context);
+            var chatId = GetUserId(context);
             var userContext = await _botContext.GetUserContext(chatId);
             var cancelingCommand = userContext?.NextCommand;
 

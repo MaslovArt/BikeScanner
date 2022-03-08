@@ -15,7 +15,29 @@ namespace BikeScanner.Data.Postgre.Repositories
         public Task<SubscriptionEntity[]> GetActiveSubs()
         {
             return Set
-                .Where(e => e.Status == SubscriptionStatus.Active)
+                .Join(
+                    Context.Users,
+                    n => n.UserId,
+                    u => u.UserId,
+                    (n, u) => new
+                    {
+                        Id = n.Id,
+                        UserId = n.UserId,
+                        Created = n.Created,
+                        SearchQuery = n.SearchQuery,
+                        Status = n.Status,
+                        UserAccountStatus = u.AccountStatus
+                    })
+                .Where(e => e.Status == SubscriptionStatus.Active &&
+                            e.UserAccountStatus == AccountStatus.Active)
+                .Select(e => new SubscriptionEntity()
+                {
+                    Id = e.Id,
+                    UserId = e.UserId,
+                    Created = e.Created,
+                    SearchQuery = e.SearchQuery,
+                    Status = e.Status,
+                })
                 .ToArrayAsync();
         }
 

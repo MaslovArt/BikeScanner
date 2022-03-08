@@ -20,7 +20,7 @@ namespace BikeScanner.UI.Bot.Commands.Subs
 
         public async override Task<ContinueWith> Execute(CommandContext context)
         {
-            var chatId = GetChatId(context);
+            var chatId = GetUserId(context);
             var input = GetChatInput(context);
 
             var userSubs = await _subs.GetActiveSubs(chatId);

@@ -1,5 +1,4 @@
-﻿using BikeScanner.Application.Types;
-using BikeScanner.Domain.Repositories;
+﻿using BikeScanner.Domain.Repositories;
 using System.Threading.Tasks;
 using System.Linq;
 using BikeScanner.Domain.Models;
@@ -29,38 +28,25 @@ namespace BikeScanner.Application.Services.SearchService
             return Task.FromResult(true);
         }
 
-        public async Task<Paged<SearchResult>> Search(long userId, string query, int skip, int take)
+        public async Task<PagedEntities<ContentEntity>> Search(long userId, string query, int skip, int take)
         {
             if (!await CanSearch(userId))
                 throw AppError.SearchLimit;
 
             await WriteHistory(userId, query);
 
-            var result = await _contentsRepository.Search(query, skip, take);
-            var pageItems = result.Entities
-                .Select(r => new SearchResult(query, r.AdUrl))
-                .ToArray();
-
-            return new Paged<SearchResult>()
-            {
-                Items = pageItems,
-                Total = result.Total,
-                Offset = result.Offset
-            };
+            return await _contentsRepository.Search(query, skip, take);
         }
 
-        public async Task<SearchResult[]> SearchEpoch(long userId, string query, long indexEpoch)
+        public async Task<ContentEntity[]> SearchEpoch(long userId, string query, long indexEpoch)
         {
             if (_newContents == null)
             {
                 _newContents = await _contentsRepository.GetContents(indexEpoch);
             }
 
-            var result = _newContents
-                .Where(c => c.Text.ToUpper().Contains(query.ToUpper()));
-
-            return result
-                .Select(r => new SearchResult(query, r.AdUrl))
+            return _newContents
+                .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
                 .ToArray();
         }
 

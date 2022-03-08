@@ -1,4 +1,4 @@
-﻿using BikeScanner.Application.Types;
+﻿using BikeScanner.Domain.Models;
 using System.Threading.Tasks;
 
 namespace BikeScanner.Application.Services.SubscriptionsService
@@ -20,20 +20,20 @@ namespace BikeScanner.Application.Services.SubscriptionsService
         /// </summary>
         /// <param name="sub"></param>
         /// <returns></returns>
-        Task<int> AddSub(Subscription sub);
+        Task<SubscriptionEntity> AddSub(long userId, string searchQuery);
 
         /// <summary>
         /// Get user active subs
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Subscription[]> GetActiveSubs(long userId);
+        Task<SubscriptionEntity[]> GetActiveSubs(long userId);
 
         /// <summary>
         /// Remove user sub
         /// </summary>
         /// <param name="subId"></param>
         /// <returns></returns>
-        Task<Subscription> RemoveSub(int subId);
+        Task<SubscriptionEntity> RemoveSub(int subId);
     }
 }
