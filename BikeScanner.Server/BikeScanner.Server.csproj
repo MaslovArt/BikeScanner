@@ -13,8 +13,6 @@
     <None Remove="Telegram.Bot" />
     <None Remove="Telegram.Bot.Extensions.Polling" />
     <None Remove="Microsoft.Extensions.Hosting" />
-    <None Remove="Hosting\" />
-    <None Remove="Controllers\" />
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Hangfire.Core" />
     <None Remove="Hangfire.AspNetCore" />
@@ -33,11 +31,12 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Hosting\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TelegramBot.UI\TelegramBot.UI.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
     <ProjectReference Include="..\BikeScanner.DI\BikeScanner.DI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>

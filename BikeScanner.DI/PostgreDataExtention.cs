@@ -16,12 +16,12 @@ namespace BikeScanner.DI
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddScoped<IContentsRepository, ContentsRepository>();
-            services.AddScoped<INotificationsQueueRepository, NotificationsQueueRepository>();
-            services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
-            services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
-            services.AddScoped<IVarsRepository, VarsRepository>();
-            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddTransient<IContentsRepository, ContentsRepository>();
+            services.AddTransient<INotificationsQueueRepository, NotificationsQueueRepository>();
+            services.AddTransient<ISearchHistoryRepository, SearchHistoryRepository>();
+            services.AddTransient<ISubscriptionsRepository, SubscriptionsRepository>();
+            services.AddTransient<IVarsRepository, VarsRepository>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
         }
     }
 }

@@ -14,14 +14,14 @@ namespace BikeScanner.DI
         {
             services.Configure<JobsConfig>(configuration.GetSection(nameof(JobsConfig)));
 
-            services.AddScoped<ISubscriptionsService, SubscriptionsService>();
-            services.AddScoped<ISearchService, SearchService>();
-            services.AddScoped<IUsersService, UsersService>();
+            services.AddTransient<ISubscriptionsService, SubscriptionsService>();
+            services.AddTransient<ISearchService, SearchService>();
+            services.AddTransient<IUsersService, UsersService>();
 
-            services.AddScoped<IContentIndexatorJob, ContentIndexatorJob>();
-            services.AddScoped<IAutoSearchJob, AutoSearchJob>();
-            services.AddScoped<INotificationsSenderJob, NotificationsSenderJob>();
-            services.AddScoped<ScanJobsChain>();
+            services.AddTransient<IContentIndexatorJob, ContentIndexatorJob>();
+            services.AddTransient<IAutoSearchJob, AutoSearchJob>();
+            services.AddTransient<INotificationsSenderJob, NotificationsSenderJob>();
+            services.AddTransient<ScanJobsChain>();
         }
     }
 }

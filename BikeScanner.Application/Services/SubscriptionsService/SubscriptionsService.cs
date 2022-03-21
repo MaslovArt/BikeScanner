@@ -62,5 +62,14 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             return _subscriptionsRepository
                 .GetUserSubs(userId, SubscriptionStatus.Active);
         }
+
+        public async Task<SubscriptionEntity> GetSub(int subId)
+        {
+            var entity = await _subscriptionsRepository.GetById(subId);
+            if (entity == null)
+                throw AppError.NotExists("Подписка");
+
+            return entity;
+        }
     }
 }

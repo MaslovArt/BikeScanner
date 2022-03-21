@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Telegram.Bot" />
+    <None Remove="Telegram.Bot.Extensions.Polling" />
+    <None Remove="Microsoft.Extensions.Caching.Abstractions" />
+    <None Remove="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <None Remove="Microsoft.Extensions.Hosting.Abstractions" />
+    <None Remove="Bot\Commands\Main\" />
+    <None Remove="Bot\Commands\Subs\" />
+    <None Remove="Bot\Commands\Feed\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Telegram.Bot" Version="17.0.0" />
+    <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
+    <ProjectReference Include="..\BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bot\Commands\Main\" />
+    <Folder Include="Bot\Commands\Subs\" />
+    <Folder Include="Bot\Commands\Feed\" />
+  </ItemGroup>
+</Project>

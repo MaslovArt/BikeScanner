@@ -9,10 +9,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj" />
     <ProjectReference Include="..\BikeScanner.Infrastructure.VK\BikeScanner.Infrastructure.VK.csproj" />
     <ProjectReference Include="..\BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj" />
     <ProjectReference Include="..\BikeScanner.UI.Bot\BikeScanner.UI.Bot.csproj" />
+    <ProjectReference Include="..\BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj" />
+    <ProjectReference Include="..\BikeScanner.Domain\BikeScanner.Domain.csproj" />
+    <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
   </ItemGroup>
 
 </Project>
