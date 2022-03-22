@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using BikeScanner.Application.Services.SubscriptionsService;
-using TelegramBot.UI.Bot.Filters;
 using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using TelegramBot.UI.Bot.Filters;
+﻿using System.Threading.Tasks;
 
 namespace TelegramBot.UI.Bot.Commands.Search
 {
     public class SearchCommand : CommandBase
     {
-        public override CommandFilter Filter =>
-            FilterDefinitions.Command(CommandNames.UI.Search);
+        public override CommandFilter Filter => CombineFilters.Any(
+            FilterDefinitions.UICommand(CommandNames.UI.Search),
+            FilterDefinitions.AlternativeUICommand(CommandNames.AlternativeUI.Search));
 
         public async override Task Execute(CommandContext context)
         {

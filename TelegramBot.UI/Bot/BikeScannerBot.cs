@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBot.UI.Bot.Commands;
-using TelegramBot.UI.Bot.Filters;
 using TelegramBot.UI.Bot.Context;
 using TelegramBot.UI.Exceptions;
 

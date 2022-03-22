@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using BikeScanner.Application.Services.UsersService;
-using TelegramBot.UI.Bot.Filters;
 
 namespace TelegramBot.UI.Bot.Commands.Main
 {

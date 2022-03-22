@@ -1,22 +1,22 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using BikeScanner.Application.Services.SubscriptionsService;
-using TelegramBot.UI.Bot.Filters;
 using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
-    public class WhatSubDeleteCommand : CommandBase
+    public class DeleteSubCommand : CommandBase
     {
         private readonly ISubscriptionsService _subs;
 
-        public WhatSubDeleteCommand(ISubscriptionsService subscriptionsService)
+        public DeleteSubCommand(ISubscriptionsService subscriptionsService)
         {
             _subs = subscriptionsService;
         }
 
-        public override CommandFilter Filter =>
-            FilterDefinitions.Command(CommandNames.UI.DeleteSub);
+        public override CommandFilter Filter => CombineFilters.Any(
+            FilterDefinitions.UICommand(CommandNames.UI.DeleteSub),
+            FilterDefinitions.CallbackCommand(CommandNames.UI.DeleteSub));
 
         public override async Task Execute(CommandContext context)
         {

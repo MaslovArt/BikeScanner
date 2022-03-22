@@ -1,10 +1,11 @@
-﻿using System;
-namespace TelegramBot.UI.Bot
+﻿namespace TelegramBot.UI.Bot
 {
 	public enum BotState
 	{
 		Default,
-		WaitSearchInput
+		WaitSearchInput,
+		WaitNewSubInput,
+		WaitBugReportInput
 	}
 }
 

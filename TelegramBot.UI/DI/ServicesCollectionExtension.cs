@@ -34,24 +34,26 @@ namespace TelegramBot.UI.DI
 			services.AddScoped<IBotContextService, InMemoryBotContext>();
 			services.AddSingleton<BikeScannerBot>();
 
-            #region Main commands
-            services.AddTransient<ICommandBase, StartCommand>();
-			services.AddTransient<ICommandBase, HelpCommand>();
+			#region Special commands
 			services.AddTransient<ICommandBase, UserBlockBotCommand>();
-            #endregion
-            #region Search commands
-            services.AddTransient<ICommandBase, SearchCommand>();
+			#endregion
+			#region UI Commands
+			services.AddTransient<ICommandBase, StartCommand>();
+			services.AddTransient<ICommandBase, HelpCommand>();
+			services.AddTransient<ICommandBase, SearchCommand>();
+			services.AddTransient<ICommandBase, GetSubsCommand>();
+			services.AddTransient<ICommandBase, DeleteSubCommand>();
+			services.AddTransient<ICommandBase, AddSubCommand>();
+			#endregion
+            #region Internal commands
 			services.AddTransient<ICommandBase, SearchResultsCommand>();
 			services.AddTransient<ICommandBase, MoreSearchResultsCommand>();
-			services.AddTransient<ICommandBase, SaveSearchCommand>();
-			#endregion
-			#region Subs commands
-			services.AddTransient<ICommandBase, GetSubsCommand>();
-			services.AddTransient<ICommandBase, WhatSubDeleteCommand>();
 			services.AddTransient<ICommandBase, ConfirmSubDeleteCommand>();
 			services.AddTransient<ICommandBase, ApplySubDeleteCommand>();
-			#endregion
-			services.AddTransient<ICommandBase, UnknownCommand>(); //always last
+			services.AddTransient<ICommandBase, ApplySubAddCommand>();
+            #endregion
+
+            services.AddTransient<ICommandBase, UnknownCommand>(); //always last
 
 			return services;
         }

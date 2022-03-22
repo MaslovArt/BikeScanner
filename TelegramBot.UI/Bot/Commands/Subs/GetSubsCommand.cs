@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using BikeScanner.Application.Services.SubscriptionsService;
-using TelegramBot.UI.Bot.Filters;
+using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
@@ -14,8 +14,9 @@ namespace TelegramBot.UI.Bot.Commands.Subs
             _subsService = subsService;
         }
 
-        public override CommandFilter Filter =>
-            FilterDefinitions.Command(CommandNames.UI.UserSubs);
+        public override CommandFilter Filter => CombineFilters.Any(
+            FilterDefinitions.UICommand(CommandNames.UI.MySubs),
+            FilterDefinitions.AlternativeUICommand(CommandNames.AlternativeUI.MySubs));
 
         public override async Task Execute(CommandContext context)
         {
@@ -24,14 +25,19 @@ namespace TelegramBot.UI.Bot.Commands.Subs
 
             if (userSubs.Length == 0)
             {
-                await SendMessage("Нет подписок", context);
+                var addSubBtn = TelegramMarkupHelper.MessageRowBtns(
+                    ("Добавить подписку", CommandNames.UI.AddSub));
+                await SendMessageWithButtons("Нет подписок", context, addSubBtn);
                 return;
             }
 
             var message = new StringBuilder($"Всего подписок: {userSubs.Length}");
             for (int i = 0; i < userSubs.Length; i++)
                 message.AppendLine($"\n{i + 1}) {userSubs[i].SearchQuery}");
-            await SendMessage(message.ToString(), context);
+            var btns = TelegramMarkupHelper.MessageRowBtns(
+                ("Добавить подписку", CommandNames.UI.AddSub),
+                ("Удалить подписку", CommandNames.UI.DeleteSub));
+            await SendMessageWithButtons(message.ToString(), context, btns);
         }
     }
 }

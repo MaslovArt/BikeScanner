@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using TelegramBot.UI.Bot.Filters;
 
 namespace TelegramBot.UI.Bot.Commands
 {

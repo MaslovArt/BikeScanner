@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using BikeScanner.Application.Services.SearchService;
 using Microsoft.Extensions.Options;
-using TelegramBot.UI.Bot.Filters;
 using TelegramBot.UI.Bot.Helpers;
 using TelegramBot.UI.Config;
 

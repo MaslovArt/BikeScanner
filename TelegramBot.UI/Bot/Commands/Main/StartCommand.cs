@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BikeScanner.Application.Services.UsersService;
 using BikeScanner.Domain.Models;
-using TelegramBot.UI.Bot.Filters;
+using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Main
 {
@@ -15,7 +15,7 @@ namespace TelegramBot.UI.Bot.Commands.Main
         }
 
         public override CommandFilter Filter =>
-            FilterDefinitions.Command(CommandNames.UI.Start);
+            FilterDefinitions.UICommand(CommandNames.UI.Start);
 
         public async override Task Execute(CommandContext context)
         {
@@ -28,7 +28,14 @@ namespace TelegramBot.UI.Bot.Commands.Main
             }
 
             var message = $"Привет! {helloAgainMsg} Я бот для поиска по объявлениям.";
-            await SendMessage(message, context);
+            var btns = new string[]
+            {
+                CommandNames.AlternativeUI.Search,
+                CommandNames.AlternativeUI.MySubs,
+                CommandNames.AlternativeUI.Help
+            };
+            var keyboard = TelegramMarkupHelper.KeyboardRowBtns(btns);
+            await SendMessageWithButtons(message, context, keyboard);
         }
     }
 }

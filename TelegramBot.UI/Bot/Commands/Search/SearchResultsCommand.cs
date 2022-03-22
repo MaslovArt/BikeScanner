@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BikeScanner.Application.Services.SearchService;
 using Microsoft.Extensions.Options;
-using TelegramBot.UI.Bot.Filters;
 using TelegramBot.UI.Bot.Helpers;
 using TelegramBot.UI.Config;
 
@@ -25,7 +23,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
 
 
         public override CommandFilter Filter =>
-            FilterDefinitions.Message(BotState.WaitSearchInput);
+            FilterDefinitions.StateMessage(BotState.WaitSearchInput);
 
         public override async Task Execute(CommandContext context)
         {
@@ -36,7 +34,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
 
             var resultMessage = $"По запросу '{input}' нашел {result.Total} объявлений.";
             var saveSearchBtn = TelegramMarkupHelper.MessageRowBtns(
-                ("Сохранить поиск", $"{CommandNames.Internal.SaveSearch} {input}"));
+                ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {input}"));
             await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
 
             var urls = result.Entities.Select(r => r.AdUrl);

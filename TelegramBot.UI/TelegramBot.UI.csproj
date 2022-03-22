@@ -12,7 +12,9 @@
     <None Remove="Microsoft.Extensions.Hosting.Abstractions" />
     <None Remove="Bot\Commands\Main\" />
     <None Remove="Bot\Commands\Subs\" />
-    <None Remove="Bot\Commands\Feed\" />
+    <None Remove="Bot\Commands\Subs\Add\" />
+    <None Remove="Bot\Commands\Subs\Delete\" />
+    <None Remove="Bot\Commands\BugReport\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Telegram.Bot" Version="17.0.0" />
@@ -28,6 +30,8 @@
   <ItemGroup>
     <Folder Include="Bot\Commands\Main\" />
     <Folder Include="Bot\Commands\Subs\" />
-    <Folder Include="Bot\Commands\Feed\" />
+    <Folder Include="Bot\Commands\Subs\Add\" />
+    <Folder Include="Bot\Commands\Subs\Delete\" />
+    <Folder Include="Bot\Commands\DevMessage\" />
   </ItemGroup>
 </Project>
