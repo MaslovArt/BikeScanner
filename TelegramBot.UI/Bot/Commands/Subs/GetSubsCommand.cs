@@ -5,6 +5,9 @@ using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
+    /// <summary>
+    /// Show user subscriptions
+    /// </summary>
     public class GetSubsCommand : CommandBase
     {
         private readonly ISubscriptionsService _subsService;

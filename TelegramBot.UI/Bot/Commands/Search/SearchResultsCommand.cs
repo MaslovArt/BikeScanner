@@ -7,6 +7,9 @@ using TelegramBot.UI.Config;
 
 namespace TelegramBot.UI.Bot.Commands.Search
 {
+    /// <summary>
+    /// Search. Show search results.
+    /// </summary>
     public class SearchResultsCommand : CommandBase
     {
         private readonly int _perPage;
@@ -37,14 +40,14 @@ namespace TelegramBot.UI.Bot.Commands.Search
                 ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {input}"));
             await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
 
-            var urls = result.Entities.Select(r => r.AdUrl);
-            await SendMessages(urls, context);
+            var adUrls = result.Entities.Select(r => r.AdUrl);
+            await SendMessages(adUrls, context);
 
             if (result.Total > result.Entities.Length)
             {
                 var moreMessage = $"Показать еще? ({result.Total - result.Entities.Length})";
                 var moreButton = TelegramMarkupHelper.MessageRowBtns(
-                    ("Еще", $"{CommandNames.Internal.MoreSearchResults} {input};{_perPage}"));
+                    ("Еще", $"{CommandNames.Internal.MoreSearchResults} {input}{ParamSeparator}{_perPage}"));
                 await SendMessageWithButtons(moreMessage, context, moreButton);
             }
 

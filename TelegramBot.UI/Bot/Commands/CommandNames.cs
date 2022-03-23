@@ -10,12 +10,13 @@
         /// </summary>
         public static class UI
         {
-            public const string Start = "start";
-            public const string Help = "help";
-            public const string Search = "search";
-            public const string MySubs = "my_subs";
-            public const string DeleteSub = "delete_sub";
-            public const string AddSub = "add_sub";
+            public const string Start = "/start";
+            public const string Help = "/help";
+            public const string Search = "/search";
+            public const string MySubs = "/my_subs";
+            public const string DeleteSub = "/delete_sub";
+            public const string AddSub = "/add_sub";
+            public const string DevMessage = "/dev_message";
         }
 
         /// <summary>

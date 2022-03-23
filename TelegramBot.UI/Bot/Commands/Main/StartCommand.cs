@@ -5,6 +5,9 @@ using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Main
 {
+    /// <summary>
+    /// Start bot
+    /// </summary>
     public class StartCommand : CommandBase
 	{
         private readonly IUsersService _usersService;
@@ -27,7 +30,21 @@ namespace TelegramBot.UI.Bot.Commands.Main
                 await _usersService.ActivateUser(user.Id);
             }
 
-            var message = $"Привет! {helloAgainMsg} Я бот для поиска по объявлениям.";
+            var message = @$"Привет! {helloAgainMsg} Я бот для поиска по объявлениям.
+Для поиска нужно запустить комманду ({CommandNames.UI.Search}), дальше думаю разберетесь)
+Если желаемого найти не удалось, можно добавить подписку на поиск ({CommandNames.UI.AddSub}).
+Как только появится похожее объявление, я сообщу.
+Подписка больше неактуальна - удаляй ее ({CommandNames.UI.DeleteSub}).
+
+Хочешь сообщить об ошибке в работе бота, предложить улучшения или сказать что это полная хрень и послать автора - {CommandNames.UI.DevMessage}.
+
+Список доступных команд:
+{CommandNames.UI.Search} - Поиск
+{CommandNames.UI.MySubs} - Мои подписки
+{CommandNames.UI.AddSub} - Добавить подписку
+{CommandNames.UI.DeleteSub} - Удалить подписку
+{CommandNames.UI.DevMessage} - Сообщение админу
+{CommandNames.UI.Start} - Перезапуск бота";
             var btns = new string[]
             {
                 CommandNames.AlternativeUI.Search,

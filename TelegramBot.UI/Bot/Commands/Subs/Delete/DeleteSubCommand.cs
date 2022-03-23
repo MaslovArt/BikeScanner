@@ -5,6 +5,9 @@ using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
+    /// <summary>
+    /// Delete sub. Ask what to delete.
+    /// </summary>
     public class DeleteSubCommand : CommandBase
     {
         private readonly ISubscriptionsService _subs;

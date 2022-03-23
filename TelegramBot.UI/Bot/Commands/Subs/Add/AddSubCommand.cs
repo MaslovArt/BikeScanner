@@ -2,6 +2,9 @@
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
+    /// <summary>
+    /// Add new subscription. Ask what to add.
+    /// </summary>
     public class AddSubCommand : CommandBase
     {
         public override CommandFilter Filter => CombineFilters.Any(

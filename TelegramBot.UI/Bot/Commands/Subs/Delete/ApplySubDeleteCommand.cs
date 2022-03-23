@@ -3,6 +3,9 @@ using BikeScanner.Application.Services.SubscriptionsService;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
+    /// <summary>
+    /// Delete sub. Delete selected sub.
+    /// </summary>
 	public class ApplySubDeleteCommand : CommandBase
 	{
         private readonly ISubscriptionsService _subs;

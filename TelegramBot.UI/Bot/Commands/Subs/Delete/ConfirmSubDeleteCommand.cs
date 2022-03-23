@@ -4,6 +4,9 @@ using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
+    /// <summary>
+    /// Delete sub. Confirm user input.
+    /// </summary>
     public class ConfirmSubDeleteCommand : CommandBase
     {
         private readonly ISubscriptionsService _subs;

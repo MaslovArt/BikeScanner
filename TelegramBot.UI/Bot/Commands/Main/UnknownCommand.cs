@@ -2,6 +2,9 @@
 
 namespace TelegramBot.UI.Bot.Commands.Main
 {
+    /// <summary>
+    /// Handle unknown user input
+    /// </summary>
     public class UnknownCommand : CommandBase
     {
         public override CommandFilter Filter => (_, _) => true;
@@ -10,7 +13,7 @@ namespace TelegramBot.UI.Bot.Commands.Main
         {
             var wtfMessage = @$"Хм..
 Я не знаю что с этим делать(
-Тут мои возможности (/{CommandNames.UI.Help})";
+Тут можно посмотреть что я могу ({CommandNames.UI.Help})";
             return SendMessage(wtfMessage, context);
         }
     }

@@ -12,6 +12,7 @@ using TelegramBot.UI.Bot;
 using TelegramBot.UI.Bot.Commands.Main;
 using TelegramBot.UI.Bot.Commands.Search;
 using TelegramBot.UI.Bot.Commands.Subs;
+using TelegramBot.UI.Bot.Commands.DevMessage;
 
 namespace TelegramBot.UI.DI
 {
@@ -22,8 +23,10 @@ namespace TelegramBot.UI.DI
 			IConfiguration configuration
 			)
         {
-			services.Configure<TelegramApiAccessConfig>(configuration.GetSection(nameof(TelegramApiAccessConfig)));
-			services.Configure<TelegramUIConfig>(configuration.GetSection(nameof(TelegramUIConfig)));
+			services.Configure<TelegramApiAccessConfig>(
+				configuration.GetSection(nameof(TelegramApiAccessConfig)));
+			services.Configure<TelegramUIConfig>(
+				configuration.GetSection(nameof(TelegramUIConfig)));
 
 			services.AddSingleton<ITelegramBotClient, TelegramBotClient>(x => {
 				var bot = x.GetRequiredService<IOptions<TelegramApiAccessConfig>>().Value;
@@ -44,6 +47,7 @@ namespace TelegramBot.UI.DI
 			services.AddTransient<ICommandBase, GetSubsCommand>();
 			services.AddTransient<ICommandBase, DeleteSubCommand>();
 			services.AddTransient<ICommandBase, AddSubCommand>();
+			services.AddTransient<ICommandBase, NewMessageCommand>();
 			#endregion
             #region Internal commands
 			services.AddTransient<ICommandBase, SearchResultsCommand>();
@@ -51,6 +55,7 @@ namespace TelegramBot.UI.DI
 			services.AddTransient<ICommandBase, ConfirmSubDeleteCommand>();
 			services.AddTransient<ICommandBase, ApplySubDeleteCommand>();
 			services.AddTransient<ICommandBase, ApplySubAddCommand>();
+			services.AddTransient<ICommandBase, CreateMessageCommand>();
             #endregion
 
             services.AddTransient<ICommandBase, UnknownCommand>(); //always last

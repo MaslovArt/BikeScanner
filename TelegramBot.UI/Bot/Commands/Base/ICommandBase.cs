@@ -8,14 +8,14 @@ namespace TelegramBot.UI.Bot.Commands
     public interface ICommandBase
     {
         /// <summary>
-        /// Execute command handler
+        /// Execute command logic
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
         Task Execute(CommandContext context);
 
         /// <summary>
-        /// Update handler filter
+        /// Update filter: what update this command can handle.
         /// </summary>
         CommandFilter Filter { get; }
     }

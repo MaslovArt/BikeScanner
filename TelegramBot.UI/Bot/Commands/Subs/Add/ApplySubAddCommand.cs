@@ -4,6 +4,9 @@ using Telegram.Bot.Types.Enums;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
+    /// <summary>
+    /// Add new subscription. Save user input to subs.
+    /// </summary>
     public class ApplySubAddCommand : CommandBase
     {
         private readonly ISubscriptionsService _subs;

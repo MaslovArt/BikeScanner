@@ -7,6 +7,9 @@ using TelegramBot.UI.Config;
 
 namespace TelegramBot.UI.Bot.Commands.Search
 {
+    /// <summary>
+    /// Search. Show next page search results.
+    /// </summary>
     public class MoreSearchResultsCommand : CommandBase
     {
         private readonly int _perPage;
@@ -32,14 +35,14 @@ namespace TelegramBot.UI.Bot.Commands.Search
 
             var result = await _searchService.Search(userId, searchQuery, skip, _perPage);
 
-            var urls = result.Entities.Select(r => r.AdUrl);
-            await SendMessages(urls, context);
+            var adUrls = result.Entities.Select(r => r.AdUrl);
+            await SendMessages(adUrls, context);
 
             if (result.Total > result.Offset)
             {
                 var moreMessage = $"Показать еще? ({result.Total - result.Offset})";
                 var moreButton = TelegramMarkupHelper.MessageRowBtns(
-                    ("Еще", $"{CommandNames.Internal.MoreSearchResults} {searchQuery};{skip + _perPage}"));
+                    ("Еще", $"{CommandNames.Internal.MoreSearchResults} {searchQuery}{ParamSeparator}{skip + _perPage}"));
                 await SendMessageWithButtons(moreMessage, context, moreButton);
             }
         }

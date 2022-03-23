@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace TelegramBot.UI.Bot.Context
 {
-	public class InMemoryBotContext : IBotContextService
+	public class InMemoryBotContext : IBotContextService //StateManager
     {
         private readonly IMemoryCache _cache;
         private readonly MemoryCacheEntryOptions _cacheOptions;

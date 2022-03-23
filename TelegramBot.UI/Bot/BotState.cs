@@ -5,7 +5,7 @@
 		Default,
 		WaitSearchInput,
 		WaitNewSubInput,
-		WaitBugReportInput
+		WaitDevMessageInput
 	}
 }
 

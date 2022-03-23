@@ -13,6 +13,18 @@ namespace TelegramBot.UI.Bot.Commands
 
         public abstract CommandFilter Filter { get; }
 
+        /// <summary>
+        /// Base params separator symbol
+        /// </summary>
+        protected char ParamSeparator => ';';
+
+        /// <summary>
+        /// Get input as param
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="param">Param index</param>
+        /// <param name="exclude">Exclude command name from input</param>
+        /// <returns></returns>
         protected string GetParam(
             CommandContext context,
             int param,
@@ -24,9 +36,14 @@ namespace TelegramBot.UI.Bot.Commands
                 ? input
                 : input.Replace(exclude, string.Empty).Trim();
 
-            return paramsInput.Split(';')[param];
+            return paramsInput.Split(ParamSeparator)[param];
         }
 
+        /// <summary>
+        /// User input from message or callback
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns>Message or callback text or empty string</returns>
         protected string ChatInput(CommandContext context)
         {
             var input = context.Update.Message?.Text
@@ -36,6 +53,12 @@ namespace TelegramBot.UI.Bot.Commands
             return input.Trim();
         }
 
+        /// <summary>
+        /// Extract user id from message, callback or myChatMemeber
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        /// <exception cref="ChatIdException"></exception>
         protected long UserId(CommandContext context)
         {
             return

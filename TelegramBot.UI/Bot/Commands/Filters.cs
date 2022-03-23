@@ -36,14 +36,13 @@ namespace TelegramBot.UI.Bot.Commands
 		/// <returns>Filter</returns>
 		public static CommandFilter UICommand(string name)
 		{
-			if (name.StartsWith("/"))
-				throw new ArgumentException("Command name start with '/' error.");
-			var commandName = $"/{name}";
+			if (!name.StartsWith("/"))
+				throw new ArgumentException("Command name must start with '/'.");
 
 			return (update, context) =>
 				update.Type == UpdateType.Message &&
 				update.Message.Type == MessageType.Text &&
-				update.Message.Text.StartsWith(commandName);
+				update.Message.Text.StartsWith(name);
 		}
 
 		/// <summary>
