@@ -11,6 +11,22 @@ namespace BikeScanner.Data.Postgre.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Actions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Data = table.Column<string>(type: "text", nullable: true),
+                    Action = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contents",
                 columns: table => new
                 {
@@ -29,6 +45,22 @@ namespace BikeScanner.Data.Postgre.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DevMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Message = table.Column<string>(type: "text", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Viewed = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DevMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NotificationsQueue",
                 columns: table => new
                 {
@@ -38,26 +70,11 @@ namespace BikeScanner.Data.Postgre.Migrations
                     AdUrl = table.Column<string>(type: "text", nullable: false),
                     SearchQuery = table.Column<string>(type: "text", nullable: false),
                     SendTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NotificationsQueue", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SearchHistories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    SearchQuery = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SearchHistories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,12 +85,27 @@ namespace BikeScanner.Data.Postgre.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    SearchQuery = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    SearchQuery = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    SocialDisplayName = table.Column<string>(type: "text", nullable: true),
+                    AccountStatus = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.UniqueConstraint("AK_Users_UserId", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,40 +136,41 @@ namespace BikeScanner.Data.Postgre.Migrations
                 column: "Status");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SearchHistories_UserId",
-                table: "SearchHistories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_Status",
-                table: "Subscriptions",
-                column: "Status");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_UserId",
                 table: "Subscriptions",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_UserId_SearchQuery_Status",
+                name: "IX_Subscriptions_UserId_SearchQuery",
                 table: "Subscriptions",
-                columns: new[] { "UserId", "SearchQuery", "Status" },
+                columns: new[] { "UserId", "SearchQuery" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_AccountStatus",
+                table: "Users",
+                column: "AccountStatus");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Actions");
+
+            migrationBuilder.DropTable(
                 name: "Contents");
+
+            migrationBuilder.DropTable(
+                name: "DevMessages");
 
             migrationBuilder.DropTable(
                 name: "NotificationsQueue");
 
             migrationBuilder.DropTable(
-                name: "SearchHistories");
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Vars");

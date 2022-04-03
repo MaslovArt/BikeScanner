@@ -23,6 +23,7 @@ namespace BikeScanner.Data.Postgre.ServiceCollection
 			services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
 			services.AddScoped<IUsersRepository, UsersRepository>();
 			services.AddScoped<IVarsRepository, VarsRepository>();
+			services.AddScoped<IDevMessagesRepository, DevMessagesRepository>();
 
 			return services;
         }

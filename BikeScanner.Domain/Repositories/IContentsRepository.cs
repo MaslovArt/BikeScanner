@@ -7,6 +7,7 @@ namespace BikeScanner.Domain.Repositories
     {
         Task<ContentEntity[]> Scroll(int skip, int take);
         Task<Page<ContentEntity>> Search(string query, int skip, int take);
+        Task<int> CountSearch(string query);
         Task<ContentEntity[]> SearchEpoch(string query, long indexEpoch);
         Task<ContentEntity[]> GetContents(long indexEpoch);
     }

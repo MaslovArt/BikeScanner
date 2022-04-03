@@ -20,7 +20,7 @@ namespace TelegramBot.UI.Bot.Commands.Subs
 
         public override async Task Execute(CommandContext context)
         {
-            var subId = int.Parse(GetParam(context, 0, CommandNames.Internal.ApplyDeleteSub));
+            var subId = int.Parse(ChatInput(context, CommandNames.Internal.ApplyDeleteSub));
             var sub = await _subs.RemoveSub(subId);
 
             var message = $"Поиск '{sub.SearchQuery}' удален.";

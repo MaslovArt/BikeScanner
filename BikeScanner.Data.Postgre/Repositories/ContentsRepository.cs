@@ -46,6 +46,13 @@ namespace BikeScanner.Data.Postgre.Repositories
             };
         }
 
+        public Task<int> CountSearch(string query)
+        {
+            return Set
+                .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
+                .CountAsync();
+        }
+
         public Task<ContentEntity[]> SearchEpoch(string query, long indexingStamp)
         {
             return Set

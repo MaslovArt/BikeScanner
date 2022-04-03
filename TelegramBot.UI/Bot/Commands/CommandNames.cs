@@ -35,6 +35,7 @@
         public static class Internal
         {
             public const string AddSubFromSearch = "sub_from_search";
+            public const string ShowSubsFromSearch = "show_subs_from_search";
             public const string MoreSearchResults = "more_search_results";
             public const string ConfirmDeleteSub = "confirm_delete_sub";
             public const string ApplyDeleteSub = "apply_delete_sub";

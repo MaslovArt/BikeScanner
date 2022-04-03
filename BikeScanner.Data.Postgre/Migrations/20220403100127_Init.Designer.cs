@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BikeScanner.Data.Postgre.Migrations
 {
     [DbContext(typeof(BikeScannerContext))]
-    [Migration("20220227102010_Init")]
+    [Migration("20220403100127_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,32 @@ namespace BikeScanner.Data.Postgre.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("BikeScanner.Domain.Models.ActionEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actions");
+                });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.ContentEntity", b =>
                 {
@@ -60,6 +86,31 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.ToTable("Contents");
                 });
 
+            modelBuilder.Entity("BikeScanner.Domain.Models.DevMessageEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Viewed")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DevMessages");
+                });
+
             modelBuilder.Entity("BikeScanner.Domain.Models.NotificationQueueEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -79,8 +130,9 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.Property<DateTime?>("SendTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -90,31 +142,6 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("NotificationsQueue");
-                });
-
-            modelBuilder.Entity("BikeScanner.Domain.Models.SearchHistoryEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SearchQuery")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SearchHistories");
                 });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.SubscriptionEntity", b =>
@@ -132,22 +159,44 @@ namespace BikeScanner.Data.Postgre.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "SearchQuery")
+                        .IsUnique();
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("BikeScanner.Domain.Models.UserEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SocialDisplayName")
+                        .HasColumnType("text");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Status");
+                    b.HasAlternateKey("UserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AccountStatus");
 
-                    b.HasIndex("UserId", "SearchQuery", "Status")
-                        .IsUnique();
-
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.VarEntity", b =>

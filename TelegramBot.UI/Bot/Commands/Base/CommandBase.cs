@@ -28,13 +28,17 @@ namespace TelegramBot.UI.Bot.Commands
         protected string GetParam(
             CommandContext context,
             int param,
-            string exclude = null
+            params string[] excludeCommands
             )
         {
             var input = ChatInput(context);
-            var paramsInput = exclude == null
-                ? input
-                : input.Replace(exclude, string.Empty).Trim();
+            if (excludeCommands != null)
+            {
+                foreach (var excludeCommand in excludeCommands)
+                    input = input.Replace(excludeCommand, "");
+            }
+
+            var paramsInput = input.Trim();
 
             return paramsInput.Split(ParamSeparator)[param];
         }
@@ -49,6 +53,26 @@ namespace TelegramBot.UI.Bot.Commands
             var input = context.Update.Message?.Text
                 ?? context.Update.CallbackQuery?.Data
                 ?? string.Empty;
+
+            return input.Trim();
+        }
+
+        /// <summary>
+        /// User input from message or callback
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns>Message or callback text or empty string</returns>
+        protected string ChatInput(CommandContext context, params string[] excludeCommands)
+        {
+            var input = context.Update.Message?.Text
+                ?? context.Update.CallbackQuery?.Data
+                ?? string.Empty;
+
+            if (excludeCommands != null)
+            {
+                foreach (var excludeCommand in excludeCommands)
+                    input = input.Replace(excludeCommand, "");
+            } 
 
             return input.Trim();
         }

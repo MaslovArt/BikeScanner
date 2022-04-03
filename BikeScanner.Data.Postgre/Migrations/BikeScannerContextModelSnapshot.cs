@@ -22,6 +22,32 @@ namespace BikeScanner.Data.Postgre.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("BikeScanner.Domain.Models.ActionEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actions");
+                });
+
             modelBuilder.Entity("BikeScanner.Domain.Models.ContentEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -58,6 +84,31 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.ToTable("Contents");
                 });
 
+            modelBuilder.Entity("BikeScanner.Domain.Models.DevMessageEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Viewed")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DevMessages");
+                });
+
             modelBuilder.Entity("BikeScanner.Domain.Models.NotificationQueueEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -77,8 +128,9 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.Property<DateTime?>("SendTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -88,29 +140,6 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("NotificationsQueue");
-                });
-
-            modelBuilder.Entity("BikeScanner.Domain.Models.SearchHistoryEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SearchQuery")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SearchHistories");
                 });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.SubscriptionEntity", b =>
@@ -139,29 +168,6 @@ namespace BikeScanner.Data.Postgre.Migrations
                         .IsUnique();
 
                     b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("BikeScanner.Domain.Models.SubscriptionHistoryEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SearchQuery")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SubscriptionHistories");
                 });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.UserEntity", b =>

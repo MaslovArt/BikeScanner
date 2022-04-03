@@ -27,18 +27,21 @@ namespace TelegramBot.UI.Bot.Commands.Search
 
 
         public override CommandFilter Filter =>
-            FilterDefinitions.StateMessage(BotState.WaitSearchInput);
+            CombineFilters.Any(
+                FilterDefinitions.StateMessage(BotState.WaitSearchInput),
+                FilterDefinitions.CallbackCommand(CommandNames.Internal.ShowSubsFromSearch)
+                );
 
         public override async Task Execute(CommandContext context)
         {
             var userId = UserId(context);
-            var input = ChatInput(context);
+            var searchQuery = ChatInput(context, CommandNames.Internal.ShowSubsFromSearch);
 
-            var result = await _searchService.Search(userId, input, 0, _perPage);
+            var result = await _searchService.Search(userId, searchQuery, 0, _perPage);
 
-            var resultMessage = $"По запросу '{input}' нашел {result.Total} объявлений.";
+            var resultMessage = $"По запросу '{searchQuery}' нашел {result.Total} объявлений.";
             var saveSearchBtn = TelegramMarkupHelper.MessageRowBtns(
-                ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {input}"));
+                ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {searchQuery}"));
             await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
 
             var adUrls = result.Items.Select(r => r.AdUrl);
@@ -48,7 +51,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
             {
                 var moreMessage = $"Показать еще? ({result.Total - result.Items.Length})";
                 var moreButton = TelegramMarkupHelper.MessageRowBtns(
-                    ("Еще", $"{CommandNames.Internal.MoreSearchResults} {input}{ParamSeparator}{_perPage}"));
+                    ("Еще", $"{CommandNames.Internal.MoreSearchResults} {searchQuery}{ParamSeparator}{_perPage}"));
                 await SendMessageWithButtons(moreMessage, context, moreButton);
             }
 

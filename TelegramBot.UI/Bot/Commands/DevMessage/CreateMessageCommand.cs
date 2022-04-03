@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using BikeScanner.Domain.Models;
+using BikeScanner.Domain.Repositories;
 
 namespace TelegramBot.UI.Bot.Commands.DevMessage
 {
@@ -7,14 +9,27 @@ namespace TelegramBot.UI.Bot.Commands.DevMessage
     /// </summary>
     public class CreateMessageCommand : CommandBase
     {
+        private readonly IDevMessagesRepository _devMessagesRepository;
+
+        public CreateMessageCommand(IDevMessagesRepository devMessagesRepository)
+        {
+            _devMessagesRepository = devMessagesRepository;
+        }
+
         public override CommandFilter Filter =>
             FilterDefinitions.StateMessage(BotState.WaitDevMessageInput);
 
-        public override Task Execute(CommandContext context)
+        public override async Task Execute(CommandContext context)
         {
             context.BotContext.State = BotState.Default;
-            //... save message
-            return SendMessage("Сообщение отправлено.", context);
+
+            var userId = UserId(context);
+            var input = ChatInput(context);
+
+            var newMsg = new DevMessageEntity(userId, input);
+            await _devMessagesRepository.Add(newMsg);
+
+            await SendMessage("Сообщение отправлено.", context);
         }
     }
 }

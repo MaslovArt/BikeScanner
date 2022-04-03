@@ -16,6 +16,7 @@ namespace BikeScanner.Data.Postgre
         public DbSet<VarEntity> Vars { get; set; }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ActionEntity> Actions { get; set; }
+        public DbSet<DevMessageEntity> DevMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace BikeScanner.Data.Postgre
             modelBuilder.ApplyConfiguration(new VarsConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
             modelBuilder.ApplyConfiguration(new ActionsConfiguration());
+            modelBuilder.ApplyConfiguration(new DevMessagesConfiguration());
         }
     }
 }
