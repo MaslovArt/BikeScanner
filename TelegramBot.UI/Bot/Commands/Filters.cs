@@ -42,7 +42,7 @@ namespace TelegramBot.UI.Bot.Commands
 			return (update, context) =>
 				update.Type == UpdateType.Message &&
 				update.Message.Type == MessageType.Text &&
-				update.Message.Text.StartsWith(name);
+				update.Message.Text.ToLower().StartsWith(name);
 		}
 
 		/// <summary>

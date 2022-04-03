@@ -1,6 +1,6 @@
 ﻿using BikeScanner.Application.Configs;
 using BikeScanner.Application.Interfaces;
-using BikeScanner.Domain.Extentions;
+using BikeScanner.Domain.Extensions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;

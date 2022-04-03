@@ -1,4 +1,5 @@
-﻿using BikeScanner.Domain.Models;
+﻿using System;
+using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,6 +17,12 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
             builder
                 .Property(e => e.AdUrl)
                 .IsRequired();
+            builder
+                .Property(e => e.Status)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => Enum.Parse<NotificationStatus>(v));
         }
     }
 }
+

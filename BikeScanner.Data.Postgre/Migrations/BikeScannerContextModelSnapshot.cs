@@ -110,8 +110,6 @@ namespace BikeScanner.Data.Postgre.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("SearchHistories");
                 });
 
@@ -130,22 +128,40 @@ namespace BikeScanner.Data.Postgre.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "SearchQuery")
+                        .IsUnique();
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("BikeScanner.Domain.Models.SubscriptionHistoryEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SearchQuery")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Status");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId", "SearchQuery", "Status")
-                        .IsUnique();
-
-                    b.ToTable("Subscriptions");
+                    b.ToTable("SubscriptionHistories");
                 });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.UserEntity", b =>
@@ -156,8 +172,9 @@ namespace BikeScanner.Data.Postgre.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountStatus")
-                        .HasColumnType("integer");
+                    b.Property<string>("AccountStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("SocialDisplayName")
                         .HasColumnType("text");

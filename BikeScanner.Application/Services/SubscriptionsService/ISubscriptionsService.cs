@@ -1,4 +1,4 @@
-﻿using BikeScanner.Domain.Models;
+﻿using BikeScanner.Application.Models.Subs;
 using System.Threading.Tasks;
 
 namespace BikeScanner.Application.Services.SubscriptionsService
@@ -9,38 +9,31 @@ namespace BikeScanner.Application.Services.SubscriptionsService
     public interface ISubscriptionsService
     {
         /// <summary>
-        /// Check if user can add more subs
-        /// </summary>
-        /// <param name="userId">User id</param>
-        /// <returns></returns>
-        Task<bool> NewSubsAvailable(long userId);
-
-        /// <summary>
         /// Add new user sub
         /// </summary>
         /// <param name="sub"></param>
         /// <returns></returns>
-        Task<SubscriptionEntity> AddSub(long userId, string searchQuery);
+        Task<Subscription> AddSub(long userId, string searchQuery);
 
         /// <summary>
         /// Get user active subs
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<SubscriptionEntity[]> GetActiveSubs(long userId);
+        Task<Subscription[]> GetActiveSubs(long userId);
 
         /// <summary>
         /// Remove user sub
         /// </summary>
         /// <param name="subId"></param>
         /// <returns></returns>
-        Task<SubscriptionEntity> RemoveSub(int subId);
+        Task<Subscription> RemoveSub(int subId);
 
         /// <summary>
         /// Get user sub
         /// </summary>
         /// <param name="subId"></param>
         /// <returns></returns>
-        Task<SubscriptionEntity> GetSub(int subId);
+        Task<Subscription> GetSub(int subId);
     }
 }

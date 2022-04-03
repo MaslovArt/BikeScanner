@@ -24,14 +24,14 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
-    <ProjectReference Include="..\BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Bot\Commands\Main\" />
     <Folder Include="Bot\Commands\Subs\" />
     <Folder Include="Bot\Commands\Subs\Add\" />
     <Folder Include="Bot\Commands\Subs\Delete\" />
     <Folder Include="Bot\Commands\DevMessage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BikeScanner.Application\BikeScanner.Application.csproj" />
+    <ProjectReference Include="..\BikeScanner.Domain\BikeScanner.Domain.csproj" />
   </ItemGroup>
 </Project>

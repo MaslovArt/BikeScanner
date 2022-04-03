@@ -12,10 +12,10 @@ namespace BikeScanner.Data.Postgre
 
         public DbSet<ContentEntity> Contents { get; set; }
         public DbSet<NotificationQueueEntity> NotificationsQueue { get; set; }
-        public DbSet<SearchHistoryEntity> SearchHistories { get; set; }
         public DbSet<SubscriptionEntity> Subscriptions { get; set; }
         public DbSet<VarEntity> Vars { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<ActionEntity> Actions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,10 @@ namespace BikeScanner.Data.Postgre
 
             modelBuilder.ApplyConfiguration(new ContentsConfiguration());
             modelBuilder.ApplyConfiguration(new SubsciptionsConfiguration());
-            modelBuilder.ApplyConfiguration(new SearchHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationQueueConfiguration());
             modelBuilder.ApplyConfiguration(new VarsConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
+            modelBuilder.ApplyConfiguration(new ActionsConfiguration());
         }
     }
 }

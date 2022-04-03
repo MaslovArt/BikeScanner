@@ -34,10 +34,16 @@
     <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BikeScanner.Bussines\BikeScanner.Bussines.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
     <ProjectReference Include="..\TelegramBot.UI\TelegramBot.UI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\BikeScanner.DI\BikeScanner.DI.csproj">
+    <ProjectReference Include="..\BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

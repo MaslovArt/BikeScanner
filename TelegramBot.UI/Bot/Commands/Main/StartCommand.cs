@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using BikeScanner.Application.Services.UsersService;
-using BikeScanner.Domain.Models;
 using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Main
@@ -22,15 +21,11 @@ namespace TelegramBot.UI.Bot.Commands.Main
 
         public async override Task Execute(CommandContext context)
         {
+            var userId = UserId(context);
             var helloAgainMsg = string.Empty;
-            var user = await _usersService.EnsureUser(UserId(context));
-            if (user.AccountStatus == AccountStatus.Inactive)
-            {
-                helloAgainMsg = "С возвращением!";
-                await _usersService.ActivateUser(user.Id);
-            }
+            var user = await _usersService.EnsureActiveUser(userId);
 
-            var message = @$"Привет! {helloAgainMsg} Я бот для поиска по объявлениям.
+            var message = @$"Привет {user.Login}! {helloAgainMsg} Я бот для поиска по объявлениям.
 Для поиска нужно запустить комманду ({CommandNames.UI.Search}), дальше думаю разберетесь)
 Если желаемого найти не удалось, можно добавить подписку на поиск ({CommandNames.UI.AddSub}).
 Как только появится похожее объявление, я сообщу.

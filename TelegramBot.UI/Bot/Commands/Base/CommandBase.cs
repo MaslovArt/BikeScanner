@@ -71,7 +71,7 @@ namespace TelegramBot.UI.Bot.Commands
         protected Task AnswerCallback(string text, CommandContext context)
         {
             var callbackId = context.Update.CallbackQuery.Id;
-            return context.Client.AnswerCallbackQueryAsync(callbackId, text, true);
+            return context.Client.AnswerCallbackQueryAsync(callbackId, text, false);
         }
 
         protected Task SendMessages(IEnumerable<string> messages, CommandContext context)

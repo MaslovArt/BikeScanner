@@ -15,5 +15,9 @@
 
   <ItemGroup>
     <None Remove="Telegram.Bot" />
+    <None Remove="ServiceCollection\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServiceCollection\" />
   </ItemGroup>
 </Project>

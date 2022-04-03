@@ -1,4 +1,5 @@
-﻿using BikeScanner.Domain.Models;
+﻿using System;
+using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,6 +11,11 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         {
             builder.HasAlternateKey(e => e.UserId);
             builder.HasIndex(e => e.AccountStatus);
+            builder
+                .Property(e => e.AccountStatus)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => Enum.Parse<AccountStatus>(v));
         }
     }
 }

@@ -2,63 +2,54 @@
 using System.Threading.Tasks;
 using System.Linq;
 using BikeScanner.Domain.Models;
-using BikeScanner.Domain.Exceptions;
-using System;
+using BikeScanner.Application.Models.Search;
+using AutoMapper;
 
 namespace BikeScanner.Application.Services.SearchService
 {
     public class SearchService : ISearchService
     {
-        private readonly ISearchHistoryRepository   _searchHistoryRepository;
+        private readonly IMapper                    _mapper;
+        private readonly IActionsRepository         _actionsRepository;
         private readonly IContentsRepository        _contentsRepository;
         private ContentEntity[]                     _newContents;
 
         public SearchService(
+            IMapper mapper,
             IContentsRepository contentsRepository,
-            ISearchHistoryRepository searchHistoryRepository
+            IActionsRepository actionsRepository
             )
         {
+            _mapper = mapper;
             _contentsRepository = contentsRepository;
-            _searchHistoryRepository = searchHistoryRepository;
+            _actionsRepository = actionsRepository;
         }
 
-        //ToDo add restrictions
-        public Task<bool> CanSearch(long userId)
+        public async Task<Page<SearchResult>> Search(long userId, string query, int skip, int take)
         {
-            return Task.FromResult(true);
+            var result = await _contentsRepository.Search(query, skip, take);
+            await _actionsRepository.LogSearch(userId, query);
+
+            return new Page<SearchResult>()
+            {
+                Items = _mapper.Map<SearchResult[]>(result.Items),
+                Total = result.Total,
+                Offset = result.Offset
+            };
         }
 
-        public async Task<PagedEntities<ContentEntity>> Search(long userId, string query, int skip, int take)
-        {
-            if (!await CanSearch(userId))
-                throw AppError.SearchLimit;
-
-            await WriteHistory(userId, query);
-
-            return await _contentsRepository.Search(query, skip, take);
-        }
-
-        public async Task<ContentEntity[]> SearchEpoch(long userId, string query, long indexEpoch)
+        public async Task<SearchResult[]> SearchEpoch(long userId, string query, long indexEpoch)
         {
             if (_newContents == null)
             {
                 _newContents = await _contentsRepository.GetContents(indexEpoch);
             }
 
-            return _newContents
+            var result = _newContents
                 .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
                 .ToArray();
-        }
 
-        private Task WriteHistory(long userId, string query)
-        {
-            var history = new SearchHistoryEntity()
-            {
-                UserId = userId,
-                SearchQuery = query,
-                Date = DateTime.UtcNow
-            };
-            return _searchHistoryRepository.Add(history);
+            return _mapper.Map<SearchResult[]>(result);
         }
     }
 }

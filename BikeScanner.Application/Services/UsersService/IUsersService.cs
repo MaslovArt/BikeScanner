@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BikeScanner.Domain.Models;
+using BikeScanner.Application.Models.Users;
 
 namespace BikeScanner.Application.Services.UsersService
 {
@@ -7,6 +7,8 @@ namespace BikeScanner.Application.Services.UsersService
     {
         Task ActivateUser(long userId);
         Task DiactivateUser(long userId);
-        Task<UserEntity> EnsureUser(long userId);
+        Task<User> EnsureActiveUser(long userId);
+        Task<User> EnsureUser(long userId);
     }
 }
+

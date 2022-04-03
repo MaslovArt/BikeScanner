@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using BikeScanner.Domain.Extentions;
+using BikeScanner.Domain.Extensions;
 using BikeScanner.Application.Interfaces;
 using BikeScanner.Infrastructure.VK.Api;
 using BikeScanner.Infrastructure.VK.Config;

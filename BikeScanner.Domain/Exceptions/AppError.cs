@@ -26,5 +26,8 @@ namespace BikeScanner.Domain.Exceptions
 
         public static AppError NotExists(string description) =>
             new AppError(ErrorCode.ElementNotExists, $"{description} не существует.");
+
+        public static AppError Forbidden(string message) =>
+            new AppError(ErrorCode.Forbidden, message);
     }
 }

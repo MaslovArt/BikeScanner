@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BikeScanner.Domain.Extentions;
+using BikeScanner.Domain.Extensions;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot.UI.Bot.Helpers

@@ -7,6 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,9 +18,13 @@
   <ItemGroup>
     <None Remove="Configs\" />
     <None Remove="Services\UsersService\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="AutoMapper" />
+    <None Remove="ServiceCollection\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configs\" />
     <Folder Include="Services\UsersService\" />
+    <Folder Include="ServiceCollection\" />
   </ItemGroup>
 </Project>

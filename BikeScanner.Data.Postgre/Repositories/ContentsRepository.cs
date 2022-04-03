@@ -22,7 +22,7 @@ namespace BikeScanner.Data.Postgre.Repositories
                 .ToArrayAsync();
         }
 
-        public async Task<PagedEntities<ContentEntity>> Search(string query, int skip, int take)
+        public async Task<Page<ContentEntity>> Search(string query, int skip, int take)
         {
             var queryable = Set
                 .AsNoTracking()
@@ -38,9 +38,9 @@ namespace BikeScanner.Data.Postgre.Repositories
                 ? await queryable.CountAsync()
                 : skip + entities.Length;
 
-            return new PagedEntities<ContentEntity>()
+            return new Page<ContentEntity>()
             {
-                Entities = entities,
+                Items = entities,
                 Total = total,
                 Offset = skip + entities.Length
             };

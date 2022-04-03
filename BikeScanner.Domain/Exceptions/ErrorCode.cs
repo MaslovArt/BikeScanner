@@ -7,6 +7,7 @@
         TooMuchSubs,
         SubDuplicate,
         SearchLimit,
-        ValidationFail
+        ValidationFail,
+        Forbidden
     }
 }

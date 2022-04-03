@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Infrastructure.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Data.Postgre", "BikeScanner.Data.Postgre\BikeScanner.Data.Postgre.csproj", "{930932CA-3286-40DB-93EB-458F5AFEC4E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.DI", "BikeScanner.DI\BikeScanner.DI.csproj", "{B8746026-35FB-4499-AAB3-EB79A588E712}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeScanner.Infrastructure", "BikeScanner.Infrastructure\BikeScanner.Infrastructure.csproj", "{E98DD6ED-978C-475D-A2DC-11AE1193D81A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BikeScanner.Server", "BikeScanner.Server\BikeScanner.Server.csproj", "{3A2079AE-1ABC-4564-841F-879CEF2C51AF}"
@@ -45,10 +43,6 @@ Global
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{930932CA-3286-40DB-93EB-458F5AFEC4E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8746026-35FB-4499-AAB3-EB79A588E712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8746026-35FB-4499-AAB3-EB79A588E712}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8746026-35FB-4499-AAB3-EB79A588E712}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8746026-35FB-4499-AAB3-EB79A588E712}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98DD6ED-978C-475D-A2DC-11AE1193D81A}.Release|Any CPU.ActiveCfg = Release|Any CPU

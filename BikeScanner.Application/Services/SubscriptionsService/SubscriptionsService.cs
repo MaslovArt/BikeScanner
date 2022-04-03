@@ -1,5 +1,7 @@
-﻿using BikeScanner.Domain.Exceptions;
-using BikeScanner.Domain.Extentions;
+﻿using AutoMapper;
+using BikeScanner.Application.Models.Subs;
+using BikeScanner.Domain.Exceptions;
+using BikeScanner.Domain.Extensions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using System;
@@ -10,66 +12,65 @@ namespace BikeScanner.Application.Services.SubscriptionsService
     public class SubscriptionsService : ISubscriptionsService
     {
         private readonly ISubscriptionsRepository _subscriptionsRepository;
+        private readonly IActionsRepository       _actionsRepository;
+        private readonly IMapper                  _mapper;
 
-        public SubscriptionsService(ISubscriptionsRepository subscriptionsRepository)
+        public SubscriptionsService(
+            ISubscriptionsRepository subscriptionsRepository,
+            IActionsRepository actionsRepository,
+            IMapper mapper
+            )
         {
             _subscriptionsRepository = subscriptionsRepository;
+            _actionsRepository = actionsRepository;
+            _mapper = mapper;
         }
 
-        //ToDo Add restriction
-        public Task<bool> NewSubsAvailable(long userId)
-        {
-            return Task.FromResult(true);
-        }
-
-        public async Task<SubscriptionEntity> AddSub(long userId, string searchQuery)
+        public async Task<Subscription> AddSub(long userId, string searchQuery)
         {
             if (!searchQuery.IsMinLength(2))
                 throw AppError.Validation("Недопустимый поиск. Требуется минимум 2 символа.");
 
-            if (!await NewSubsAvailable(userId)) 
-                throw AppError.TooMuchSubs;
-
-            if (await _subscriptionsRepository.HasActiveSub(userId, searchQuery))
+            if (await _subscriptionsRepository.IsSubExists(userId, searchQuery))
                 throw AppError.SubAlreadyExists(searchQuery);
 
-            var newSubscription = new SubscriptionEntity()
+            var subscription = new SubscriptionEntity()
             {
                 UserId = userId,
                 SearchQuery = searchQuery,
-                Created = DateTime.UtcNow,
-                Status = SubscriptionStatus.Active
+                Created = DateTime.UtcNow
             };
-            await _subscriptionsRepository.Add(newSubscription);
+            await _subscriptionsRepository.Add(subscription);
+            await _actionsRepository.LogSubscription(userId, searchQuery);
 
-            return newSubscription;
+            return _mapper.Map<Subscription>(subscription);
         }
 
-        public async Task<SubscriptionEntity> RemoveSub(int subId)
+        public async Task<Subscription> RemoveSub(int subId)
         {
-            var entity = await _subscriptionsRepository.GetById(subId);
-            if (entity == null) 
+            var subscription = await _subscriptionsRepository.GetById(subId);
+            if (subscription == null) 
                 throw AppError.NotExists("Подписка");
 
-            entity.Status = SubscriptionStatus.Deleted;
-            await _subscriptionsRepository.Update(entity);
+            await _subscriptionsRepository.Remove(subscription);
 
-            return entity;
+            return _mapper.Map<Subscription>(subscription); ;
         }
 
-        public Task<SubscriptionEntity[]> GetActiveSubs(long userId)
+        public async Task<Subscription[]> GetActiveSubs(long userId)
         {
-            return _subscriptionsRepository
-                .GetUserSubs(userId, SubscriptionStatus.Active);
+            var subscriptions = await _subscriptionsRepository.GetSubs(userId);
+
+            return _mapper.Map<Subscription[]>(subscriptions);
         }
 
-        public async Task<SubscriptionEntity> GetSub(int subId)
+        public async Task<Subscription> GetSub(int subId)
         {
-            var entity = await _subscriptionsRepository.GetById(subId);
-            if (entity == null)
+            var subscription = await _subscriptionsRepository.GetById(subId);
+            if (subscription == null)
                 throw AppError.NotExists("Подписка");
 
-            return entity;
+            return _mapper.Map<Subscription>(subscription);
         }
     }
 }

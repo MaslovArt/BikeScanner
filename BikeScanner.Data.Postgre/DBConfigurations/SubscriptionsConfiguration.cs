@@ -9,9 +9,8 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         public void Configure(EntityTypeBuilder<SubscriptionEntity> builder)
         {
             builder.HasIndex(e => e.UserId);
-            builder.HasIndex(e => e.Status);
             builder
-                .HasIndex(e => new { e.UserId, e.SearchQuery, e.Status })
+                .HasIndex(e => new { e.UserId, e.SearchQuery })
                 .IsUnique();
 
             builder

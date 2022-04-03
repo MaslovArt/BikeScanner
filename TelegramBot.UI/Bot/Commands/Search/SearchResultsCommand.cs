@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using BikeScanner.Application.Models.Search;
 using BikeScanner.Application.Services.SearchService;
 using Microsoft.Extensions.Options;
 using TelegramBot.UI.Bot.Helpers;
@@ -40,12 +41,12 @@ namespace TelegramBot.UI.Bot.Commands.Search
                 ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {input}"));
             await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
 
-            var adUrls = result.Entities.Select(r => r.AdUrl);
+            var adUrls = result.Items.Select(r => r.AdUrl);
             await SendMessages(adUrls, context);
 
-            if (result.Total > result.Entities.Length)
+            if (result.Total > result.Items.Length)
             {
-                var moreMessage = $"Показать еще? ({result.Total - result.Entities.Length})";
+                var moreMessage = $"Показать еще? ({result.Total - result.Items.Length})";
                 var moreButton = TelegramMarkupHelper.MessageRowBtns(
                     ("Еще", $"{CommandNames.Internal.MoreSearchResults} {input}{ParamSeparator}{_perPage}"));
                 await SendMessageWithButtons(moreMessage, context, moreButton);

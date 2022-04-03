@@ -12,7 +12,7 @@ namespace BikeScanner.Data.Postgre.Repositories
             : base(context)
         { }
 
-        public Task<SubscriptionEntity[]> GetActiveSubs()
+        public Task<SubscriptionEntity[]> GetSubs()
         {
             return Set
                 .Join(
@@ -25,36 +25,31 @@ namespace BikeScanner.Data.Postgre.Repositories
                         UserId = n.UserId,
                         Created = n.Created,
                         SearchQuery = n.SearchQuery,
-                        Status = n.Status,
                         UserAccountStatus = u.AccountStatus
                     })
-                .Where(e => e.Status == SubscriptionStatus.Active &&
-                            e.UserAccountStatus == AccountStatus.Active)
+                .Where(e => e.UserAccountStatus == AccountStatus.Active)
                 .Select(e => new SubscriptionEntity()
                 {
                     Id = e.Id,
                     UserId = e.UserId,
                     Created = e.Created,
-                    SearchQuery = e.SearchQuery,
-                    Status = e.Status,
+                    SearchQuery = e.SearchQuery
                 })
                 .ToArrayAsync();
         }
 
-        public Task<SubscriptionEntity[]> GetUserSubs(long userId, SubscriptionStatus status)
+        public Task<SubscriptionEntity[]> GetSubs(long userId)
         {
             return Set
-                .Where(e => e.UserId == userId &&
-                            e.Status == status)
+                .Where(e => e.UserId == userId)
                 .ToArrayAsync();
         }
 
-        public Task<bool> HasActiveSub(long userId, string query)
+        public Task<bool> IsSubExists(long userId, string query)
         {
             return Set
                 .AnyAsync(e => e.UserId == userId && 
-                               e.SearchQuery == query &&
-                               e.Status == SubscriptionStatus.Active);
+                               e.SearchQuery == query);
         }
     }
 }

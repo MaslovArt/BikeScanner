@@ -1,11 +1,8 @@
-﻿using BikeScanner.Application.Jobs;
-using BikeScanner.DI;
-using BikeScanner.Server;
-using Hangfire;
-using Hangfire.PostgreSql;
-using Microsoft.OpenApi.Models;
+﻿using BikeScanner.Application.ServiceCollection;
+using BikeScanner.Data.Postgre.ServiceCollection;
+using BikeScanner.Infrastructure.ServiceCollection;
 using NLog.Web;
-using TelegramBot.UI.DI;
+using TelegramBot.UI.ServiceCollection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseNLog();
@@ -13,17 +10,19 @@ builder.Host.UseNLog();
 var configuration = builder.Configuration;
 
 // Add services to the container.
-builder.Services.AddMemoryCache();
-builder.Services.AddBikeScannerBot(configuration);
-builder.Services.AddTelegramPolling();
+builder.Services
+    .AddMemoryCache()
+    .AddPostgresDB(configuration)
+    .AddBikeScannerMapping()
+    .AddBikeScannerServices()
+    .AddBikeScannerJobs()
+    .AddNotificators()
+    .AddBikeScannerTelegramBotUI(configuration)
+    .AddTelegramPollingHostedService();
 //builder.Services.AddSwaggerGen(c =>
 //{
 //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeScanner Api", Version = "v1" });
 //});
-builder.Services.AddBikeScanner(configuration);
-//builder.Services.AddVKAdSource(configuration);
-builder.Services.AddPostgreDataAccess(configuration);
-builder.Services.AddServices();
 //builder.Services.AddHangfire(options =>
 //    options.UsePostgreSqlStorage(configuration.GetConnectionString("DefaultConnection")));
 //builder.Services.AddHangfireServer();

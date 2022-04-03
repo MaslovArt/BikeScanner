@@ -71,15 +71,27 @@ namespace TelegramBot.UI.Bot
 			var chatId = GetChatId(update);
 			if (ex is AppError)
 			{
-				return client.SendTextMessageAsync(chatId, $"Ошибка: {ex.Message}");
+				return client.SendTextMessageAsync(chatId, ex.Message);
 			}
 			else
 			{
 				_logger.LogError(ex, $"User[{chatId}] error:{ex.Message} stackTrace:${ex.StackTrace}");
-				//return client.SendTextMessageAsync(chatId, "Ошибка: Что-то пошло не так(");
-				return Task.CompletedTask;
+				return TrySendErrorMessage(client, chatId);
 			}
 		}
+
+		private Task TrySendErrorMessage(ITelegramBotClient client, long chatId)
+        {
+			try
+            {
+				return client.SendTextMessageAsync(chatId, "Что-то пошло не так(");
+			}
+			catch (Exception ex)
+            {
+				_logger.LogError(ex, $"User[{chatId}] onError err:{ex.Message}");
+				return Task.CompletedTask;
+			}
+        }
 
 		private long GetChatId(Update update)
         {

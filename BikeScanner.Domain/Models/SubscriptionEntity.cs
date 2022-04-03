@@ -7,6 +7,5 @@ namespace BikeScanner.Domain.Models
         public long UserId { get; set; }
         public DateTime Created { get; set; }
         public string SearchQuery { get; set; }
-        public SubscriptionStatus Status { get; set; }
     }
 }
