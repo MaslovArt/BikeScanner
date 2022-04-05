@@ -54,7 +54,6 @@ namespace TelegramBot.UI.Bot.Commands
 			(update, context) =>
 				update.Type == UpdateType.Message &&
 				update.Message.Type == MessageType.Text &&
-				context.State == BotState.Default &&
 				update.Message.Text.Equals(name);
 
 		/// <summary>
@@ -76,6 +75,17 @@ namespace TelegramBot.UI.Bot.Commands
 			(update, context) =>
 				update.Type == UpdateType.Message &&
 				update.Message.Type == MessageType.Text &&
+				context.State == state;
+
+		/// <summary>
+        /// Filter for cancel button press
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+		public static CommandFilter Cancel(BotState state) =>
+			(update, context) =>
+				update.Type == UpdateType.CallbackQuery &&
+				update.CallbackQuery.Data.Equals(CommandNames.Internal.Cancel) &&
 				context.State == state;
 
 		/// <summary>

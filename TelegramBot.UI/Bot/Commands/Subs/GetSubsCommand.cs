@@ -8,9 +8,9 @@ namespace TelegramBot.UI.Bot.Commands.Subs
     /// <summary>
     /// Show user subscriptions
     /// </summary>
-    public class GetSubsCommand : CommandBase
+    public class GetSubsCommand : CommandUIBase
     {
-        private readonly ISubscriptionsService _subsService;
+        protected readonly ISubscriptionsService _subsService;
 
         public GetSubsCommand(ISubscriptionsService subsService)
         {
@@ -19,28 +19,34 @@ namespace TelegramBot.UI.Bot.Commands.Subs
 
         public override CommandFilter Filter => CombineFilters.Any(
             FilterDefinitions.UICommand(CommandNames.UI.MySubs),
-            FilterDefinitions.AlternativeUICommand(CommandNames.AlternativeUI.MySubs));
+            FilterDefinitions.AlternativeUICommand(CommandNames.AlternativeUI.MySubs),
+            FilterDefinitions.Cancel(BotState.DeleteSub)
+            );
 
-        public override async Task Execute(CommandContext context)
+        public override async Task ExecuteCommand(CommandContext context)
         {
             var userId = UserId(context);
-            var userSubs = await _subsService.GetActiveSubs(userId);
+            var subs = await _subsService.GetSubs(userId);
 
-            if (userSubs.Length == 0)
+            if (subs.Length == 0)
             {
                 var addSubBtn = TelegramMarkupHelper.MessageRowBtns(
                     ("Добавить подписку", CommandNames.UI.AddSub));
-                await SendMessageWithButtons("Нет подписок", context, addSubBtn);
+                await SendMessage("Нет подписок", context, addSubBtn);
                 return;
             }
 
-            var message = new StringBuilder($"Всего подписок: {userSubs.Length}");
-            for (int i = 0; i < userSubs.Length; i++)
-                message.AppendLine($"\n{i + 1}) {userSubs[i].SearchQuery}");
+            var message = new StringBuilder($"Всего подписок: {subs.Length}\n\n");
+            foreach (var sub in subs)
+                message.AppendLine($"• {sub.SearchQuery}");
             var btns = TelegramMarkupHelper.MessageRowBtns(
-                ("Добавить подписку", CommandNames.UI.AddSub),
-                ("Удалить подписку", CommandNames.UI.DeleteSub));
-            await SendMessageWithButtons(message.ToString(), context, btns);
+                ("Добавить", CommandNames.UI.AddSub),
+                ("Удалить", CommandNames.UI.DeleteSub));
+
+            if (IsCallback(context))
+                await EditCallbackMessage(message.ToString(), context, btns);
+            else
+                await SendMessage(message.ToString(), context, btns);
         }
     }
 }

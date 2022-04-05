@@ -1,6 +1,6 @@
 ﻿namespace BikeScanner.Domain.Models
 {
-    public enum AccountStatus
+    public enum AccountState
 	{
 		Active,
 		Inactive,

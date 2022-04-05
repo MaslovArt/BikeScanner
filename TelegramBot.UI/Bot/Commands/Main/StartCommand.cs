@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using BikeScanner.Application.Services.UsersService;
-using TelegramBot.UI.Bot.Helpers;
+using BikeScanner.Domain.Models;
 
 namespace TelegramBot.UI.Bot.Commands.Main
 {
     /// <summary>
     /// Start bot
     /// </summary>
-    public class StartCommand : CommandBase
+    public class StartCommand : HelpCommand
 	{
         private readonly IUsersService _usersService;
 
@@ -19,19 +19,20 @@ namespace TelegramBot.UI.Bot.Commands.Main
         public override CommandFilter Filter =>
             FilterDefinitions.UICommand(CommandNames.UI.Start);
 
-        public async override Task Execute(CommandContext context)
+        public async override Task ExecuteCommand(CommandContext context)
         {
             var userId = UserId(context);
             var helloAgainMsg = string.Empty;
-            var user = await _usersService.EnsureActiveUser(userId);
+            var user = await _usersService.EnsureUser(userId);
 
-            var message = @$"Привет {user.Login}! {helloAgainMsg} Я бот для поиска по объявлениям.
-Для поиска нужно запустить комманду ({CommandNames.UI.Search}), дальше думаю разберетесь)
-Если желаемого найти не удалось, можно добавить подписку на поиск ({CommandNames.UI.AddSub}).
-Как только появится похожее объявление, я сообщу.
-Подписка больше неактуальна - удаляй ее ({CommandNames.UI.DeleteSub}).
+            if (user.State == AccountState.Inactive)
+            {
+                await _usersService.ActivateUser(userId);
+            }
 
-Хочешь сообщить об ошибке в работе бота, предложить улучшения или сказать что это полная хрень и послать автора - {CommandNames.UI.DevMessage}.
+            var message = @$"Привет!
+{helloAgainMsg}
+Я бот для поиска по объявлениям.
 
 Список доступных команд:
 {CommandNames.UI.Search} - Поиск
@@ -40,14 +41,8 @@ namespace TelegramBot.UI.Bot.Commands.Main
 {CommandNames.UI.DeleteSub} - Удалить подписку
 {CommandNames.UI.DevMessage} - Сообщение админу
 {CommandNames.UI.Start} - Перезапуск бота";
-            var btns = new string[]
-            {
-                CommandNames.AlternativeUI.Search,
-                CommandNames.AlternativeUI.MySubs,
-                CommandNames.AlternativeUI.Help
-            };
-            var keyboard = TelegramMarkupHelper.KeyboardRowBtns(btns);
-            await SendMessageWithButtons(message, context, keyboard);
+            await SendMessage(message, context);
+            await base.ExecuteCommand(context);
         }
     }
 }

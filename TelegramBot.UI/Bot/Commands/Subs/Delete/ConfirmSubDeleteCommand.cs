@@ -25,9 +25,10 @@ namespace TelegramBot.UI.Bot.Commands.Subs
             var sub = await _subs.GetSub(subId);
 
             var confirmMessage = $"Подтвердите удаление '{sub.SearchQuery}'";
-            var confirmBtn = TelegramMarkupHelper.MessageRowBtns(
-                ("Удалить", $"{CommandNames.Internal.ApplyDeleteSub} {sub.Id}"));
-            await SendMessageWithButtons(confirmMessage, context, confirmBtn);
+            var confirmBtn = TelegramMarkupHelper.MessageColumnBtns(
+                ($"{Emoji.X} Удалить", $"{CommandNames.Internal.ApplyDeleteSub} {sub.Id}"),
+                BaseButtons.Cancel);
+            await EditCallbackMessage(confirmMessage, context, confirmBtn);
         }
     }
 }

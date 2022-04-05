@@ -25,7 +25,8 @@ namespace TelegramBot.UI.Bot.Commands.Subs
 
         public override CommandFilter Filter => CombineFilters.Any(
             FilterDefinitions.StateMessage(BotState.WaitNewSubInput),
-            FilterDefinitions.CallbackCommand(CommandNames.Internal.AddSubFromSearch));
+            FilterDefinitions.CallbackCommand(CommandNames.Internal.AddSubFromSearch)
+            );
 
         public override async Task Execute(CommandContext context)
         {
@@ -34,10 +35,13 @@ namespace TelegramBot.UI.Bot.Commands.Subs
 
             await _subsService.AddSub(userId, searchQuery);
 
-            var message = $"Поиск '{searchQuery}' сохранен в подписках.";
+            var message = $"\nПоиск '{searchQuery}' сохранен в подписках.";
 
             if (context.Update.Type == UpdateType.CallbackQuery)
-                await AnswerCallback(message, context);
+            {
+                await AnswerCallback($"Поиск '{searchQuery}' cохранен", context);
+                await EditCallbackMessage(context, null);
+            }
             else
             {
                 await SendMessage(message, context);
@@ -57,7 +61,7 @@ namespace TelegramBot.UI.Bot.Commands.Subs
                     ("Посмотреть", $"{CommandNames.Internal.ShowSubsFromSearch} {searchQuery}")
                     );
 
-                await SendMessageWithButtons(message, context, showBtn);
+                await SendMessage(message, context, showBtn);
             }
         }
     }

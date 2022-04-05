@@ -7,11 +7,11 @@ namespace TelegramBot.UI.Bot.Commands.DevMessage
     /// <summary>
     /// Send message to admin. Receive user input.
     /// </summary>
-    public class CreateMessageCommand : CommandBase
+    public class ApplySendMessageCommand : CommandBase
     {
         private readonly IDevMessagesRepository _devMessagesRepository;
 
-        public CreateMessageCommand(IDevMessagesRepository devMessagesRepository)
+        public ApplySendMessageCommand(IDevMessagesRepository devMessagesRepository)
         {
             _devMessagesRepository = devMessagesRepository;
         }

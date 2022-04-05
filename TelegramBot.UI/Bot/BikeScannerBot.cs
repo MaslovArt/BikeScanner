@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using TelegramBot.UI.Bot.Commands;
 using TelegramBot.UI.Bot.Context;
 using TelegramBot.UI.Exceptions;
@@ -71,12 +72,15 @@ namespace TelegramBot.UI.Bot
 			var chatId = GetChatId(update);
 			if (ex is AppError)
 			{
+				if (update.Type == UpdateType.CallbackQuery)
+					return client.AnswerCallbackQueryAsync(update.CallbackQuery.Id, ex.Message);
 				return client.SendTextMessageAsync(chatId, ex.Message);
 			}
 			else
 			{
 				_logger.LogError(ex, $"User[{chatId}] error:{ex.Message} stackTrace:${ex.StackTrace}");
-				return TrySendErrorMessage(client, chatId);
+				return client.SendTextMessageAsync(chatId, ex.Message);
+				//return TrySendErrorMessage(client, chatId);
 			}
 		}
 

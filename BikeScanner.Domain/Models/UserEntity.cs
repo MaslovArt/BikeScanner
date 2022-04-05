@@ -4,8 +4,7 @@
 	{
 		public long UserId { get; set; }
 		public string SocialDisplayName { get; set; }
-		//public SocialType SocialType { get; set; }
-		public AccountStatus AccountStatus { get; set; }
+		public AccountState State { get; set; }
 	}
 }
 

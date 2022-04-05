@@ -43,7 +43,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
                 var moreMessage = $"Показать еще? ({result.Total - result.Offset})";
                 var moreButton = TelegramMarkupHelper.MessageRowBtns(
                     ("Еще", $"{CommandNames.Internal.MoreSearchResults} {searchQuery}{ParamSeparator}{skip + _perPage}"));
-                await SendMessageWithButtons(moreMessage, context, moreButton);
+                await SendMessage(moreMessage, context, moreButton);
             }
         }
     }

@@ -36,6 +36,7 @@ namespace TelegramBot.UI.ServiceCollection
 
 			#region Special commands
 			services.AddTransient<ICommandBase, UserBlockBotCommand>();
+			services.AddTransient<ICommandBase, UserJoinBotCommand>();
 			#endregion
 			#region UI Commands
 			services.AddTransient<ICommandBase, StartCommand>();
@@ -44,7 +45,7 @@ namespace TelegramBot.UI.ServiceCollection
 			services.AddTransient<ICommandBase, GetSubsCommand>();
 			services.AddTransient<ICommandBase, DeleteSubCommand>();
 			services.AddTransient<ICommandBase, AddSubCommand>();
-			services.AddTransient<ICommandBase, NewMessageCommand>();
+			services.AddTransient<ICommandBase, SendMessageCommand>();
 			#endregion
             #region Internal commands
 			services.AddTransient<ICommandBase, SearchResultsCommand>();
@@ -52,7 +53,7 @@ namespace TelegramBot.UI.ServiceCollection
 			services.AddTransient<ICommandBase, ConfirmSubDeleteCommand>();
 			services.AddTransient<ICommandBase, ApplySubDeleteCommand>();
 			services.AddTransient<ICommandBase, ApplySubAddCommand>();
-			services.AddTransient<ICommandBase, CreateMessageCommand>();
+			services.AddTransient<ICommandBase, ApplySendMessageCommand>();
             #endregion
 
             services.AddTransient<ICommandBase, UnknownCommand>(); //always last

@@ -5,7 +5,8 @@
 		Default,
 		WaitSearchInput,
 		WaitNewSubInput,
-		WaitDevMessageInput
+		WaitDevMessageInput,
+		DeleteSub,
 	}
 }
 

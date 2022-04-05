@@ -5,12 +5,12 @@ namespace TelegramBot.UI.Bot.Commands.DevMessage
     /// <summary>
     /// Send message to admin. Ask what to send.
     /// </summary>
-    public class NewMessageCommand : CommandBase
+    public class SendMessageCommand : CommandUIBase
     {
         public override CommandFilter Filter =>
             FilterDefinitions.UICommand(CommandNames.UI.DevMessage);
 
-        public override Task Execute(CommandContext context)
+        public override Task ExecuteCommand(CommandContext context)
         {
             context.BotContext.State = BotState.WaitDevMessageInput;
 

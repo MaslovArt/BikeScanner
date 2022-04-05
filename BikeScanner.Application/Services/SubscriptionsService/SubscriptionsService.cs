@@ -57,7 +57,7 @@ namespace BikeScanner.Application.Services.SubscriptionsService
             return _mapper.Map<Subscription>(subscription); ;
         }
 
-        public async Task<Subscription[]> GetActiveSubs(long userId)
+        public async Task<Subscription[]> GetSubs(long userId)
         {
             var subscriptions = await _subscriptionsRepository.GetSubs(userId);
 

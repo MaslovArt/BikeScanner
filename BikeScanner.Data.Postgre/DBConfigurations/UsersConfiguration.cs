@@ -10,12 +10,12 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
             builder.HasAlternateKey(e => e.UserId);
-            builder.HasIndex(e => e.AccountStatus);
+            builder.HasIndex(e => e.State);
             builder
-                .Property(e => e.AccountStatus)
+                .Property(e => e.State)
                 .HasConversion(
                     v => v.ToString(),
-                    v => Enum.Parse<AccountStatus>(v));
+                    v => Enum.Parse<AccountState>(v));
         }
     }
 }

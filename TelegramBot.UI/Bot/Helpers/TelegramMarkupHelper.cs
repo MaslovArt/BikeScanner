@@ -16,7 +16,7 @@ namespace TelegramBot.UI.Bot.Helpers
         /// <param name="btns">Array of btns (same text and callback)</param>
         /// <param name="autoHide">Hide keyboard after first usage</param>
         /// <returns></returns>
-        public static IReplyMarkup KeyboardRowBtns(string[] btns, bool autoHide = false)
+        public static ReplyKeyboardMarkup KeyboardRowBtns(string[] btns, bool autoHide = false)
         {
             var buttons = new List<List<KeyboardButton>>
             {
@@ -33,7 +33,7 @@ namespace TelegramBot.UI.Bot.Helpers
         /// </summary>
         /// <param name="btns">Array of btns (same text and callback)</param>
         /// <returns></returns>
-		public static IReplyMarkup MessageRowBtns(params string[] btns)
+		public static InlineKeyboardMarkup MessageRowBtns(params string[] btns)
         {
             var buttons = btns
                 .ToMax64BytesValue()
@@ -46,7 +46,7 @@ namespace TelegramBot.UI.Bot.Helpers
         /// </summary>
         /// <param name="btns">Array of btns (btn text, btn callback)</param>
         /// <returns></returns>
-        public static IReplyMarkup MessageRowBtns(params (string text, string callback)[] btns)
+        public static InlineKeyboardMarkup MessageRowBtns(params (string text, string callback)[] btns)
         {
             var buttons = btns
                 .Select(btn => InlineKeyboardButton.WithCallbackData(
@@ -61,7 +61,7 @@ namespace TelegramBot.UI.Bot.Helpers
         /// </summary>
         /// <param name="btns">Array of btns (same text and callback)</param>
         /// <returns></returns>
-        public static IReplyMarkup MessageColumnBtns(params string[] btns)
+        public static InlineKeyboardMarkup MessageColumnBtns(params string[] btns)
         {
             var buttons = btns
                 .ToMax64BytesValue()
@@ -77,7 +77,7 @@ namespace TelegramBot.UI.Bot.Helpers
         /// </summary>
         /// <param name="btns">Array of btns (btn text, btn callback)</param>
         /// <returns></returns>
-        public static IReplyMarkup MessageColumnBtns(params (string text, string callback)[] btns)
+        public static InlineKeyboardMarkup MessageColumnBtns(params (string text, string callback)[] btns)
         {
             var buttons = btns
                 .Select(btn => new List<InlineKeyboardButton>()

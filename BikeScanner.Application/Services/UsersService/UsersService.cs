@@ -26,35 +26,9 @@ namespace BikeScanner.Application.Services.UsersService
                 user = new UserEntity()
                 {
                     UserId = userId,
-                    AccountStatus = AccountStatus.Active
+                    State = AccountState.Active
                 };
                 await _usersRepository.Add(user);
-            }
-
-            return _mapper.Map<User>(user);
-        }
-
-        public async Task<User> EnsureActiveUser(long userId)
-        {
-            var user = await _usersRepository.FindUser(userId);
-            if (user == null)
-            {
-                user = new UserEntity()
-                {
-                    UserId = userId,
-                    AccountStatus = AccountStatus.Active
-                };
-                await _usersRepository.Add(user);
-            }
-
-            else if (user.AccountStatus == AccountStatus.Ban)
-            {
-                throw AppError.Forbidden("Доступ ограничен.");
-            }
-            else if (user.AccountStatus == AccountStatus.Inactive)
-            {
-                user.AccountStatus = AccountStatus.Active;
-                await _usersRepository.Update(user);
             }
 
             return _mapper.Map<User>(user);
@@ -65,7 +39,7 @@ namespace BikeScanner.Application.Services.UsersService
             var user = await _usersRepository.FindUser(userId)
                 ?? throw AppError.NotExists($"Пользователь {userId}]");
 
-            user.AccountStatus = AccountStatus.Active;
+            user.State = AccountState.Active;
             await _usersRepository.Update(user);
         }
 
@@ -74,7 +48,7 @@ namespace BikeScanner.Application.Services.UsersService
             var user = await _usersRepository.FindUser(userId)
                 ?? throw AppError.NotExists($"Пользователь {userId}]");
 
-            user.AccountStatus = AccountStatus.Inactive;
+            user.State = AccountState.Inactive;
             await _usersRepository.Update(user);
         }
     }

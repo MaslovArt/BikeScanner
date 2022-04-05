@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.UI.Exceptions;
 
@@ -92,12 +94,47 @@ namespace TelegramBot.UI.Bot.Commands
                 throw new ChatIdException(context.Update);
         }
 
+        protected bool IsCallback(CommandContext context)
+        {
+            return context.Update.Type == UpdateType.CallbackQuery;
+        }
+
+        protected Task EditCallbackMessage(CommandContext context, InlineKeyboardMarkup markup)
+        {
+            if (context.Update.CallbackQuery is null)
+                throw new ArgumentException("CallbackQuery update required!");
+
+            return context.Client.EditMessageTextAsync(
+                context.Update.CallbackQuery.Message.Chat,
+                context.Update.CallbackQuery.Message.MessageId,
+                context.Update.CallbackQuery.Message.Text,
+                replyMarkup: markup);
+        }
+
+        protected Task EditCallbackMessage(string text, CommandContext context, InlineKeyboardMarkup markup)
+        {
+            if (context.Update.CallbackQuery is null)
+                throw new ArgumentException("CallbackQuery update required!");
+
+            return context.Client.EditMessageTextAsync(
+                context.Update.CallbackQuery.Message.Chat,
+                context.Update.CallbackQuery.Message.MessageId,
+                text,
+                replyMarkup: markup);
+        }
+
         protected Task AnswerCallback(string text, CommandContext context)
         {
             var callbackId = context.Update.CallbackQuery.Id;
             return context.Client.AnswerCallbackQueryAsync(callbackId, text, false);
         }
 
+        /// <summary>
+        /// Send messages (possible random order)
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected Task SendMessages(IEnumerable<string> messages, CommandContext context)
         {
             var tasks = messages.Select(m => SendMessage(m, context));
@@ -110,7 +147,7 @@ namespace TelegramBot.UI.Bot.Commands
             return context.Client.SendTextMessageAsync(chatId, message);
         }
 
-        protected Task SendMessageWithButtons(
+        protected Task SendMessage(
             string message,
             CommandContext context,
             IReplyMarkup markup

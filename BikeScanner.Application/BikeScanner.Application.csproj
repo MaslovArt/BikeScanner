@@ -21,10 +21,14 @@
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="AutoMapper" />
     <None Remove="ServiceCollection\" />
+    <None Remove="Jobs\AdditionalCrowlingJob\" />
+    <None Remove="Jobs\FullCrowlingJob\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configs\" />
     <Folder Include="Services\UsersService\" />
     <Folder Include="ServiceCollection\" />
+    <Folder Include="Jobs\AdditionalCrawlingJob\" />
+    <Folder Include="Jobs\FullCrowlingJob\" />
   </ItemGroup>
 </Project>

@@ -20,7 +20,7 @@ namespace BikeScanner.Application.Services.SubscriptionsService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Subscription[]> GetActiveSubs(long userId);
+        Task<Subscription[]> GetSubs(long userId);
 
         /// <summary>
         /// Remove user sub

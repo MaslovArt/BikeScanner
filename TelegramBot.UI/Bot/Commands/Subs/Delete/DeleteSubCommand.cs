@@ -8,7 +8,7 @@ namespace TelegramBot.UI.Bot.Commands.Subs
     /// <summary>
     /// Delete sub. Ask what to delete.
     /// </summary>
-    public class DeleteSubCommand : CommandBase
+    public class DeleteSubCommand : CommandUIBase
     {
         private readonly ISubscriptionsService _subs;
 
@@ -21,10 +21,10 @@ namespace TelegramBot.UI.Bot.Commands.Subs
             FilterDefinitions.UICommand(CommandNames.UI.DeleteSub),
             FilterDefinitions.CallbackCommand(CommandNames.UI.DeleteSub));
 
-        public override async Task Execute(CommandContext context)
+        public override async Task ExecuteCommand(CommandContext context)
         {
             var userId = UserId(context);
-            var userSubs = await _subs.GetActiveSubs(userId);
+            var userSubs = await _subs.GetSubs(userId);
 
             if (userSubs.Length == 0)
             {
@@ -34,8 +34,11 @@ namespace TelegramBot.UI.Bot.Commands.Subs
 
             var btns = userSubs
                 .Select(s => (s.SearchQuery, $"{CommandNames.Internal.ConfirmDeleteSub} {s.Id}"))
+                .Append(BaseButtons.Cancel)
                 .ToArray();
-            await SendMessageWithButtons("Какой удалить?", context, TelegramMarkupHelper.MessageColumnBtns(btns));
+            await EditCallbackMessage("Какой удалить?", context, TelegramMarkupHelper.MessageColumnBtns(btns));
+
+            context.BotContext.State = BotState.DeleteSub;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
             var resultMessage = $"По запросу '{searchQuery}' нашел {result.Total} объявлений.";
             var saveSearchBtn = TelegramMarkupHelper.MessageRowBtns(
                 ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {searchQuery}"));
-            await SendMessageWithButtons(resultMessage, context, saveSearchBtn);
+            await SendMessage(resultMessage, context, saveSearchBtn);
 
             var adUrls = result.Items.Select(r => r.AdUrl);
             await SendMessages(adUrls, context);
@@ -52,7 +52,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
                 var moreMessage = $"Показать еще? ({result.Total - result.Items.Length})";
                 var moreButton = TelegramMarkupHelper.MessageRowBtns(
                     ("Еще", $"{CommandNames.Internal.MoreSearchResults} {searchQuery}{ParamSeparator}{_perPage}"));
-                await SendMessageWithButtons(moreMessage, context, moreButton);
+                await SendMessage(moreMessage, context, moreButton);
             }
 
             context.BotContext.State = BotState.Default;

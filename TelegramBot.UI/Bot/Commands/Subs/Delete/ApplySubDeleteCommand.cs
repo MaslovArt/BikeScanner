@@ -1,19 +1,17 @@
 ﻿using System.Threading.Tasks;
 using BikeScanner.Application.Services.SubscriptionsService;
+using TelegramBot.UI.Bot.Helpers;
 
 namespace TelegramBot.UI.Bot.Commands.Subs
 {
     /// <summary>
     /// Delete sub. Delete selected sub.
     /// </summary>
-	public class ApplySubDeleteCommand : CommandBase
+	public class ApplySubDeleteCommand : GetSubsCommand
 	{
-        private readonly ISubscriptionsService _subs;
-
         public ApplySubDeleteCommand(ISubscriptionsService subscriptionsService)
-        {
-            _subs = subscriptionsService;
-        }
+            : base(subscriptionsService)
+        { }
 
         public override CommandFilter Filter =>
             FilterDefinitions.CallbackCommand(CommandNames.Internal.ApplyDeleteSub);
@@ -21,10 +19,12 @@ namespace TelegramBot.UI.Bot.Commands.Subs
         public override async Task Execute(CommandContext context)
         {
             var subId = int.Parse(ChatInput(context, CommandNames.Internal.ApplyDeleteSub));
-            var sub = await _subs.RemoveSub(subId);
+            var deletedSub = await _subsService.RemoveSub(subId);
 
-            var message = $"Поиск '{sub.SearchQuery}' удален.";
-            await SendMessage(message, context);
+            var deleteMessage = $"{Emoji.X} Поиск '{deletedSub.SearchQuery}' удален. {Emoji.X}";
+            await AnswerCallback(deleteMessage, context);
+
+            await base.Execute(context);
         }
     }
 }

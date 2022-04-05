@@ -25,9 +25,9 @@ namespace BikeScanner.Data.Postgre.Repositories
                         UserId = n.UserId,
                         Created = n.Created,
                         SearchQuery = n.SearchQuery,
-                        UserAccountStatus = u.AccountStatus
+                        UserAccountStatus = u.State
                     })
-                .Where(e => e.UserAccountStatus == AccountStatus.Active)
+                .Where(e => e.UserAccountStatus == AccountState.Active)
                 .Select(e => new SubscriptionEntity()
                 {
                     Id = e.Id,
