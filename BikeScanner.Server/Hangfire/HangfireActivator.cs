@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 
-namespace BikeScanner.Server
+namespace BikeScanner.Server.Hangfire
 {
     public class HangfireActivator : JobActivator
     {

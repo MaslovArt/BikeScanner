@@ -44,7 +44,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
                 ("Сохранить поиск", $"{CommandNames.Internal.AddSubFromSearch} {searchQuery}"));
             await SendMessage(resultMessage, context, saveSearchBtn);
 
-            var adUrls = result.Items.Select(r => r.AdUrl);
+            var adUrls = result.Items.Select(r => r.Url);
             await SendMessages(adUrls, context);
 
             if (result.Total > result.Items.Length)

@@ -3,7 +3,7 @@
 	public record SearchResult
     {
         public int Id { get; set; }
-        public string AdUrl { get; set; }
+        public string Url { get; set; }
     }
 }
 

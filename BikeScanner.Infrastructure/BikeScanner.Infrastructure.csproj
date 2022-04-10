@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
     <PackageReference Include="Telegram.Bot" Version="17.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,8 +17,20 @@
   <ItemGroup>
     <None Remove="Telegram.Bot" />
     <None Remove="ServiceCollection\" />
+    <None Remove="Crawlers\" />
+    <None Remove="Services\" />
+    <None Remove="Services\ApiExecutor\" />
+    <None Remove="Services\Vk\" />
+    <None Remove="Configs\" />
+    <None Remove="Microsoft.Extensions.Options.ConfigurationExtensions" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServiceCollection\" />
+    <Folder Include="Crawlers\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Api\" />
+    <Folder Include="Services\Vk\" />
+    <Folder Include="Configs\" />
+    <Folder Include="Crawlers\" />
   </ItemGroup>
 </Project>

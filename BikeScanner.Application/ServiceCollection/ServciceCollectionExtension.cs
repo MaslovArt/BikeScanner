@@ -4,6 +4,8 @@ using BikeScanner.Application.Services.SubscriptionsService;
 using BikeScanner.Application.Services.UsersService;
 using BikeScanner.Application.Mapping;
 using Microsoft.Extensions.DependencyInjection;
+using BikeScanner.Application.Configs;
+using Microsoft.Extensions.Configuration;
 
 namespace BikeScanner.Application.ServiceCollection
 {
@@ -30,11 +32,13 @@ namespace BikeScanner.Application.ServiceCollection
         }
 
 		public static IServiceCollection AddBikeScannerJobs(
-			this IServiceCollection services
+			this IServiceCollection services,
+			IConfiguration configuration
 			)
         {
-			services.AddTransient<IContentIndexatorJob, ContentIndexatorJob>();
-			services.AddTransient<IAutoSearchJob, AutoSearchJob>();
+			services.Configure<ContentConfig>(configuration.GetSection(nameof(ContentConfig)));
+
+			services.AddTransient<IAdditionalCrawlingJob, AdditionalCrawlingJob>();
 			services.AddTransient<INotificationsSenderJob, NotificationsSenderJob>();
 
 			return services;

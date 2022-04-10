@@ -14,12 +14,7 @@ namespace BikeScanner.Application.Interfaces
         /// </summary>
         /// <param name="since">Get since datetime</param>
         /// <returns>Array of ads</returns>
-		Task<AdItem[]> Run(DateTime since);
-
-		/// <summary>
-        /// Sections array
-        /// </summary>
-		string[] NeedValidityCheck { get; }
+		Task<AdItem[]> Get(DateTime since);
 	}
 }
 

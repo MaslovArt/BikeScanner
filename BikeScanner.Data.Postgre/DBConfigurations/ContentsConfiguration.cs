@@ -8,13 +8,13 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
     {
         public void Configure(EntityTypeBuilder<ContentEntity> builder)
         {
-            builder.HasAlternateKey(e => e.AdUrl);
+            builder.HasAlternateKey(e => e.Url);
 
             builder.HasIndex(e => e.IndexEpoch);
-            builder.HasIndex(e => e.Published);
+            builder.HasIndex(e => e.Created);
 
             builder.Property(e => e.Text).IsRequired();
-            builder.Property(e => e.AdUrl).IsRequired();
+            builder.Property(e => e.Url).IsRequired();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace BikeScanner.Data.Postgre.Repositories
             var queryable = Set
                 .AsNoTracking()
                 .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
-                .OrderByDescending(c => c.Published);
+                .OrderByDescending(c => c.Created);
 
             var entities = await queryable
                 .Skip(skip)
@@ -67,6 +67,14 @@ namespace BikeScanner.Data.Postgre.Repositories
             return Set
                 .AsNoTracking()
                 .Where(c => c.IndexEpoch == indexingStamp)
+                .ToArrayAsync();
+        }
+
+        public Task<string[]> GetAllUrls()
+        {
+            return Set
+                .AsNoTracking()
+                .Select(c => c.Url)
                 .ToArrayAsync();
         }
     }

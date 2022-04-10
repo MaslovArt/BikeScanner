@@ -10,5 +10,6 @@ namespace BikeScanner.Domain.Repositories
         Task<int> CountSearch(string query);
         Task<ContentEntity[]> SearchEpoch(string query, long indexEpoch);
         Task<ContentEntity[]> GetContents(long indexEpoch);
+        Task<string[]> GetAllUrls();
     }
 }

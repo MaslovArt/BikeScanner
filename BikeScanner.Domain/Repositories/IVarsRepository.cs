@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace BikeScanner.Domain.Repositories
 {
     public interface IVarsRepository
     {
-        Task<long?> GetLastIndexEpoch();
-        Task SetLastIndexEpoch(long stamp);
+        Task<DateTime?> GetLastCrawlingTime();
+        Task SetLastCrawlingTime(DateTime time);
 
-        Task<long?> GetLastScheduleEpoch();
-        Task SetLastScheduleEpoch(long stamp);
+        Task<DateTime?> GetLastScheduleEpoch();
+        Task SetLastScheduleEpoch(DateTime time);
     }
 }

@@ -65,9 +65,9 @@ namespace BikeScanner.Infrastructure.VK.Services
                 .Select(p => new ContentEntity() 
                 { 
                     Text = p.Text,
-                    Published = DateTimeOffset.FromUnixTimeSeconds(p.DateStamp).DateTime,
+                    Created = DateTimeOffset.FromUnixTimeSeconds(p.DateStamp).DateTime,
                     SourceType = Consts.VkAlbumSourceType,
-                    AdUrl = p.Url
+                    Url = p.Url
                 })
                 .ToArray();
         }

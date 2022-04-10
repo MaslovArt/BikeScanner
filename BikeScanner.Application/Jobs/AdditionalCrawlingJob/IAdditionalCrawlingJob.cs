@@ -2,7 +2,7 @@
 
 namespace BikeScanner.Application.Jobs
 {
-    public interface IAutoSearchJob
+    public interface IAdditionalCrawlingJob
     {
         Task Execute();
     }

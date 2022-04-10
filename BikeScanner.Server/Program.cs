@@ -1,32 +1,35 @@
-﻿using BikeScanner.Application.ServiceCollection;
+﻿using BikeScanner.Application.Jobs;
+using BikeScanner.Application.ServiceCollection;
 using BikeScanner.Data.Postgre.ServiceCollection;
 using BikeScanner.Infrastructure.ServiceCollection;
+using BikeScanner.Server.Hangfire;
+using Hangfire;
+using Hangfire.PostgreSql;
 using NLog.Web;
 using TelegramBot.UI.ServiceCollection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseNLog();
 
-var configuration = builder.Configuration;
+var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services
     .AddMemoryCache()
-    .AddPostgresDB(configuration)
+    .AddPostgresDB(config)
     .AddBikeScannerMapping()
     .AddBikeScannerServices()
-    .AddBikeScannerJobs()
-    .AddNotificators()
-    .AddBikeScannerTelegramBotUI(configuration)
-    .AddTelegramPollingHostedService();
+    .AddBikeScannerJobs(config)
+    .AddTelegramNotificator()
+    .AddVkCrawler(config)
+    .AddBikeScannerTelegramBotUI(config)
+    .AddTelegramPollingHostedService()
+    .AddHangfire(o => o.UsePostgreSqlStorage(config.GetConnectionString("DefaultConnection")))
+    .AddHangfireServer();
 //builder.Services.AddSwaggerGen(c =>
 //{
 //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeScanner Api", Version = "v1" });
 //});
-//builder.Services.AddHangfire(options =>
-//    options.UsePostgreSqlStorage(configuration.GetConnectionString("DefaultConnection")));
-//builder.Services.AddHangfireServer();
-
 
 var app = builder.Build();
 
@@ -39,12 +42,21 @@ var app = builder.Build();
 //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeScanner Api V1");
 //    });
 //}
-//GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
-//GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
-//app.UseHangfireDashboard();
+GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
+GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
+app.UseHangfireDashboard();
 
-//// Initializations
-//RecurringJob.AddOrUpdate<ScanJobsChain>("SCAN_CHAIN", j => j.ExecuteChain(), Cron.Hourly);
+// Hangfire jobs
+RecurringJob.AddOrUpdate<IAdditionalCrawlingJob>(
+    Jobs.ADDITIONAL_CRAWLING,
+    j => j.Execute(),
+    Cron.Never
+    );
+RecurringJob.AddOrUpdate<INotificationsSenderJob>(
+    Jobs.NOTIFICATIONS,
+    j => j.Execute(),
+    Cron.Never)
+    ;
 
 app.Run();
 

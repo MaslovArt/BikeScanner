@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace BikeScanner.Infrastructure.Notificators
 {
-    public class TestLoggerNotificator : INotificator
+    public class LogNotificator : INotificator
     {
-        private readonly ILogger<TestLoggerNotificator> _logger;
+        private readonly ILogger<LogNotificator> _logger;
 
-        public TestLoggerNotificator(ILogger<TestLoggerNotificator> logger)
+        public LogNotificator(ILogger<LogNotificator> logger)
         {
             _logger = logger;
         }

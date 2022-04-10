@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BikeScanner.Application.Models;
 using BikeScanner.Application.Models.Search;
 using BikeScanner.Application.Models.Subs;
 using BikeScanner.Application.Models.Users;
@@ -13,6 +14,7 @@ namespace BikeScanner.Application.Mapping
 			CreateMap<ContentEntity, SearchResult>();
 			CreateMap<SubscriptionEntity, Subscription>();
 			CreateMap<UserEntity, User>();
+			CreateMap<AdItem, ContentEntity>();
 		}
 	}
 }

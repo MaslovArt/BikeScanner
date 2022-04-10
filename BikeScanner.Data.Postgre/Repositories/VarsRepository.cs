@@ -1,12 +1,13 @@
 ﻿using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace BikeScanner.Data.Postgre.Repositories
 {
     public class VarsRepository : IVarsRepository
     {
-        private readonly string _indexingStampKey = "LastIndexEpoch";
+        private readonly string _indexingStampKey = "LastCrawlingTime";
         private readonly string _schedulingStampKey = "LastScheduleEpoch";
 
         private readonly BikeScannerContext _context;
@@ -16,56 +17,56 @@ namespace BikeScanner.Data.Postgre.Repositories
             _context = context;
         }
 
-        public async Task<long?> GetLastIndexEpoch()
+        public async Task<DateTime?> GetLastCrawlingTime()
         {
             var value = await _context.Vars.FindAsync(_indexingStampKey);
             return value == null
                 ? null
-                : long.Parse(value.Value);
+                : DateTime.Parse(value.Value);
         }
 
-        public async Task SetLastIndexEpoch(long stamp)
+        public async Task SetLastCrawlingTime(DateTime time)
         {
             var indexingTimeVar = await _context.Vars.FindAsync(_indexingStampKey);
 
             if (indexingTimeVar != null)
             {
-                indexingTimeVar.Value = stamp.ToString();
+                indexingTimeVar.Value = time.ToString();
             }
             else
             {
                 _context.Vars.Add(new VarEntity()
                 {
                     Key = _indexingStampKey,
-                    Value = stamp.ToString()
+                    Value = time.ToString()
                 });
             }
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task<long?> GetLastScheduleEpoch()
+        public async Task<DateTime?> GetLastScheduleEpoch()
         {
             var value = await _context.Vars.FindAsync(_schedulingStampKey);
             return value == null
                 ? null
-                : long.Parse(value.Value);
+                : DateTime.Parse(value.Value);
         }
 
-        public async Task SetLastScheduleEpoch(long stamp)
+        public async Task SetLastScheduleEpoch(DateTime time)
         {
             var indexingTimeVar = await _context.Vars.FindAsync(_schedulingStampKey);
 
             if (indexingTimeVar != null)
             {
-                indexingTimeVar.Value = stamp.ToString();
+                indexingTimeVar.Value = time.ToString();
             }
             else
             {
                 _context.Vars.Add(new VarEntity()
                 {
                     Key = _schedulingStampKey,
-                    Value = stamp.ToString()
+                    Value = time.ToString()
                 });
             }
 

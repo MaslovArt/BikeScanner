@@ -35,7 +35,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
 
             var result = await _searchService.Search(userId, searchQuery, skip, _perPage);
 
-            var adUrls = result.Items.Select(r => r.AdUrl);
+            var adUrls = result.Items.Select(r => r.Url);
             await SendMessages(adUrls, context);
 
             if (result.Total > result.Offset)

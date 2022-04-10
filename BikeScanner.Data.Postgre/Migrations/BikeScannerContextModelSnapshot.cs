@@ -56,15 +56,11 @@ namespace BikeScanner.Data.Postgre.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("IndexEpoch")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Published")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SourceType")
                         .HasColumnType("text");
@@ -73,13 +69,17 @@ namespace BikeScanner.Data.Postgre.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("AdUrl");
+                    b.HasAlternateKey("Url");
+
+                    b.HasIndex("Created");
 
                     b.HasIndex("IndexEpoch");
-
-                    b.HasIndex("Published");
 
                     b.ToTable("Contents");
                 });
