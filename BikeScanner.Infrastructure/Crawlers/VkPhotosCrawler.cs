@@ -37,35 +37,31 @@ namespace BikeScanner.Infrastructure.Crawlers
 
         public async Task<AdItem[]> Get(DateTime loadSince)
         {
-            var groupsByOwner = _sourceConfig
+            var tasks = _sourceConfig
                 .Albums
-                .GroupBy(s => s.OwnerId);
-
-            var albumTasks = groupsByOwner
                 .Select(source => GetPhotos(source, loadSince));
-            var results = await Task.WhenAll(albumTasks);
+            var results = await Task.WhenAll(tasks);
 
             return results
                 .SelectMany(r => r)
                 .ToArray();
         }
 
-        private async Task<AdItem[]> GetPhotos(IGrouping<int, AlbumSourceConfig> sources, DateTime since)
+        private async Task<AdItem[]> GetPhotos(AlbumSourceConfig source, DateTime since)
         {
             var sinceStamp = since.UnixStamp();
 
-            var albumsIds = sources
-                .Select(a => a.Id)
+            var albumsIds = source
+                .List
+                .Select(a => a.AlbumId)
                 .ToArray();
-            var albumsInfo = await _vkApi.GetAlbums(sources.Key, albumsIds);
+            var albumsInfo = await _vkApi.GetAlbums(source.OwnerId, albumsIds);
+            var updatedAlbums = albumsInfo.Where(a => a.Updated > sinceStamp);
+            var updatedSources = source
+                .List
+                .Where(s => updatedAlbums.Any(ua => ua.Id == s.AlbumId));
 
-            var updatedAlbums = albumsInfo
-                .Where(a => a.Updated > sinceStamp);
-            var updatedSources = sources
-                .Where(s => updatedAlbums.Any(ua => ua.Id == s.Id));
-
-            var photosTasks = updatedSources
-                .Select(s => LoadAlbumPhotos(s, sinceStamp));
+            var photosTasks = updatedSources.Select(s => LoadAlbumPhotos(source, s, sinceStamp));
             var photos = await Task.WhenAll(photosTasks);
 
             return photos
@@ -82,7 +78,11 @@ namespace BikeScanner.Infrastructure.Crawlers
         }
 
         //ToDo Load first comment if no photo text provided
-        private async Task<PhotoModel[]> LoadAlbumPhotos(AlbumSourceConfig source, long sinceStamp)
+        private async Task<PhotoModel[]> LoadAlbumPhotos(
+            AlbumSourceConfig source,
+            AlbumItemConfig album,
+            long sinceStamp
+            )
         {
             var result = new List<PhotoModel>();
             var offset = 0;
@@ -91,7 +91,7 @@ namespace BikeScanner.Infrastructure.Crawlers
 
             while (true)
             {
-                var photos = await _vkApi.GetPhotos(source.OwnerId, source.Id, offset, count);
+                var photos = await _vkApi.GetPhotos(source.OwnerId, album.AlbumId, offset, count);
                 var validPhotos = photos.Where(p => p.DateStamp > sinceStamp);
                 result.AddRange(validPhotos);
 
@@ -101,7 +101,7 @@ namespace BikeScanner.Infrastructure.Crawlers
                                     result.Count > _sourceConfig.MaxPostsPerGroup ||
                                     result.Count == 0)
                 {
-                    _logger.LogInformation($"Download {result.Count} photos from [{source.OwnerName}:{source.Title}] ({requestsCounter} request)");
+                    _logger.LogInformation($"Download {result.Count} photos from [{source.OwnerName}:{album.AlbumName}] ({requestsCounter} request)");
                     return result.ToArray();
                 }
 

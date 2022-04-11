@@ -67,7 +67,7 @@ namespace BikeScanner.Infrastructure.Crawlers
                 requestsCounter++;
 
                 if (validPosts.Count() < count ||
-                    result.Count > _apiConfig.MaxApiRequestsPerSecond ||
+                    result.Count > _sourceConfig.MaxPostsPerGroup ||
                     result.Count == 0)
                 {
                     _logger.LogInformation($"Download {result.Count} posts from [{source.OwnerName}] ({requestsCounter} requests)");
