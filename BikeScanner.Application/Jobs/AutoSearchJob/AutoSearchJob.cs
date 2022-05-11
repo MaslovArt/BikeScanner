@@ -57,7 +57,7 @@ namespace BikeScanner.Application.Jobs
                     var result = await _contentsRepository.Search(search.SearchQuery, 0, 100, lastExecuteTime);
                     var searchNotifications = result.Items.Select(c => new NotificationQueueEntity()
                     {
-                        Text = $"Новый результат поиска '{search.SearchQuery}'\n{c.Url}",
+                        Text = $"Новый результат поиска '{search.SearchQuery}'\n\n{c.Url}",
                         UserId = search.UserId,
                         Status = NotificationStatus.Scheduled
                     });

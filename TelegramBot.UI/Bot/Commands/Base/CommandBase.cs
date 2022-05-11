@@ -108,7 +108,19 @@ namespace TelegramBot.UI.Bot.Commands
                 context.Update.CallbackQuery.Message.Chat,
                 context.Update.CallbackQuery.Message.MessageId,
                 context.Update.CallbackQuery.Message.Text,
-                replyMarkup: markup);
+                replyMarkup: markup
+                );
+        }
+
+        protected Task DeleteMessage(CommandContext context)
+        {
+            if (context.Update.CallbackQuery is null)
+                throw new ArgumentException("CallbackQuery update required!");
+
+            return context.Client.DeleteMessageAsync(
+                context.Update.CallbackQuery.Message.Chat,
+                context.Update.CallbackQuery.Message.MessageId
+                );
         }
 
         protected Task EditCallbackMessage(string text, CommandContext context, InlineKeyboardMarkup markup)
@@ -120,7 +132,8 @@ namespace TelegramBot.UI.Bot.Commands
                 context.Update.CallbackQuery.Message.Chat,
                 context.Update.CallbackQuery.Message.MessageId,
                 text,
-                replyMarkup: markup);
+                replyMarkup: markup
+                );
         }
 
         protected Task AnswerCallback(string text, CommandContext context)

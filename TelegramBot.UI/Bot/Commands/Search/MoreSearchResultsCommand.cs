@@ -37,6 +37,7 @@ namespace TelegramBot.UI.Bot.Commands.Search
 
             var adUrls = result.Items.Select(r => r.Url);
             await SendMessages(adUrls, context);
+            await DeleteMessage(context);
 
             if (result.Total > result.Offset)
             {
