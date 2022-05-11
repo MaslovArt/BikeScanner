@@ -3,6 +3,7 @@ using System;
 using BikeScanner.Data.Postgre;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BikeScanner.Data.Postgre.Migrations
 {
     [DbContext(typeof(BikeScannerContext))]
-    partial class BikeScannerContextModelSnapshot : ModelSnapshot
+    [Migration("20220427125148_ContentCreatedField")]
+    partial class ContentCreatedField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,6 +61,9 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("IndexEpoch")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("Published")
                         .HasColumnType("timestamp with time zone");
 
@@ -77,7 +82,7 @@ namespace BikeScanner.Data.Postgre.Migrations
 
                     b.HasAlternateKey("Url");
 
-                    b.HasIndex("Created");
+                    b.HasIndex("IndexEpoch");
 
                     b.HasIndex("Published");
 
@@ -117,14 +122,18 @@ namespace BikeScanner.Data.Postgre.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SearchQuery")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("SendTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
 

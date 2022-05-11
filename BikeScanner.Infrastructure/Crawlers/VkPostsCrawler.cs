@@ -76,7 +76,7 @@ namespace BikeScanner.Infrastructure.Crawlers
                         .Select(r => new AdItem()
                         {
                             Text = r.Text,
-                            Created = DateTimeOffset.FromUnixTimeSeconds(r.DateStamp).DateTime,
+                            Published = DateTimeOffset.FromUnixTimeSeconds(r.DateStamp).DateTime,
                             SourceType = CrawlerType.VkWall.ToString(),
                             Url = r.Url
                         })

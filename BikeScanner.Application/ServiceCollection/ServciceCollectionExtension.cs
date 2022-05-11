@@ -39,6 +39,7 @@ namespace BikeScanner.Application.ServiceCollection
 			services.Configure<ContentConfig>(configuration.GetSection(nameof(ContentConfig)));
 
 			services.AddTransient<IAdditionalCrawlingJob, AdditionalCrawlingJob>();
+			services.AddTransient<IAutoSearchJob, AutoSearchJob>();
 			services.AddTransient<INotificationsSenderJob, NotificationsSenderJob>();
 
 			return services;

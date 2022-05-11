@@ -58,7 +58,7 @@ namespace BikeScanner.Application.Jobs
                     .Where(c => !currentContents.Contains(c.Url))
                     .ToArray();
                 foreach (var c in content)
-                    c.Created = new DateTime(c.Created.Ticks, DateTimeKind.Utc);
+                    c.Published = new DateTime(c.Published.Ticks, DateTimeKind.Utc);
 
                 var entities = _mapper.Map<ContentEntity[]>(content);
                 await _contentsRepository.AddRange(entities);

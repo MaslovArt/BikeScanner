@@ -1,6 +1,8 @@
-﻿using BikeScanner.Domain.Models;
+﻿using BikeScanner.Data.Postgre.Extensions;
+using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,12 +24,17 @@ namespace BikeScanner.Data.Postgre.Repositories
                 .ToArrayAsync();
         }
 
-        public async Task<Page<ContentEntity>> Search(string query, int skip, int take)
+        public async Task<Page<ContentEntity>> Search(
+            string query,
+            int skip,
+            int take,
+            DateTime? since)
         {
             var queryable = Set
                 .AsNoTracking()
                 .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
-                .OrderByDescending(c => c.Created);
+                .WhereIf(c => c.Created >= since.Value, since.HasValue)
+                .OrderByDescending(c => c.Published);
 
             var entities = await queryable
                 .Skip(skip)
@@ -53,20 +60,11 @@ namespace BikeScanner.Data.Postgre.Repositories
                 .CountAsync();
         }
 
-        public Task<ContentEntity[]> SearchEpoch(string query, long indexingStamp)
+        public Task<ContentEntity[]> GetContents(DateTime createdSince)
         {
             return Set
                 .AsNoTracking()
-                .Where(c => c.IndexEpoch == indexingStamp)
-                .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
-                .ToArrayAsync();
-        }
-
-        public Task<ContentEntity[]> GetContents(long indexingStamp)
-        {
-            return Set
-                .AsNoTracking()
-                .Where(c => c.IndexEpoch == indexingStamp)
+                .Where(c => c.Created > createdSince)
                 .ToArrayAsync();
         }
 

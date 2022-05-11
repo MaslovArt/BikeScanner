@@ -37,9 +37,10 @@ namespace BikeScanner.Infrastructure.Crawlers
 
         public async Task<AdItem[]> Get(DateTime loadSince)
         {
+            var since = loadSince.UnixStamp();
             var tasks = _sourceConfig
                 .Albums
-                .Select(source => GetPhotos(source, loadSince));
+                .Select(source => GetPhotos(source, since));
             var results = await Task.WhenAll(tasks);
 
             return results
@@ -47,21 +48,19 @@ namespace BikeScanner.Infrastructure.Crawlers
                 .ToArray();
         }
 
-        private async Task<AdItem[]> GetPhotos(AlbumSourceConfig source, DateTime since)
+        private async Task<AdItem[]> GetPhotos(AlbumSourceConfig source, long since)
         {
-            var sinceStamp = since.UnixStamp();
-
             var albumsIds = source
                 .List
                 .Select(a => a.AlbumId)
                 .ToArray();
             var albumsInfo = await _vkApi.GetAlbums(source.OwnerId, albumsIds);
-            var updatedAlbums = albumsInfo.Where(a => a.Updated > sinceStamp);
+            var updatedAlbums = albumsInfo.Where(a => a.Updated > since);
             var updatedSources = source
                 .List
                 .Where(s => updatedAlbums.Any(ua => ua.Id == s.AlbumId));
 
-            var photosTasks = updatedSources.Select(s => LoadAlbumPhotos(source, s, sinceStamp));
+            var photosTasks = updatedSources.Select(s => LoadAlbumPhotos(source, s, since));
             var photos = await Task.WhenAll(photosTasks);
 
             return photos
@@ -70,7 +69,7 @@ namespace BikeScanner.Infrastructure.Crawlers
                 .Select(p => new AdItem()
                 {
                     Text = p.Text,
-                    Created = DateTimeOffset.FromUnixTimeSeconds(p.DateStamp).DateTime,
+                    Published = DateTimeOffset.FromUnixTimeSeconds(p.DateStamp).DateTime,
                     SourceType = CrawlerType.VkAlbum.ToString(),
                     Url = p.Url
                 })

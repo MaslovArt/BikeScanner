@@ -27,6 +27,7 @@
     <None Remove="Jobs\FullCrowlingJob\" />
     <None Remove="Microsoft.Extensions.Configuration.Abstractions" />
     <None Remove="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <None Remove="Jobs\AutoSearchJob\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configs\" />
@@ -34,5 +35,6 @@
     <Folder Include="ServiceCollection\" />
     <Folder Include="Jobs\AdditionalCrawlingJob\" />
     <Folder Include="Jobs\FullCrowlingJob\" />
+    <Folder Include="Jobs\AutoSearchJob\" />
   </ItemGroup>
 </Project>

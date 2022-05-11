@@ -10,8 +10,8 @@ namespace BikeScanner.Data.Postgre.DBConfigurations
         {
             builder.HasAlternateKey(e => e.Url);
 
-            builder.HasIndex(e => e.IndexEpoch);
             builder.HasIndex(e => e.Created);
+            builder.HasIndex(e => e.Published);
 
             builder.Property(e => e.Text).IsRequired();
             builder.Property(e => e.Url).IsRequired();

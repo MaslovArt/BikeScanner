@@ -8,7 +8,7 @@ namespace BikeScanner.Data.Postgre.Repositories
     public class VarsRepository : IVarsRepository
     {
         private readonly string _indexingStampKey = "LastCrawlingTime";
-        private readonly string _schedulingStampKey = "LastScheduleEpoch";
+        private readonly string _autoSearchStampKey = "LastAutoSearchTime";
 
         private readonly BikeScannerContext _context;
 
@@ -45,17 +45,17 @@ namespace BikeScanner.Data.Postgre.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DateTime?> GetLastScheduleEpoch()
+        public async Task<DateTime?> GetLastAutoSearchTime()
         {
-            var value = await _context.Vars.FindAsync(_schedulingStampKey);
+            var value = await _context.Vars.FindAsync(_autoSearchStampKey);
             return value == null
                 ? null
                 : DateTime.Parse(value.Value);
         }
 
-        public async Task SetLastScheduleEpoch(DateTime time)
+        public async Task SetLastAutoSearchTime(DateTime time)
         {
-            var indexingTimeVar = await _context.Vars.FindAsync(_schedulingStampKey);
+            var indexingTimeVar = await _context.Vars.FindAsync(_autoSearchStampKey);
 
             if (indexingTimeVar != null)
             {
@@ -65,7 +65,7 @@ namespace BikeScanner.Data.Postgre.Repositories
             {
                 _context.Vars.Add(new VarEntity()
                 {
-                    Key = _schedulingStampKey,
+                    Key = _autoSearchStampKey,
                     Value = time.ToString()
                 });
             }

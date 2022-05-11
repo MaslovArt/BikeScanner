@@ -55,9 +55,18 @@ RecurringJob.AddOrUpdate<IAdditionalCrawlingJob>(
 RecurringJob.AddOrUpdate<INotificationsSenderJob>(
     Jobs.NOTIFICATIONS,
     j => j.Execute(),
-    Cron.Never)
-    ;
+    Cron.Never
+    );
+RecurringJob.AddOrUpdate<IAutoSearchJob>(
+    Jobs.AUTO_SEARCH,
+    j => j.Execute(),
+    Cron.Never
+    );
+RecurringJob.AddOrUpdate<CSNJob>(
+    Jobs.CSN,
+    j => j.Execute(),
+    Cron.Never
+    );
 
 app.Run();
-
 

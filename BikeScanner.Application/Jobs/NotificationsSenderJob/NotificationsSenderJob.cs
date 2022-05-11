@@ -1,5 +1,4 @@
 ﻿using BikeScanner.Application.Interfaces;
-using BikeScanner.Application.Services.UsersService;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.Extensions.Logging;
@@ -61,8 +60,7 @@ namespace BikeScanner.Application.Jobs
                 {
                     try
                     { 
-                        var msg = $"Новый результат поиска '{notification.SearchQuery}'\n{notification.AdUrl}";
-                        await _notificator.Send(notification.UserId, msg);
+                        await _notificator.Send(notification.UserId, notification.Text);
 
                         notification.SendTime = DateTime.UtcNow;
                         notification.Status = NotificationStatus.Sended;

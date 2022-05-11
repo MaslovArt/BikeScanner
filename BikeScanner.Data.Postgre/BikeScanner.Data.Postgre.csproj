@@ -26,6 +26,7 @@
   <ItemGroup>
     <None Remove="appsettings.Development.json" />
     <None Remove="ServiceCollection\" />
+    <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.DesignTimeDb.json" Condition="'$(ExcludeConfigFilesFromBuildOutput)'!='true'">
@@ -36,5 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServiceCollection\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ namespace BikeScanner.Application.Models
 		public string Url { get; set; }
 		public string SourceType { get; set; }
 		public string Section { get; set; }
-		public DateTime Created { get; set; }
+		public DateTime Published { get; set; }
 	}
 }
 

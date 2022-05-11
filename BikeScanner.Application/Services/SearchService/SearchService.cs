@@ -1,10 +1,8 @@
 ﻿using BikeScanner.Domain.Repositories;
 using System.Threading.Tasks;
-using System.Linq;
 using BikeScanner.Domain.Models;
 using BikeScanner.Application.Models.Search;
 using AutoMapper;
-
 namespace BikeScanner.Application.Services.SearchService
 {
     public class SearchService : ISearchService
@@ -12,7 +10,6 @@ namespace BikeScanner.Application.Services.SearchService
         private readonly IMapper                    _mapper;
         private readonly IActionsRepository         _actionsRepository;
         private readonly IContentsRepository        _contentsRepository;
-        private ContentEntity[]                     _newContents;
 
         public SearchService(
             IMapper mapper,
@@ -36,20 +33,6 @@ namespace BikeScanner.Application.Services.SearchService
                 Total = result.Total,
                 Offset = result.Offset
             };
-        }
-
-        public async Task<SearchResult[]> SearchEpoch(long userId, string query, long indexEpoch)
-        {
-            if (_newContents == null)
-            {
-                _newContents = await _contentsRepository.GetContents(indexEpoch);
-            }
-
-            var result = _newContents
-                .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
-                .ToArray();
-
-            return _mapper.Map<SearchResult[]>(result);
         }
     }
 }
