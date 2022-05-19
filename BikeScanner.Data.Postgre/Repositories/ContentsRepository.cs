@@ -1,4 +1,5 @@
-﻿using BikeScanner.Data.Postgre.Extensions;
+﻿using BikeScanner.Data.Postgre.Constants;
+using BikeScanner.Data.Postgre.Extensions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +33,8 @@ namespace BikeScanner.Data.Postgre.Repositories
         {
             var queryable = Set
                 .AsNoTracking()
-                .Where(c => c.Text.ToUpper().Contains(query.ToUpper()))
                 .WhereIf(c => c.Created >= since.Value, since.HasValue)
+                .Where(c => EF.Functions.ToTsVector(PostgreVectorLangs.Default, c.Text).Matches(query))
                 .OrderByDescending(c => c.Published);
 
             var entities = await queryable

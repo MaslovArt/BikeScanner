@@ -3,6 +3,7 @@ using System;
 using BikeScanner.Data.Postgre;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BikeScanner.Data.Postgre.Migrations
 {
     [DbContext(typeof(BikeScannerContext))]
-    partial class BikeScannerContextModelSnapshot : ModelSnapshot
+    [Migration("20220519182205_FullTextSearch2")]
+    partial class FullTextSearch2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace BikeScanner.Data.Postgre.Migrations
                     b.HasIndex("Published");
 
                     b.HasIndex("Text")
-                        .HasAnnotation("Npgsql:TsVectorConfig", "russian");
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english");
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Text"), "GIN");
 
