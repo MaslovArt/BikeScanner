@@ -44,25 +44,32 @@ namespace BikeScanner.Application.Jobs
 
                 _logger.LogInformation($"Starting auto search");
 
-                var saveSearchQueries = await _subscriptionsRepository.GetSubs();
-                if (saveSearchQueries.Length == 0)
+                var subs = await _subscriptionsRepository.GetSubs();
+                if (subs.Length == 0)
                 {
                     _logger.LogInformation($"No subscriptions. Skip search");
                     return;
                 }
 
-                var notifications = new List<NotificationQueueEntity>();
-                foreach (var search in saveSearchQueries)
-                {
-                    var result = await _contentsRepository.Search(search.SearchQuery, 0, 100, lastExecuteTime);
-                    var searchNotifications = result.Items.Select(c => new NotificationQueueEntity()
-                    {
-                        Text = $"Новый результат поиска '{search.SearchQuery}'\n\n{c.Url}",
-                        UserId = search.UserId,
-                        Status = NotificationStatus.Scheduled
-                    });
+                var groupedSubs = subs.GroupBy(s => s.SearchQuery);
+                _logger.LogInformation($"Total subs: {subs.Length}, uniq subs: {groupedSubs.Count()}");
 
-                    notifications.AddRange(searchNotifications);
+                var notifications = new List<NotificationQueueEntity>();
+                foreach (var subGroup in groupedSubs)
+                {
+                    var searchQuery = subGroup.Key;
+                    var result = await _contentsRepository.Search(searchQuery, 0, 100, lastExecuteTime);
+                    foreach(var sub in subGroup)
+                    {
+                        var searchNotifications = result.Items.Select(c => new NotificationQueueEntity()
+                        {
+                            Text = $"Новый результат поиска '{searchQuery}'\n\n{c.Url}",
+                            UserId = sub.UserId,
+                            Status = NotificationStatus.Scheduled
+                        });
+
+                        notifications.AddRange(searchNotifications);
+                    }
                 }
 
                 await _notificationsQueueRepository.AddRange(notifications);
