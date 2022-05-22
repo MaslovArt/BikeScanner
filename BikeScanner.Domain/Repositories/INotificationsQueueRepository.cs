@@ -5,6 +5,6 @@ namespace BikeScanner.Domain.Repositories
 {
     public interface INotificationsQueueRepository : IRepository<NotificationQueueEntity>
     {
-        Task<NotificationQueueEntity[]> GetNotSended();
+        Task<NotificationQueueEntity[]> GetScheduled();
     }
 }

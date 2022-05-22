@@ -12,7 +12,7 @@ namespace BikeScanner.Data.Postgre.Repositories
             : base(context)
         { }
 
-        public Task<NotificationQueueEntity[]> GetNotSended()
+        public Task<NotificationQueueEntity[]> GetScheduled()
         {
             return Set
                 .Where(e => e.Status == NotificationStatus.Scheduled)
