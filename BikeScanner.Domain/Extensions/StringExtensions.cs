@@ -6,18 +6,6 @@ namespace BikeScanner.Domain.Extensions
 {
     public static class StringExtensions
     {
-        public static string ToDecimalStringList(this IEnumerable<string> enumerable)
-        {
-            var list = new StringBuilder();
-            var array = enumerable.ToArray();
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                list.AppendLine($"{i + 1}. {array[i]}");
-            }
-            return list.ToString();
-        }
-
         public static string[] ToMax64BytesValue(this IEnumerable<string> array)
         {
             return array.Select(ToMax64BytesValue).ToArray();
@@ -38,5 +26,12 @@ namespace BikeScanner.Domain.Extensions
 
         public static bool IsMinLength(this string str, int minLength) =>
             !str.IsNullOrEmptyOrWhiteSpace() && str.Length >= minLength;
+
+        public static string ReplaceAll(this string str, IEnumerable<string> oldStrs, string newStr)
+        {
+            foreach (var oldStr in oldStrs)
+                str = str.Replace(oldStr, newStr);
+            return str;
+        }
     }
 }

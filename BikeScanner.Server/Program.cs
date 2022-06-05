@@ -21,7 +21,7 @@ builder.Services
     .AddBikeScannerServices()
     .AddBikeScannerJobs(config)
     .AddTelegramNotificator()
-    .AddVkCrawler(config)
+    .AddVkCrawlers(config)
     .AddBikeScannerTelegramBotUI(config)
     .AddTelegramPollingHostedService()
     .AddHangfire(o => o.UsePostgreSqlStorage(config.GetConnectionString("DefaultConnection")))

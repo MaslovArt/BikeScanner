@@ -3,7 +3,8 @@
 	internal enum CrawlerType
 	{
 		VkWall,
-		VkAlbum
+		VkAlbum,
+		DirtRu
 	}
 }
 
