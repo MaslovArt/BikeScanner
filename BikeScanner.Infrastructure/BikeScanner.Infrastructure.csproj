@@ -27,9 +27,9 @@
     <None Remove="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <None Remove="HtmlAgilityPack" />
     <None Remove="HtmlAgilityPack.CssSelectors.NetCore" />
-    <None Remove="Models\" />
-    <None Remove="Models\DirtRu\" />
     <None Remove="Configs\DirtRu\" />
+    <None Remove="Services\DirtRu\" />
+    <None Remove="Services\DirtRu\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServiceCollection\" />
@@ -39,8 +39,8 @@
     <Folder Include="Services\Vk\" />
     <Folder Include="Configs\" />
     <Folder Include="Crawlers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Models\DirtRu\" />
     <Folder Include="Configs\DirtRu\" />
+    <Folder Include="Services\DirtRu\" />
+    <Folder Include="Services\DirtRu\Models\" />
   </ItemGroup>
 </Project>

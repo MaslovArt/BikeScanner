@@ -1,5 +1,6 @@
 ﻿using System;
-namespace BikeScanner.Infrastructure.Models.DirtRu
+
+namespace BikeScanner.Infrastructure.Services.DirtRu.Models
 {
 	internal class ForumInfo
 	{

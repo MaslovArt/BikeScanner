@@ -30,8 +30,15 @@ namespace TelegramBot.UI.Hosting
             _bot = bot;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
+            var info = await _botClient.GetWebhookInfoAsync(cancellationToken);
+            if (!string.IsNullOrEmpty(info.Url))
+            {
+                await _botClient.DeleteWebhookAsync(true, cancellationToken);
+                _logger.LogInformation($"Delete webhook {info.Url} before polling");
+            }
+
             _botClient.StartReceiving(
                 HandleUpdateAsync,
                 HandleErrorAsync,
@@ -46,8 +53,6 @@ namespace TelegramBot.UI.Hosting
                 },
                 _cts.Token);
             _logger.LogInformation($"{nameof(TelegramPollHostedService)}: Start redirect polling to webhook.");
-
-            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

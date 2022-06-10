@@ -34,7 +34,7 @@ namespace BikeScanner.Infrastructure.ServiceCollection
 			services.Configure<DirtRuSourceConfig>(configuration.GetSection(nameof(DirtRuSourceConfig)));
 
 			services.AddTransient<ICrawler, VkPostsCrawler>();
-			//services.AddTransient<ICrawler, VkPhotosCrawler>();
+			services.AddTransient<ICrawler, VkPhotosCrawler>();
 			services.AddTransient<ICrawler, DirtRuCrawler>();
 
 			return services;

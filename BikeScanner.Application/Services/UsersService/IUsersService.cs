@@ -8,6 +8,7 @@ namespace BikeScanner.Application.Services.UsersService
         Task ActivateUser(long userId);
         Task DiactivateUser(long userId);
         Task<User> EnsureUser(long userId);
+        Task<bool> IsBanned(long userId);
     }
 }
 

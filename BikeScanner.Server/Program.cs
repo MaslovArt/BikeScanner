@@ -3,6 +3,7 @@ using BikeScanner.Application.ServiceCollection;
 using BikeScanner.Data.Postgre.ServiceCollection;
 using BikeScanner.Infrastructure.ServiceCollection;
 using BikeScanner.Server.Hangfire;
+using BikeScanner.Server.Middlewares;
 using Hangfire;
 using Hangfire.PostgreSql;
 using NLog.Web;
@@ -23,6 +24,7 @@ builder.Services
     .AddTelegramNotificator()
     .AddVkCrawlers(config)
     .AddBikeScannerTelegramBotUI(config)
+    //.AddTelegramWebhookHostedService()
     .AddTelegramPollingHostedService()
     .AddHangfire(o => o.UsePostgreSqlStorage(config.GetConnectionString("DefaultConnection")))
     .AddHangfireServer();
@@ -42,6 +44,7 @@ var app = builder.Build();
 //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeScanner Api V1");
 //    });
 //}
+app.UseTelegramBotHandler();
 GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
 GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
 app.UseHangfireDashboard();

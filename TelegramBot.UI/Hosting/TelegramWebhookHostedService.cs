@@ -35,7 +35,12 @@ namespace TelegramBot.UI.Hosting
         {
             await _telegramBotClient.SetWebhookAsync(
                 url: _webhookAddress,
-                allowedUpdates: Array.Empty<UpdateType>(),
+                allowedUpdates: new UpdateType[]
+                {
+                    UpdateType.Message,
+                    UpdateType.CallbackQuery,
+                    UpdateType.MyChatMember
+                },
                 cancellationToken: cancellationToken);
             _logger.LogInformation($"Add webhook: {_webhookAddress}");
         }

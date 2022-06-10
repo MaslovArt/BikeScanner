@@ -88,5 +88,16 @@ namespace TelegramBot.UI.Bot.Helpers
                 });
             return new InlineKeyboardMarkup(buttons);
         }
+
+        /// <summary>
+        /// Return link button for message
+        /// </summary>
+        /// <param name="url">Link url</param>
+        /// <returns></returns>
+        public static InlineKeyboardMarkup MessageViewLink(string url)
+        {
+            var link = InlineKeyboardButton.WithUrl("Посмотреть", url);
+            return new InlineKeyboardMarkup(new List<InlineKeyboardButton>() { link });
+        }
     }
 }

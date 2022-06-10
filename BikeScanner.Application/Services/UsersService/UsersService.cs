@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using BikeScanner.Application.Models.Users;
 using BikeScanner.Domain.Exceptions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BikeScanner.Application.Services.UsersService
 {
@@ -11,11 +13,16 @@ namespace BikeScanner.Application.Services.UsersService
     {
         private readonly IUsersRepository _usersRepository;
         private readonly IMapper          _mapper;
+        private readonly IMemoryCache     _cache;
 
-        public UsersService(IUsersRepository usersRepository, IMapper mapper)
+        public UsersService(
+            IUsersRepository usersRepository,
+            IMapper mapper,
+            IMemoryCache cache)
         {
             _usersRepository = usersRepository;
             _mapper = mapper;
+            _cache = cache;
         }
 
         public async Task<User> EnsureUser(long userId)
@@ -50,6 +57,18 @@ namespace BikeScanner.Application.Services.UsersService
 
             user.State = AccountState.Inactive;
             await _usersRepository.Update(user);
+        }
+
+        public async Task<bool> IsBanned(long userId)
+        {
+            var blackListUsers = _cache.Get<long[]>("black_list");
+            if (blackListUsers == null)
+            {
+                var blackList = await _usersRepository.GetBlackList();
+                blackListUsers = blackList.Select(l => l.UserId).ToArray();
+            }
+
+            return blackListUsers.Any(u => u == userId);
         }
     }
 }

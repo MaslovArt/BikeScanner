@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,11 @@ namespace BikeScanner.Data.Postgre.Repositories
         public Task<UserEntity> FindUser(long socialId)
         {
             return Set.FirstOrDefaultAsync(e => e.UserId == socialId);
+        }
+
+        public Task<UserEntity[]> GetBlackList()
+        {
+            return Set.Where(u => u.State == AccountState.Ban).ToArrayAsync();
         }
     }
 }
